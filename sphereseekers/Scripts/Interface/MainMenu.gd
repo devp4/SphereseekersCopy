@@ -27,12 +27,11 @@ func _on_Continue_pressed() -> void:
 
 # Signal handler for the "New Game" button
 func _on_new_game_pressed() -> void:
-	# Change the scene to Level1
-	Global.is_paused = false
-	get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
+	# set name first
+	get_tree().change_scene_to_file("res://Scenes/Interface/SetNameMenu.tscn")
 
 func _on_load_game_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/Interface/SetNameMenu.tscn")
+	pass
 	
 func _on_options_pressed() -> void:
 	pass

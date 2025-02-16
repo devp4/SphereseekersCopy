@@ -26,9 +26,20 @@ func _on_continue_pressed():
 		error_label.text = "Please enter a name"
 		error_label.modulate = Color(1, 0, 0)
 		error_label.visible = true
+		return
+		
+	error_label.visible = false
+	var save_names: Array = LocalStorage.get_save_names()
+	
+	if trimmed_text in save_names:
+		pass
 	else:
-		error_label.visible = false
-		print("Name entered:", trimmed_text)
+		save_names.append(trimmed_text)
+		LocalStorage.set_save_names(save_names)
+		
+		# Change the scene to Level1
+		Global.is_paused = false
+		get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 
 func set_objects_for_desktop(label, name_input, continue_button):
 	var screen_size = get_viewport_rect().size
