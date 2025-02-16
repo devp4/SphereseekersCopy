@@ -28,9 +28,9 @@ func _on_Continue_pressed() -> void:
 # Signal handler for the "New Game" button
 func _on_new_game_pressed() -> void:
 	# set name first
-	#get_tree().change_scene_to_file("res://Scenes/Interface/SetNameMenu.tscn")
-	Global.is_paused = false
-	get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
+	get_tree().change_scene_to_file("res://Scenes/Interface/SetNameMenu.tscn")
+	# Global.is_paused = false
+	# get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 
 func _on_load_game_pressed() -> void:
 	pass
