@@ -32,7 +32,9 @@ func _on_continue_pressed():
 	var save_names: Array = LocalStorage.get_save_names()
 	
 	if trimmed_text in save_names:
-		pass
+		error_label.text = "Name already in use"
+		error_label.modulate = Color(1, 0, 0)
+		error_label.visible = true
 	else:
 		save_names.append(trimmed_text)
 		LocalStorage.set_save_names(save_names)
