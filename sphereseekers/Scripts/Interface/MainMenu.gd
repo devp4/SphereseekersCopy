@@ -31,8 +31,8 @@ func _on_new_game_pressed() -> void:
 	Global.is_paused = false
 	get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 
-func _on_Load_Game_pressed() -> void:
-	pass
+func _on_load_game_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/Interface/SetNameMenu.tscn")
 	
 func _on_options_pressed() -> void:
 	pass
@@ -93,7 +93,7 @@ func set_objects_for_desktop(background, title, continue_button, new_game_button
 	))
 	
 	# Load Game
-	load_game_button.text = "Options"
+	load_game_button.text = "Load Game"
 	load_game_button.set_size(Vector2(bg_size.x * 0.5, bg_size.y * 0.1))
 
 	load_game_button.set_position(Vector2(
@@ -102,7 +102,7 @@ func set_objects_for_desktop(background, title, continue_button, new_game_button
 	))
 	
 	# Options
-	options_button.text = "Main Menu"
+	options_button.text = "Options"
 	options_button.set_size(Vector2(bg_size.x * 0.5, bg_size.y * 0.1))
 
 	options_button.set_position(Vector2(

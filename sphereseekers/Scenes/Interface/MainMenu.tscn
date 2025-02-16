@@ -50,3 +50,4 @@ offset_right = 8.0
 offset_bottom = 8.0
 
 [connection signal="pressed" from="new_game_button" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="load_game_button" to="." method="_on_load_game_pressed"]
