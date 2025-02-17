@@ -68,7 +68,14 @@ func _ready():
 		delete_button.modulate = Color.RED
 		button_box.add_child(delete_button)
 		delete_button.pressed.connect(_on_delete_pressed.bind(save_name))
+		
+	var main_menu_button = Button.new()
+	main_menu_button.text = "Main Menu"
+	main_menu_button.pressed.connect(_on_main_menu_pressed)
+	main_vbox.add_child(main_menu_button)
 
+func _on_main_menu_pressed():
+	get_tree().change_scene_to_file("res://Scenes/Interface/MainMenu.tscn")
 
 func _on_load_pressed(save_name):
 	print("Loading save: ", save_name)
