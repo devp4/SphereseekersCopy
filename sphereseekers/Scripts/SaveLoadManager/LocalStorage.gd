@@ -16,4 +16,5 @@ func get_save_names():
 
 func set_save_names(save_names):
 	var save_names_string = JSON.stringify(save_names)
-	JavaScriptBridge.eval("localStorage.setItem('saves', %s)" % save_names_string)
+	var complete_string = "localStorage.setItem('saves', '%s')" % save_names_string
+	JavaScriptBridge.eval(complete_string)
