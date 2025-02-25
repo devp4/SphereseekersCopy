@@ -67,7 +67,7 @@ func _ready():
 		delete_button.custom_minimum_size = Vector2(80, 30)
 		delete_button.modulate = Color.RED
 		button_box.add_child(delete_button)
-		delete_button.pressed.connect(_on_delete_pressed.bind(save_name))
+		delete_button.pressed.connect(_on_delete_confirm.bind(save_name))
 		
 	var main_menu_button = Button.new()
 	main_menu_button.text = "Main Menu"
@@ -79,7 +79,16 @@ func _on_main_menu_pressed():
 
 func _on_load_pressed(save_name):
 	print("Loading save: ", save_name)
-
+	
+func _on_delete_confirm(save_name):
+	var popup = ConfirmationDialog.new()
+	popup.dialog_text = "Are you sure you want to delete this save? This cannot be undone."
+	popup.ok_button_text = "Delete"
+	popup.cancel_button_text = "Exit"
+	popup.get_ok_button().modulate = Color.RED
+	popup.confirmed.connect(_on_delete_pressed.bind(save_name))
+	add_child(popup)
+	popup.popup_centered()
 
 func _on_delete_pressed(save_name):
 	var saves = LocalStorage.get_save_names()
