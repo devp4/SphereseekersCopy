@@ -1,33 +1,33 @@
 extends Node2D
 
-var label
-var error_label
-var name_input: LineEdit
-var continue_button
+var label_instance: Label
+var error_label_instance: Label
+var name_input_instance: LineEdit
+var continue_button_instance: Button
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	label = $title
-	name_input = $name_input
-	continue_button = $continue
-	error_label = $error
+	label_instance = $title
+	name_input_instance = $name_input
+	continue_button_instance = $continue
+	error_label_instance = $error
 	
 	if not Global.is_mobile:
-		set_objects_for_desktop(label, name_input, continue_button)
+		set_objects_for_desktop(label_instance, name_input_instance, continue_button_instance, error_label_instance)
 	else:
 		# we assume that is a smartphone
-		set_objects_for_smartphone(label, name_input, continue_button)
+		set_objects_for_smartphone(label_instance, name_input_instance, continue_button_instance, error_label_instance)
 
 func _on_continue_pressed():
-	var trimmed_text = name_input.text.strip_edges()
+	var trimmed_text = name_input_instance.text.strip_edges()
 	
 	if trimmed_text == "":
-		error_label.text = "Please enter your name"
-		error_label.modulate = Color(1, 0, 0)
-		error_label.visible = true
+		error_label_instance.text = "Please enter your name"
+		error_label_instance.modulate = Color(1, 0, 0)
+		error_label_instance.visible = true
 		return
 		
-	error_label.visible = false
+	error_label_instance.visible = false
 	var save_names: Array = LocalStorage.get_save_names()
 	
 	if trimmed_text in save_names:
@@ -38,7 +38,7 @@ func _on_continue_pressed():
 		
 		# Change the scene to Level1
 		Global.is_paused = false
-		get_tree().change_scene_to_file("res://Scenes/Interface/loading_screen.tscn")
+		get_tree().change_scene_to_file("res://Scenes/interface/loading_screen.tscn")
 		# get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 
 func _on_override_confirm(save_name):
@@ -51,11 +51,11 @@ func _on_override_confirm(save_name):
 	popup.confirmed.connect(_on_override_pressed.bind(save_name))
 	popup.popup_centered()
 
-func _on_override_pressed(save_name):
+func _on_override_pressed(_save_name):
 	Global.is_paused = false
 	get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 
-func set_objects_for_desktop(label, name_input, continue_button):
+func set_objects_for_desktop(label, name_input, continue_button, error_label):
 	var screen_size = get_viewport_rect().size
 	var width = screen_size.x
 	var height = screen_size.y
@@ -99,7 +99,7 @@ func set_objects_for_desktop(label, name_input, continue_button):
 	error_label.modulate = Color(1, 0, 0)
 	error_label.visible = false
 
-func set_objects_for_smartphone(label, name_input, continue_button):
+func set_objects_for_smartphone(label, name_input, continue_button, error_label):
 	var screen_size = get_viewport_rect().size
 	var width = screen_size.x
 	var height = screen_size.y

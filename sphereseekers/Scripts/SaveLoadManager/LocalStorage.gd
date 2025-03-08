@@ -5,8 +5,8 @@ func get_local_storage(key):
 	return JavaScriptBridge.eval("localStorage.getItem(%s)" % key)
 
 func set_local_storage(key, item):
-	var key_string = "%s" % key
-	var item_string = JSON.stringify(item)
+	var _key_string = "%s" % key
+	var _item_string = JSON.stringify(item)
 	JavaScriptBridge.eval("localStorage.setItem(%s, %s)" % [key, item])
 
 func get_save_names():

@@ -1,12 +1,10 @@
-[gd_scene load_steps=27 format=3 uid="uid://bkhapywan2k7e"]
+[gd_scene load_steps=30 format=3 uid="uid://bkhapywan2k7e"]
 
 [ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_bkrq4"]
 [ext_resource type="Texture2D" uid="uid://dytrejtswgqmg" path="res://Assets/backgrounds/lonely_road_afternoon_puresky_4k.hdr" id="2_4ihq7"]
 [ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="2_6qjlu"]
 [ext_resource type="Script" uid="uid://c6ycpobav1k77" path="res://Scripts/Movement/ball.gd" id="3_v4j33"]
-[ext_resource type="Material" uid="uid://2m1qsb0db4x3" path="res://Assets/Materials/stones/stones.tres" id="5_n5gfo"]
 [ext_resource type="Script" uid="uid://c3nmstgb3dbw8" path="res://Scripts/Objects/limit.gd" id="7_ajsod"]
-[ext_resource type="Script" uid="uid://bcck0syn6x4lh" path="res://Scripts/Objects/exit_area.gd" id="9_mb8kl"]
 [ext_resource type="Material" uid="uid://dv76cxap5uj7y" path="res://Assets/Materials/cheese/cheese.tres" id="10_6y8dp"]
 [ext_resource type="PackedScene" uid="uid://dqeuanfk6o722" path="res://Scenes/Objects/path_with_holes/path_with_holes.tscn" id="10_c8kkf"]
 [ext_resource type="PackedScene" uid="uid://chy427wghii5s" path="res://Scenes/Objects/cannon/cannon.tscn" id="10_gg1sk"]
@@ -28,12 +26,12 @@ tonemap_mode = 2
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_cnoru"]
 panorama = ExtResource("2_4ihq7")
 
-[sub_resource type="Sky" id="Sky_5rbo1"]
+[sub_resource type="Sky" id="Sky_356um"]
 sky_material = SubResource("PanoramaSkyMaterial_cnoru")
 
 [sub_resource type="Environment" id="Environment_3585k"]
 background_mode = 2
-sky = SubResource("Sky_5rbo1")
+sky = SubResource("Sky_356um")
 
 [sub_resource type="GDScript" id="GDScript_5len1"]
 script/source = "extends CanvasLayer
@@ -49,14 +47,49 @@ material = ExtResource("10_6y8dp")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_lwhh4"]
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_356um"]
+load_path = "res://.godot/imported/texture_rock_albedo.png-1efa3a14597659ccdfb71330ec287b28.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_u3mja"]
+load_path = "res://.godot/imported/texture_rock_ao.png-0ddb71ef8b0acffcdbacf636135f6f23.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_v6tyg"]
+load_path = "res://.godot/imported/texture_rock_depth.png-6a39d8e59bcc6e4a9b8e02b392bd2469.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1odfw"]
+load_path = "res://.godot/imported/texture_rock_metal.png-0809622c823ca045b385e9f794c75b8b.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4rdjy"]
+load_path = "res://.godot/imported/texture_rock_normal.png-8add8ea4b5de4e42aaf68f164725f4a6.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_egla1"]
+render_priority = 15
+albedo_texture = SubResource("CompressedTexture2D_356um")
+metallic = 1.0
+metallic_texture = SubResource("CompressedTexture2D_1odfw")
+roughness = 0.47
+normal_enabled = true
+normal_texture = SubResource("CompressedTexture2D_4rdjy")
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = SubResource("CompressedTexture2D_u3mja")
+heightmap_enabled = true
+heightmap_scale = 8.0
+heightmap_deep_parallax = true
+heightmap_min_layers = 4
+heightmap_max_layers = 16
+heightmap_texture = SubResource("CompressedTexture2D_v6tyg")
+heightmap_flip_texture = true
+uv1_triplanar = true
+uv1_world_triplanar = true
+uv2_world_triplanar = true
+texture_filter = 5
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_q4olh"]
 size = Vector3(100, 1, 150)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_iwds3"]
 size = Vector3(20, 2, 66.9434)
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_0d7wx"]
-radius = 2.5
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_bkrq4")
@@ -122,9 +155,9 @@ shape = SubResource("SphereShape3D_lwhh4")
 [node name="FirstFloor" type="CSGCombiner3D" parent="."]
 use_collision = true
 
-[node name="Ground" type="CSGBox3D" parent="FirstFloor"]
+[node name="Ground" type="CSGBox3D" parent="FirstFloor" groups=["Ground"]]
 size = Vector3(100, 5, 150)
-material = ExtResource("5_n5gfo")
+material = SubResource("StandardMaterial3D_egla1")
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="FirstFloor/Ground"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 47.4067, 5, 50)
@@ -132,7 +165,7 @@ operation = 2
 radius = 4.5
 height = 6.0
 sides = 32
-material = ExtResource("5_n5gfo")
+material = SubResource("StandardMaterial3D_egla1")
 
 [node name="CSGCylinder3D2" type="CSGCylinder3D" parent="FirstFloor/Ground"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 47.3546, 5, 0)
@@ -140,7 +173,7 @@ operation = 2
 radius = 4.4
 height = 6.0
 sides = 32
-material = ExtResource("5_n5gfo")
+material = SubResource("StandardMaterial3D_egla1")
 
 [node name="CSGCylinder3D3" type="CSGCylinder3D" parent="FirstFloor/Ground"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -47.7091, 5, 25)
@@ -148,25 +181,25 @@ operation = 2
 radius = 4.4
 height = 6.0
 sides = 32
-material = ExtResource("5_n5gfo")
+material = SubResource("StandardMaterial3D_egla1")
 
 [node name="GroundHole-Limits" type="CSGBox3D" parent="FirstFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 operation = 2
 size = Vector3(90, 3, 140)
-material = ExtResource("5_n5gfo")
+material = SubResource("StandardMaterial3D_egla1")
 
 [node name="GroundHole" type="CSGBox3D" parent="FirstFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.106728, 0, -47.5)
 operation = 2
 size = Vector3(90, 5, 45)
-material = ExtResource("5_n5gfo")
+material = SubResource("StandardMaterial3D_egla1")
 
-[node name="CSGPolygon3D" type="CSGPolygon3D" parent="FirstFloor"]
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="FirstFloor" groups=["Ground"]]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -10, 0, 70)
 polygon = PackedVector2Array(-10, 0, 0, 4, 30, 4, 30, 0)
 depth = 20.0
-material = ExtResource("5_n5gfo")
+material = SubResource("StandardMaterial3D_egla1")
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="FirstFloor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 90)
@@ -174,7 +207,7 @@ operation = 2
 radius = 4.0
 height = 5.1
 sides = 16
-material = ExtResource("5_n5gfo")
+material = SubResource("StandardMaterial3D_egla1")
 
 [node name="LimitFirstFloor" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
@@ -194,78 +227,66 @@ restart_position = Vector3(0, 5, -67.5)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, -8.47168)
 shape = SubResource("BoxShape3D_iwds3")
 
-[node name="SecondFloor" type="CSGCombiner3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 150)
-use_collision = true
-
-[node name="Exit" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 145)
-script = ExtResource("9_mb8kl")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Exit"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-shape = SubResource("CylinderShape3D_0d7wx")
-
 [node name="Canon1" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 47.409, 5, 0.066)
 shoot_distance = 90.0
-cannon_material = ExtResource("5_n5gfo")
+cannon_material = SubResource("StandardMaterial3D_egla1")
 projectile_material = ExtResource("11_jstjo")
-rotate = true
+rotate_function = true
 
 [node name="Canon2" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.534, 5, 25.136)
 shoot_distance = 90.0
-cannon_material = ExtResource("5_n5gfo")
+cannon_material = SubResource("StandardMaterial3D_egla1")
 projectile_material = ExtResource("11_jstjo")
-rotate = true
+rotate_function = true
 
 [node name="Canon3" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 47.432, 5, 50.112)
 shoot_distance = 90.0
-cannon_material = ExtResource("5_n5gfo")
+cannon_material = SubResource("StandardMaterial3D_egla1")
 projectile_material = ExtResource("11_jstjo")
-rotate = true
+rotate_function = true
 
 [node name="Canon4" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(-0.5, 7.54979e-08, 0, -7.54979e-08, -0.5, 0, 0, 0, 0.5, 20, -6.631, 101.432)
 shoot_distance = 70.0
-cannon_material = ExtResource("5_n5gfo")
+cannon_material = SubResource("StandardMaterial3D_egla1")
 projectile_material = ExtResource("11_bpixh")
 
 [node name="Canon5" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(-0.5, 7.54979e-08, 0, -7.54979e-08, -0.5, 0, 0, 0, 0.5, 20, -6.631, 111.53)
 shoot_distance = 70.0
 shoot_delay = 2.0
-cannon_material = ExtResource("5_n5gfo")
+cannon_material = SubResource("StandardMaterial3D_egla1")
 projectile_material = ExtResource("11_bpixh")
 
 [node name="Canon6" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(-0.5, 7.54979e-08, 0, -7.54979e-08, -0.5, 0, 0, 0, 0.5, 20, -6.631, 121.43)
 shoot_distance = 70.0
-cannon_material = ExtResource("5_n5gfo")
+cannon_material = SubResource("StandardMaterial3D_egla1")
 projectile_material = ExtResource("11_bpixh")
 
 [node name="Canon7" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -20, -6.631, 106.43)
 shoot_distance = 70.0
-cannon_material = ExtResource("5_n5gfo")
+cannon_material = SubResource("StandardMaterial3D_egla1")
 projectile_material = ExtResource("11_bpixh")
 
 [node name="Canon8" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -20, -6.631, 116.43)
 shoot_distance = 70.0
 shoot_delay = 2.0
-cannon_material = ExtResource("5_n5gfo")
+cannon_material = SubResource("StandardMaterial3D_egla1")
 projectile_material = ExtResource("11_bpixh")
 
 [node name="Canon9" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -20, -6.631, 126.43)
 shoot_distance = 70.0
-cannon_material = ExtResource("5_n5gfo")
+cannon_material = SubResource("StandardMaterial3D_egla1")
 projectile_material = ExtResource("11_bpixh")
 
-[node name="PathWithHoles1" parent="." instance=ExtResource("10_c8kkf")]
+[node name="PathWithHoles1" parent="." groups=["Ground"] instance=ExtResource("10_c8kkf")]
 transform = Transform3D(1.04815, 0, 0, 0, 1.04815, 0, 0, 0, 2.50277, 0, 0.25, -62.4371)
 tile_enabled = {
 "l1": true,
@@ -287,9 +308,9 @@ tile_enabled = {
 "r8": true,
 "r9": true
 }
-tile_material = ExtResource("5_n5gfo")
+tile_material = SubResource("StandardMaterial3D_egla1")
 
-[node name="PathWithHoles2" parent="." instance=ExtResource("10_c8kkf")]
+[node name="PathWithHoles2" parent="." groups=["Ground"] instance=ExtResource("10_c8kkf")]
 transform = Transform3D(0.640123, 0, 0, 0, 1, 0, 0, 0, 2.81029, 0.0129051, -9.75533, 93.0594)
 tile_enabled = {
 "l1": true,
@@ -311,12 +332,12 @@ tile_enabled = {
 "r8": true,
 "r9": true
 }
-tile_material = ExtResource("5_n5gfo")
+tile_material = SubResource("StandardMaterial3D_egla1")
 
 [node name="TeleportPlatform" parent="." instance=ExtResource("14_mq0sh")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -9.614, 131.703)
 
 [connection signal="body_entered" from="Marble" to="Marble" method="_on_body_entered"]
+[connection signal="body_shape_entered" from="Marble" to="Marble" method="_on_body_shape_entered"]
 [connection signal="body_entered" from="LimitFirstFloor" to="LimitFirstFloor" method="_on_body_entered"]
 [connection signal="body_entered" from="LimitSecondFloor" to="LimitSecondFloor" method="_on_body_entered"]
-[connection signal="body_entered" from="Exit" to="Exit" method="_on_body_entered"]

@@ -1,55 +1,40 @@
-[gd_scene load_steps=17 format=3 uid="uid://c7jhe1qwuek1p"]
+[gd_scene load_steps=14 format=3 uid="uid://bo84yrmciq5r"]
 
 [ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_66voi"]
-[ext_resource type="PackedScene" uid="uid://deyiv84u42irg" path="res://Scenes/Objects/room_windows/room_windows.tscn" id="2_y37gr"]
+[ext_resource type="PackedScene" uid="uid://dd86yv0a58ro3" path="res://Scenes/Objects/teleport_platform/platform.tscn" id="2_5f3p6"]
 [ext_resource type="Script" uid="uid://c6ycpobav1k77" path="res://Scripts/Movement/ball.gd" id="3_5weku"]
 [ext_resource type="Material" uid="uid://dv76cxap5uj7y" path="res://Assets/Materials/cheese/cheese.tres" id="4_gecyo"]
 [ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="5_5yx82"]
 [ext_resource type="Texture2D" uid="uid://dytrejtswgqmg" path="res://Assets/backgrounds/lonely_road_afternoon_puresky_4k.hdr" id="6_ovien"]
-[ext_resource type="PackedScene" uid="uid://dqeuanfk6o722" path="res://Scenes/Objects/path_with_holes/path_with_holes.tscn" id="7_dwjng"]
-[ext_resource type="PackedScene" uid="uid://chy427wghii5s" path="res://Scenes/Objects/cannon/cannon.tscn" id="9_e2vs3"]
-[ext_resource type="PackedScene" uid="uid://dofsae8odfnbn" path="res://Scenes/Objects/big_room/big_room.tscn" id="10_g62s6"]
-[ext_resource type="Material" uid="uid://qpdv7evfgbyw" path="res://Assets/Materials/mirror/mirror.tres" id="11_nfgd5"]
+[ext_resource type="PackedScene" uid="uid://blwcgg18dx5gs" path="res://Scenes/Objects/tower/tower.tscn" id="7_jv26f"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bg48n"]
-
-[sub_resource type="SphereMesh" id="SphereMesh_8kw05"]
-material = ExtResource("4_gecyo")
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_0tplf"]
-
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_2om6r"]
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_1jlnc"]
 panorama = ExtResource("6_ovien")
 
-[sub_resource type="Sky" id="Sky_dmkbo"]
-sky_material = SubResource("PanoramaSkyMaterial_2om6r")
+[sub_resource type="Sky" id="Sky_5rbo1"]
+sky_material = SubResource("PanoramaSkyMaterial_1jlnc")
 
-[sub_resource type="Environment" id="Environment_70xwf"]
+[sub_resource type="Environment" id="Environment_u40f0"]
 background_mode = 2
-sky = SubResource("Sky_dmkbo")
+sky = SubResource("Sky_5rbo1")
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0x4y1"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_uqiic"]
+material = ExtResource("4_gecyo")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_eopvx"]
 
 [node name="Level1" type="Node3D"]
 script = ExtResource("1_66voi")
 
-[node name="room_windows" parent="." instance=ExtResource("2_y37gr")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+[node name="platform" parent="." instance=ExtResource("2_5f3p6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 100, 0)
 
-[node name="Marble" type="RigidBody3D" parent="." groups=["player"]]
-transform = Transform3D(1, 8.74228e-08, 8.74227e-08, 8.74227e-08, -1, 0, 8.74227e-08, 7.64274e-15, -1, 0, 25.9703, -0.263168)
-mass = 20.0
-physics_material_override = SubResource("PhysicsMaterial_bg48n")
-contact_monitor = true
-max_contacts_reported = 1
-script = ExtResource("3_5weku")
-movement_speed = 18500.0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Marble"]
-transform = Transform3D(-0.677543, 5.50161e-08, 0.735483, -1.50996e-07, -1, -6.42979e-08, 0.735483, -1.54619e-07, 0.677543, 0, 0, 0)
-mesh = SubResource("SphereMesh_8kw05")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Marble"]
-transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("SphereShape3D_0tplf")
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 11.2913, 0)
+light_energy = 1.5
+shadow_enabled = true
 
 [node name="CameraRig" type="Node3D" parent="."]
 transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 10.782, -80.51)
@@ -64,63 +49,29 @@ spring_length = 9.0
 margin = 1.0
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig/HRotation/VRotation/SpringArm3D"]
-environment = SubResource("Environment_70xwf")
+environment = SubResource("Environment_u40f0")
 current = true
 fov = 80.0
 
-[node name="PathWithHoles" parent="." instance=ExtResource("7_dwjng")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 3.12135, 0, 0, 19.3501)
-tile_enabled = {
-"l1": true,
-"l2": false,
-"l3": true,
-"l4": true,
-"l5": true,
-"l6": false,
-"l7": true,
-"l8": true,
-"l9": true,
-"r1": true,
-"r2": true,
-"r3": true,
-"r4": false,
-"r5": true,
-"r6": true,
-"r7": true,
-"r8": false,
-"r9": true
-}
-tile_material = ExtResource("11_nfgd5")
+[node name="Marble" type="RigidBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 8.74228e-08, 8.74227e-08, 8.74227e-08, -1, 0, 8.74227e-08, 7.64274e-15, -1, 35.8731, 5, 0.349762)
+mass = 20.0
+physics_material_override = SubResource("PhysicsMaterial_0x4y1")
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("3_5weku")
+movement_speed = 18500.0
+jump_force = 250.0
 
-[node name="Canon" parent="." instance=ExtResource("9_e2vs3")]
-transform = Transform3D(-0.25, 0, -3.7749e-08, 0, 0.25, 0, 3.7749e-08, 0, -0.25, 10, 1.5351, 20)
-shoot_distance = 80.0
-speed = 150.0
-cannon_material = ExtResource("11_nfgd5")
-projectile_material = ExtResource("11_nfgd5")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Marble"]
+transform = Transform3D(-0.677543, 5.50161e-08, 0.735483, -1.50996e-07, -1, -6.42979e-08, 0.735483, -1.54619e-07, 0.677543, 0, 0, 0)
+mesh = SubResource("SphereMesh_uqiic")
 
-[node name="Canon2" parent="." instance=ExtResource("9_e2vs3")]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -10, 1.5, 30)
-shoot_distance = 80.0
-speed = 150.0
-cannon_material = ExtResource("11_nfgd5")
-projectile_material = ExtResource("11_nfgd5")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Marble"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_eopvx")
 
-[node name="Canon3" parent="." instance=ExtResource("9_e2vs3")]
-transform = Transform3D(-0.25, 0, -3.7749e-08, 0, 0.25, 0, 3.7749e-08, 0, -0.25, 10, 1.5, 40)
-shoot_distance = 80.0
-speed = 150.0
-cannon_material = ExtResource("11_nfgd5")
-projectile_material = ExtResource("11_nfgd5")
-
-[node name="Canon4" parent="." instance=ExtResource("9_e2vs3")]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -10, 1.5, 50)
-shoot_distance = 80.0
-speed = 150.0
-cannon_material = ExtResource("11_nfgd5")
-projectile_material = ExtResource("11_nfgd5")
-
-[node name="big_room" parent="." instance=ExtResource("10_g62s6")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 86.1697)
+[node name="tower" parent="." instance=ExtResource("7_jv26f")]
 
 [connection signal="body_entered" from="Marble" to="Marble" method="_on_body_entered"]
+[connection signal="body_shape_entered" from="Marble" to="Marble" method="_on_body_shape_entered"]

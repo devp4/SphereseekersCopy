@@ -19,15 +19,15 @@ func _process(delta):
 	var progress = []
 	var status = ResourceLoader.load_threaded_get_status(scene_path, progress)
 
+	# Checks what is actually being loaded for the level	
+	#for dependency in ResourceLoader.get_dependencies(scene_path):
+		#print(dependency.get_slice("::", 0)) # Prints the UID.
+		#print(dependency.get_slice("::", 2)) # Prints the path.
+		
 	if status == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-		$image.rotation_degrees += 100 * delta
+		$image.rotation_degrees += 360 * delta
 	elif status == ResourceLoader.THREAD_LOAD_LOADED:
 		get_tree().change_scene_to_packed(ResourceLoader.load_threaded_get(scene_path))
-		
-	# Checks what is actually being loaded for the level	
-	for dependency in ResourceLoader.get_dependencies(scene_path):
-		print(dependency.get_slice("::", 0)) # Prints the UID.
-		print(dependency.get_slice("::", 2)) # Prints the path.
 		
 func set_objects(background, image):
 	var screen_size = get_viewport_rect().size
@@ -41,7 +41,6 @@ func set_objects(background, image):
 
 	# Background size & position
 	var bg_size = background.size
-	var bg_position = background.position
 
 	# Image (TextureRect) - Remove label & center image
 	image.texture = load("res://Assets/Interface/loading_screen/gear.png")
@@ -67,7 +66,7 @@ func set_objects(background, image):
 		(width - image.size.x) / 2,
 		(height - image.size.y) / 2
 	))
-
+			
 func get_path_to_level() -> String:
 	match Global.level_to_play:
 		Global.levels.TUTORIAL:

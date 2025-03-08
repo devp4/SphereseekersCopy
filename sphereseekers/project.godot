@@ -24,6 +24,11 @@ LocalStorage="*res://Scripts/SaveLoadManager/LocalStorage.gd"
 
 project/assembly_name="Sphereseekers"
 
+[global_group]
+
+Ground=""
+player=""
+
 [input]
 
 ui_cancel={

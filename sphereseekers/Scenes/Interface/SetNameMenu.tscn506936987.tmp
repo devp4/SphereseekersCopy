@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://2jm1027hjbde"]
+
+[ext_resource type="Script" uid="uid://ddjyxn7i6exo5" path="res://Scripts/Interface/SetNameMenu.gd" id="1_ulw0x"]
+
+[node name="SetSaveName" type="Node2D"]
+script = ExtResource("1_ulw0x")
+
+[node name="title" type="Label" parent="."]
+offset_right = 79.0
+offset_bottom = 23.0
+text = "Set Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="name_input" type="LineEdit" parent="."]
+offset_top = 27.0
+offset_right = 79.0
+offset_bottom = 58.0
+
+[node name="continue" type="Button" parent="."]
+offset_top = 62.0
+offset_right = 79.0
+offset_bottom = 93.0
+text = "Continue"
+
+[node name="error" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[connection signal="pressed" from="continue" to="." method="_on_continue_pressed"]

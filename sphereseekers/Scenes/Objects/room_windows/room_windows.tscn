@@ -10,6 +10,10 @@
 [node name="floor" parent="." index="0"]
 surface_material_override/0 = ExtResource("2_bhghr")
 
+[node name="StaticBody3D" parent="floor" index="0" groups=["Ground"]]
+
+[node name="CollisionShape3D" parent="floor/StaticBody3D" index="0" groups=["Ground"]]
+
 [node name="wall_gate_og_001" parent="." index="1"]
 surface_material_override/0 = ExtResource("3_t4uid")
 

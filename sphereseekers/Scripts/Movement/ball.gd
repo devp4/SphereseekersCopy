@@ -4,12 +4,14 @@ extends RigidBody3D
 @export var max_angular_velocity : float = 350.0
 @export var braking_factor : float = 0.05
 @export var spin_boost_factor : float = 75.0
+@export var jump_force : float = 100.0;
 
 @onready var camera_3d: Camera3D = $"../CameraRig/HRotation/VRotation/SpringArm3D/Camera3D"
 
 var can_move: bool = true
+var is_on_ground: bool = true
 
-func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
+func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	
 	if not can_move:
 		linear_velocity = Vector3.ZERO
@@ -36,6 +38,10 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 	# Calculate forward/backward direction relative to camera position
 	var direction_forward = forward_input * cam_forward
 	var direction_horizontal = horizontal_input * cam_horizontal
+	
+	if Input.is_action_pressed("ui_end") and is_on_ground:
+		apply_impulse(Vector3(0, jump_force, 0))
+		is_on_ground = false
 	
 	# Ball will not move around while shift is being held down...
 	if (Input.is_action_pressed("shift")):
@@ -92,6 +98,10 @@ func disable_controls():
 func _on_body_entered(body: Node3D) -> void:
 	if body.is_in_group("enemy_balls"):
 		reset_position()
+		
+func _on_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
+	if body.is_in_group("Ground"):
+		is_on_ground = true
 
 # Resets player position to (0, 5, -67.5)
 func reset_position() -> void:
@@ -101,3 +111,4 @@ func reset_position() -> void:
 	var new_transform = global_transform
 	new_transform.origin = Vector3(0, 5, -67.5) # Set position to (0, 5, -67.5)
 	global_transform = new_transform
+	is_on_ground = true

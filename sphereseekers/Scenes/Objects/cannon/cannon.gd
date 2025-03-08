@@ -6,7 +6,7 @@ extends Node3D
 @export var shoot_delay: float = 0.5
 @export var cannon_material: StandardMaterial3D
 @export var projectile_material: StandardMaterial3D
-@export var rotate: bool = false
+@export var rotate_function: bool = false
 
 var cylinder_radius: float
 var scale_factor : float
@@ -22,9 +22,7 @@ func _ready() -> void:
 
 	start_shooting()
 
-func apply_scaling():
-	var scaled_radius = cylinder_radius * scale_factor
-	
+func apply_scaling():	
 	var cylinder = $structure
 	cylinder.material = cannon_material
 
@@ -68,15 +66,15 @@ func move_sphere(sphere: RigidBody3D):
 	var rotation_speed = 5.0
 	
 	while distance_traveled < shoot_distance:
-		if not is_instance_valid(sphere) or not is_inside_tree():
+		if not is_instance_valid(sphere) or not is_inside_tree() or Global.stop_all_projectiles:
 			return
 			
-		while Global.is_paused:
-			if not get_tree() or not is_inside_tree():
+		while Global.is_paused or Global.in_main_menu or Global.stop_all_projectiles:
+			if not get_tree() or not is_inside_tree() or Global.stop_all_projectiles:
 				return
 			await get_tree().process_frame 
 
-		if not get_tree():
+		if not get_tree() or not is_inside_tree() or Global.stop_all_projectiles:
 			return
 
 		await get_tree().process_frame
@@ -85,13 +83,16 @@ func move_sphere(sphere: RigidBody3D):
 		sphere.position += direction * speed * delta_time
 		distance_traveled += speed * delta_time
 		
-		if rotate:
+		if rotate_function:
 			sphere.rotate_z(deg_to_rad(rotation_speed * delta_time * -50))
+			
+	if Global.stop_all_projectiles:
+		return
 
 	if is_instance_valid(sphere):
 		sphere.queue_free()
-
-	await get_tree().create_timer(shoot_delay).timeout
-
-	if is_inside_tree():
-		spawn_and_shoot_sphere()
+	
+	if get_tree() and is_inside_tree() and not Global.stop_all_projectiles:
+		await get_tree().create_timer(shoot_delay).timeout
+		if is_inside_tree() and not Global.stop_all_projectiles:
+			spawn_and_shoot_sphere()

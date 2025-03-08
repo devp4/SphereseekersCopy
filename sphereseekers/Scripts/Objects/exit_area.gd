@@ -14,6 +14,15 @@ func _on_body_entered(body):
 		tween.tween_property(body, "position", target_position, 1.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 		tween.tween_callback(_on_animation_complete)
 
+func _level_to_play():
+	match Global.level_to_play:
+		Global.levels.TUTORIAL:
+			Global.level_to_play = Global.levels.LEVEL1
+		Global.levels.LEVEL1:
+			Global.level_to_play = Global.levels.LEVEL2
+
 func _on_animation_complete():
-	print("Player moved to center and elevated. Level Finished.")
-	get_tree().paused = true
+	print("Current Level: ", Global.level_to_play)
+	_level_to_play()
+	print("Going to level: ", Global.level_to_play)
+	get_tree().change_scene_to_file("res://Scenes/interface/loading_screen.tscn")

@@ -34,8 +34,15 @@ func _on_options_button_pressed():
 	print("Options menu coming soon!")
 
 func _on_main_menu_button_pressed():
+	Global.in_main_menu = true
+	Global.stop_all_projectiles = true
 	Global.controls_shown = false
 	Global.is_paused = false
+	
+	for sphere in get_tree().get_nodes_in_group("enemy_balls"):
+		if is_instance_valid(sphere):
+			sphere.queue_free()
+	
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Scenes/Interface/MainMenu.tscn")
 
