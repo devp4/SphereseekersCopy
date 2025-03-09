@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://chy427wghii5s" path="res://Scenes/Objects/cannon/cannon.tscn" id="10_gg1sk"]
 [ext_resource type="Material" uid="uid://dtui5o3potpen" path="res://Assets/Materials/wool/wool.tres" id="11_bpixh"]
 [ext_resource type="Material" uid="uid://dfsu6vtygh0tc" path="res://Assets/Materials/bricks/brick.tres" id="11_jstjo"]
+[ext_resource type="PackedScene" uid="uid://bbkib2fbyyasc" path="res://Scenes/Objects/tutorial_platform/tutorial_platform.tscn" id="12_u3mja"]
 [ext_resource type="PackedScene" uid="uid://copu860806ql0" path="res://Scenes/Objects/teleport_platform/teleport_platform.tscn" id="14_mq0sh"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_kcoyj"]
@@ -46,6 +47,9 @@ func _ready():
 material = ExtResource("10_6y8dp")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_lwhh4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q4olh"]
+size = Vector3(150, 1, 300)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_356um"]
 load_path = "res://.godot/imported/texture_rock_albedo.png-1efa3a14597659ccdfb71330ec287b28.s3tc.ctex"
@@ -84,12 +88,6 @@ uv1_triplanar = true
 uv1_world_triplanar = true
 uv2_world_triplanar = true
 texture_filter = 5
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_q4olh"]
-size = Vector3(100, 1, 150)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_iwds3"]
-size = Vector3(20, 2, 66.9434)
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_bkrq4")
@@ -152,97 +150,31 @@ mesh = SubResource("SphereMesh_6jkj5")
 transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("SphereShape3D_lwhh4")
 
-[node name="FirstFloor" type="CSGCombiner3D" parent="."]
-use_collision = true
-
-[node name="Ground" type="CSGBox3D" parent="FirstFloor" groups=["Ground"]]
-size = Vector3(100, 5, 150)
-material = SubResource("StandardMaterial3D_egla1")
-
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="FirstFloor/Ground"]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 47.4067, 5, 50)
-operation = 2
-radius = 4.5
-height = 6.0
-sides = 32
-material = SubResource("StandardMaterial3D_egla1")
-
-[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="FirstFloor/Ground"]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 47.3546, 5, 0)
-operation = 2
-radius = 4.4
-height = 6.0
-sides = 32
-material = SubResource("StandardMaterial3D_egla1")
-
-[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="FirstFloor/Ground"]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -47.7091, 5, 25)
-operation = 2
-radius = 4.4
-height = 6.0
-sides = 32
-material = SubResource("StandardMaterial3D_egla1")
-
-[node name="GroundHole-Limits" type="CSGBox3D" parent="FirstFloor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
-operation = 2
-size = Vector3(90, 3, 140)
-material = SubResource("StandardMaterial3D_egla1")
-
-[node name="GroundHole" type="CSGBox3D" parent="FirstFloor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.106728, 0, -47.5)
-operation = 2
-size = Vector3(90, 5, 45)
-material = SubResource("StandardMaterial3D_egla1")
-
-[node name="CSGPolygon3D" type="CSGPolygon3D" parent="FirstFloor" groups=["Ground"]]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -10, 0, 70)
-polygon = PackedVector2Array(-10, 0, 0, 4, 30, 4, 30, 0)
-depth = 20.0
-material = SubResource("StandardMaterial3D_egla1")
-
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="FirstFloor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 90)
-operation = 2
-radius = 4.0
-height = 5.1
-sides = 16
-material = SubResource("StandardMaterial3D_egla1")
-
-[node name="LimitFirstFloor" type="Area3D" parent="."]
+[node name="Limit" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
 script = ExtResource("7_ajsod")
 restart_position = Vector3(0, 5, -67.5)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="LimitFirstFloor"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Limit"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
 shape = SubResource("BoxShape3D_q4olh")
 
-[node name="LimitSecondFloor" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 110)
-disable_mode = 2
-script = ExtResource("7_ajsod")
-restart_position = Vector3(0, 5, -67.5)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="LimitSecondFloor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, -8.47168)
-shape = SubResource("BoxShape3D_iwds3")
-
 [node name="Canon1" parent="." instance=ExtResource("10_gg1sk")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 47.409, 5, 0.066)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 47.5, 5.5, 0)
 shoot_distance = 90.0
 cannon_material = SubResource("StandardMaterial3D_egla1")
 projectile_material = ExtResource("11_jstjo")
 rotate_function = true
 
 [node name="Canon2" parent="." instance=ExtResource("10_gg1sk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.534, 5, 25.136)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.5, 5.5, 20)
 shoot_distance = 90.0
 cannon_material = SubResource("StandardMaterial3D_egla1")
 projectile_material = ExtResource("11_jstjo")
 rotate_function = true
 
 [node name="Canon3" parent="." instance=ExtResource("10_gg1sk")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 47.432, 5, 50.112)
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 47.5, 5.5, 40)
 shoot_distance = 90.0
 cannon_material = SubResource("StandardMaterial3D_egla1")
 projectile_material = ExtResource("11_jstjo")
@@ -287,7 +219,7 @@ cannon_material = SubResource("StandardMaterial3D_egla1")
 projectile_material = ExtResource("11_bpixh")
 
 [node name="PathWithHoles1" parent="." groups=["Ground"] instance=ExtResource("10_c8kkf")]
-transform = Transform3D(1.04815, 0, 0, 0, 1.04815, 0, 0, 0, 2.50277, 0, 0.25, -62.4371)
+transform = Transform3D(1.05, 0, 0, 0, 1.05, 0, 0, 0, 2.508, 0, 0.25, -62.4371)
 tile_enabled = {
 "l1": true,
 "l2": false,
@@ -337,7 +269,9 @@ tile_material = SubResource("StandardMaterial3D_egla1")
 [node name="TeleportPlatform" parent="." instance=ExtResource("14_mq0sh")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -9.614, 131.703)
 
+[node name="tutorial_platform" parent="." instance=ExtResource("12_u3mja")]
+transform = Transform3D(-0.5, 0, -4.37114e-08, 0, 0.5, 0, 4.37114e-08, 0, -0.5, 0, 2.5, 0)
+
 [connection signal="body_entered" from="Marble" to="Marble" method="_on_body_entered"]
 [connection signal="body_shape_entered" from="Marble" to="Marble" method="_on_body_shape_entered"]
-[connection signal="body_entered" from="LimitFirstFloor" to="LimitFirstFloor" method="_on_body_entered"]
-[connection signal="body_entered" from="LimitSecondFloor" to="LimitSecondFloor" method="_on_body_entered"]
+[connection signal="body_entered" from="Limit" to="Limit" method="_on_body_entered"]

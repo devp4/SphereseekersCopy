@@ -63,6 +63,8 @@ script = ExtResource("4_a6oy8")
 [node name="p10" parent="." index="11"]
 script = ExtResource("4_a6oy8")
 
+[node name="StaticBody3D" parent="p10" index="0" groups=["Ground"]]
+
 [node name="p11" parent="." index="12"]
 script = ExtResource("4_a6oy8")
 
