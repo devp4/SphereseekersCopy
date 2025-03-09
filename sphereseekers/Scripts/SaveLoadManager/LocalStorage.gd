@@ -18,3 +18,14 @@ func set_save_names(save_names):
 	var save_names_string = JSON.stringify(save_names)
 	var complete_string = "localStorage.setItem('saves', '%s')" % save_names_string
 	JavaScriptBridge.eval(complete_string)
+	
+func save_player_data(player_name, player_data):
+	var player_string = JSON.stringify(player_data)
+	var js_string = "localStorage.setItem('%s', %s')" % [player_data, player_name]
+	var data = JavaScriptBridge.eval(js_string)
+
+func get_player_data(player_name):
+	var js_string = "localStorage.getItem('%s')" % player_name
+	var data = JavaScriptBridge.eval(js_string)
+	if data == null: return []
+	else: return JSON.parse_string(data)

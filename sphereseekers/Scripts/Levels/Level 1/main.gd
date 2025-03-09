@@ -2,7 +2,6 @@ extends Node3D
 
 var controls_menu_instance = null
 var pause_menu_instance = null
-var timer = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -32,8 +31,8 @@ func _process(delta: float) -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		timer += delta
-		$UI/StopwatchLabel.text = str(timer).pad_decimals(2)
+		PlayerClass.current_level_time += delta
+		$UI/StopwatchLabel.text = str(PlayerClass.current_level_time).pad_decimals(2)
 
 func show_controls_menu():
 	controls_menu_instance = preload("res://Scenes/Interface/ControlsMenu.tscn").instantiate()
