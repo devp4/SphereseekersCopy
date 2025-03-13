@@ -1,0 +1,132 @@
+[gd_scene load_steps=21 format=3 uid="uid://bi5v1olqblflr"]
+
+[ext_resource type="PackedScene" uid="uid://bbkib2fbyyasc" path="res://Scenes/Objects/tutorial_platform/tutorial_platform.tscn" id="1_8mdcv"]
+[ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_gt7pi"]
+[ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="2_mvygv"]
+[ext_resource type="Texture2D" uid="uid://dytrejtswgqmg" path="res://Assets/backgrounds/lonely_road_afternoon_puresky_4k.hdr" id="3_hukai"]
+[ext_resource type="Script" uid="uid://c6ycpobav1k77" path="res://Scripts/Movement/ball.gd" id="4_u1y0i"]
+[ext_resource type="Material" uid="uid://dv76cxap5uj7y" path="res://Assets/Materials/regular/cheese/cheese.tres" id="5_b8n46"]
+[ext_resource type="Material" uid="uid://bhrcvuaba1n8v" path="res://Assets/Materials/cartoon/purple_toon/purple_toon.tres" id="6_u1y0i"]
+[ext_resource type="Material" uid="uid://y4yhjq6ftc3l" path="res://Assets/Materials/cartoon/orange_toon/orange_toon.tres" id="7_b8n46"]
+[ext_resource type="Material" uid="uid://dv5esmm34fpg2" path="res://Assets/Materials/cartoon/brick_toon/brick_toon.tres" id="7_gt7pi"]
+[ext_resource type="Material" uid="uid://3vg8xdyp66a4" path="res://Assets/Materials/cartoon/grass_toon/grass_toon.tres" id="8_7ppab"]
+[ext_resource type="Material" uid="uid://dy6tyj3t7v5kw" path="res://Assets/Materials/cartoon/white_bricks_toon/white_bricks_toon.tres" id="8_aebg8"]
+[ext_resource type="Material" uid="uid://bm5qhhsjmred0" path="res://Assets/Materials/cartoon/wood_planks_toon/wood_plank_toon.tres" id="8_ljyd5"]
+[ext_resource type="Material" uid="uid://d17bn5nh0y3me" path="res://Assets/Materials/cartoon/leaves_toon/leaves_toon.tres" id="8_ytbuo"]
+[ext_resource type="Material" uid="uid://bypxjktybemk8" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="10_tdihx"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_gt7pi"]
+panorama = ExtResource("3_hukai")
+
+[sub_resource type="Sky" id="Sky_356um"]
+sky_material = SubResource("PanoramaSkyMaterial_gt7pi")
+
+[sub_resource type="Environment" id="Environment_tdihx"]
+background_mode = 2
+sky = SubResource("Sky_356um")
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ljyd5"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_aebg8"]
+material = ExtResource("5_b8n46")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_7ppab"]
+
+[node name="MaterialTesting" type="Node3D"]
+script = ExtResource("1_gt7pi")
+
+[node name="tutorial_platform" parent="." instance=ExtResource("1_8mdcv")]
+
+[node name="CameraRig" type="Node3D" parent="." groups=["hammer"]]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 10.782, -80.51)
+script = ExtResource("2_mvygv")
+
+[node name="HRotation" type="Node3D" parent="CameraRig"]
+
+[node name="VRotation" type="Node3D" parent="CameraRig/HRotation"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraRig/HRotation/VRotation"]
+spring_length = 9.0
+margin = 1.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig/HRotation/VRotation/SpringArm3D"]
+environment = SubResource("Environment_tdihx")
+current = true
+fov = 80.0
+
+[node name="Marble" type="RigidBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 8.74228e-08, 8.74227e-08, 8.74227e-08, -1, 0, 8.74227e-08, 7.64274e-15, -1, 0, 5, -67.5)
+mass = 20.0
+physics_material_override = SubResource("PhysicsMaterial_ljyd5")
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("4_u1y0i")
+movement_speed = 18500.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Marble"]
+transform = Transform3D(-0.677543, 5.50161e-08, 0.735483, -1.50996e-07, -1, -6.42979e-08, 0.735483, -1.54619e-07, 0.677543, 0, 0, 0)
+mesh = SubResource("SphereMesh_aebg8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Marble"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_7ppab")
+
+[node name="purple_toon" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.19384, 0)
+radius = 1.0
+radial_segments = 32
+rings = 32
+material = ExtResource("6_u1y0i")
+
+[node name="leaves_toon" type="CSGSphere3D" parent="."]
+transform = Transform3D(0.999806, 0, 0.0197209, 0, 1, 0, -0.0197209, 0, 0.999806, 16, -2.194, 0)
+radius = 1.0
+radial_segments = 32
+rings = 32
+material = ExtResource("8_ytbuo")
+
+[node name="grass_toon" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, -2.194, 0)
+radius = 1.0
+radial_segments = 32
+rings = 32
+material = ExtResource("8_7ppab")
+
+[node name="white_bricks_toon" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, -2.194, 0)
+radius = 1.0
+radial_segments = 32
+rings = 32
+material = ExtResource("8_aebg8")
+
+[node name="wood_plank_toon" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, -2.194, 0)
+radius = 1.0
+radial_segments = 32
+rings = 32
+material = ExtResource("8_ljyd5")
+
+[node name="brick_toon" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -2.194, 0)
+radius = 1.0
+radial_segments = 32
+rings = 32
+material = ExtResource("7_gt7pi")
+
+[node name="orange_toon" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -2.194, 0)
+material_override = ExtResource("7_b8n46")
+radius = 1.0
+radial_segments = 32
+rings = 32
+material = ExtResource("7_b8n46")
+
+[node name="stone_toon" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -2.194, 0)
+radius = 1.0
+radial_segments = 32
+rings = 32
+material = ExtResource("10_tdihx")
+
+[connection signal="body_entered" from="Marble" to="Marble" method="_on_body_entered"]
+[connection signal="body_shape_entered" from="Marble" to="Marble" method="_on_body_shape_entered"]

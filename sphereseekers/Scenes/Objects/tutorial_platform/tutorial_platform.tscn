@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bbkib2fbyyasc"]
 
 [ext_resource type="PackedScene" uid="uid://cnkpmn5idacj5" path="res://Scenes/Objects/tutorial_platform/tutorial_platform.glb" id="1_ale4b"]
-[ext_resource type="Material" uid="uid://cby6gpcuacx8a" path="res://Assets/Materials/rock/rock.tres" id="2_kma0k"]
+[ext_resource type="Material" uid="uid://bypxjktybemk8" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="2_kma0k"]
 
 [node name="tutorial_platform" instance=ExtResource("1_ale4b")]
 

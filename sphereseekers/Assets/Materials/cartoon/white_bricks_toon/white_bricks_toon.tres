@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://dy6tyj3t7v5kw"]
+
+[ext_resource type="Texture2D" uid="uid://d18cwpmlhtru" path="res://Assets/Materials/cartoon/white_bricks_toon/Toon Rocks_diffuseOriginal.jpg" id="1_8r02d"]
+[ext_resource type="Texture2D" uid="uid://5fkbd7k2nq8n" path="res://Assets/Materials/cartoon/white_bricks_toon/Toon Rocks_normal.jpg" id="2_xx4mt"]
+
+[resource]
+albedo_texture = ExtResource("1_8r02d")
+normal_enabled = true
+normal_texture = ExtResource("2_xx4mt")
+uv1_scale = Vector3(0.1, 0.1, 0.1)
+uv1_triplanar = true
+uv1_world_triplanar = true

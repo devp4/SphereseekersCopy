@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://dd86yv0a58ro3"]
 
 [ext_resource type="PackedScene" uid="uid://bhfsenf56s678" path="res://Scenes/Objects/teleport_platform/platform.glb" id="1_o6ep8"]
+[ext_resource type="Material" uid="uid://w5n4a03t0r7u" path="res://Assets/Materials/cartoon/dragon_scales_toon/dragon_scales_toon.tres" id="2_g7qnx"]
 [ext_resource type="Script" uid="uid://dcu2dsxv1bfhd" path="res://Scenes/Objects/teleport_platform/middle.gd" id="2_heunl"]
-[ext_resource type="Material" uid="uid://cg7l6w2h0aq22" path="res://Assets/Materials/aluminium/aluminium.tres" id="2_hf7qq"]
 [ext_resource type="Material" uid="uid://bv6dr534vwcr1" path="res://Assets/Materials/ice/ice.tres" id="3_r7x4l"]
 [ext_resource type="Texture2D" uid="uid://bl1t61kwmu8r1" path="res://Assets/particles/trace_01.png" id="5_sqifr"]
 
@@ -32,7 +32,7 @@ material = SubResource("StandardMaterial3D_t3i4h")
 [node name="platform" instance=ExtResource("1_o6ep8")]
 
 [node name="external" parent="." index="0"]
-surface_material_override/0 = ExtResource("2_hf7qq")
+surface_material_override/0 = ExtResource("2_g7qnx")
 
 [node name="middle" parent="." index="1"]
 surface_material_override/0 = ExtResource("3_r7x4l")
@@ -47,4 +47,4 @@ process_material = SubResource("ParticleProcessMaterial_n4mb1")
 draw_pass_1 = SubResource("QuadMesh_bkub5")
 
 [node name="internal" parent="." index="2"]
-surface_material_override/0 = ExtResource("2_hf7qq")
+surface_material_override/0 = ExtResource("2_g7qnx")

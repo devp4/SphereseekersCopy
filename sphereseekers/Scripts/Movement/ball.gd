@@ -98,6 +98,8 @@ func disable_controls():
 func _on_body_entered(body: Node3D) -> void:
 	if body.is_in_group("enemy_balls"):
 		reset_position()
+	if body.is_in_group("killing_obstacle"):
+		reset_position()
 		
 func _on_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
 	if body.is_in_group("Ground"):

@@ -1,15 +1,14 @@
-[gd_scene load_steps=30 format=3 uid="uid://bkhapywan2k7e"]
+[gd_scene load_steps=23 format=3 uid="uid://bkhapywan2k7e"]
 
 [ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_bkrq4"]
 [ext_resource type="Texture2D" uid="uid://dytrejtswgqmg" path="res://Assets/backgrounds/lonely_road_afternoon_puresky_4k.hdr" id="2_4ihq7"]
 [ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="2_6qjlu"]
 [ext_resource type="Script" uid="uid://c6ycpobav1k77" path="res://Scripts/Movement/ball.gd" id="3_v4j33"]
 [ext_resource type="Script" uid="uid://c3nmstgb3dbw8" path="res://Scripts/Objects/limit.gd" id="7_ajsod"]
-[ext_resource type="Material" uid="uid://dv76cxap5uj7y" path="res://Assets/Materials/cheese/cheese.tres" id="10_6y8dp"]
+[ext_resource type="Material" uid="uid://bypxjktybemk8" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="8_u3mja"]
+[ext_resource type="Material" uid="uid://bhrcvuaba1n8v" path="res://Assets/Materials/cartoon/purple_toon/purple_toon.tres" id="9_v6tyg"]
 [ext_resource type="PackedScene" uid="uid://dqeuanfk6o722" path="res://Scenes/Objects/path_with_holes/path_with_holes.tscn" id="10_c8kkf"]
 [ext_resource type="PackedScene" uid="uid://chy427wghii5s" path="res://Scenes/Objects/cannon/cannon.tscn" id="10_gg1sk"]
-[ext_resource type="Material" uid="uid://dtui5o3potpen" path="res://Assets/Materials/wool/wool.tres" id="11_bpixh"]
-[ext_resource type="Material" uid="uid://dfsu6vtygh0tc" path="res://Assets/Materials/bricks/brick.tres" id="11_jstjo"]
 [ext_resource type="PackedScene" uid="uid://bbkib2fbyyasc" path="res://Scenes/Objects/tutorial_platform/tutorial_platform.tscn" id="12_u3mja"]
 [ext_resource type="PackedScene" uid="uid://copu860806ql0" path="res://Scenes/Objects/teleport_platform/teleport_platform.tscn" id="14_mq0sh"]
 
@@ -27,12 +26,12 @@ tonemap_mode = 2
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_cnoru"]
 panorama = ExtResource("2_4ihq7")
 
-[sub_resource type="Sky" id="Sky_356um"]
+[sub_resource type="Sky" id="Sky_u3mja"]
 sky_material = SubResource("PanoramaSkyMaterial_cnoru")
 
 [sub_resource type="Environment" id="Environment_3585k"]
 background_mode = 2
-sky = SubResource("Sky_356um")
+sky = SubResource("Sky_u3mja")
 
 [sub_resource type="GDScript" id="GDScript_5len1"]
 script/source = "extends CanvasLayer
@@ -44,50 +43,11 @@ func _ready():
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_44r5w"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_6jkj5"]
-material = ExtResource("10_6y8dp")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_lwhh4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_q4olh"]
 size = Vector3(150, 1, 300)
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_356um"]
-load_path = "res://.godot/imported/texture_rock_albedo.png-1efa3a14597659ccdfb71330ec287b28.s3tc.ctex"
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_u3mja"]
-load_path = "res://.godot/imported/texture_rock_ao.png-0ddb71ef8b0acffcdbacf636135f6f23.s3tc.ctex"
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_v6tyg"]
-load_path = "res://.godot/imported/texture_rock_depth.png-6a39d8e59bcc6e4a9b8e02b392bd2469.s3tc.ctex"
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1odfw"]
-load_path = "res://.godot/imported/texture_rock_metal.png-0809622c823ca045b385e9f794c75b8b.s3tc.ctex"
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4rdjy"]
-load_path = "res://.godot/imported/texture_rock_normal.png-8add8ea4b5de4e42aaf68f164725f4a6.s3tc.ctex"
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_egla1"]
-render_priority = 15
-albedo_texture = SubResource("CompressedTexture2D_356um")
-metallic = 1.0
-metallic_texture = SubResource("CompressedTexture2D_1odfw")
-roughness = 0.47
-normal_enabled = true
-normal_texture = SubResource("CompressedTexture2D_4rdjy")
-ao_enabled = true
-ao_light_affect = 1.0
-ao_texture = SubResource("CompressedTexture2D_u3mja")
-heightmap_enabled = true
-heightmap_scale = 8.0
-heightmap_deep_parallax = true
-heightmap_min_layers = 4
-heightmap_max_layers = 16
-heightmap_texture = SubResource("CompressedTexture2D_v6tyg")
-heightmap_flip_texture = true
-uv1_triplanar = true
-uv1_world_triplanar = true
-uv2_world_triplanar = true
-texture_filter = 5
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_bkrq4")
@@ -162,61 +122,61 @@ shape = SubResource("BoxShape3D_q4olh")
 [node name="Canon1" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 47.5, 5.5, 0)
 shoot_distance = 90.0
-cannon_material = SubResource("StandardMaterial3D_egla1")
-projectile_material = ExtResource("11_jstjo")
+cannon_material = ExtResource("8_u3mja")
+projectile_material = ExtResource("9_v6tyg")
 rotate_function = true
 
 [node name="Canon2" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.5, 5.5, 20)
 shoot_distance = 90.0
-cannon_material = SubResource("StandardMaterial3D_egla1")
-projectile_material = ExtResource("11_jstjo")
+cannon_material = ExtResource("8_u3mja")
+projectile_material = ExtResource("9_v6tyg")
 rotate_function = true
 
 [node name="Canon3" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 47.5, 5.5, 40)
 shoot_distance = 90.0
-cannon_material = SubResource("StandardMaterial3D_egla1")
-projectile_material = ExtResource("11_jstjo")
+cannon_material = ExtResource("8_u3mja")
+projectile_material = ExtResource("9_v6tyg")
 rotate_function = true
 
 [node name="Canon4" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(-0.5, 7.54979e-08, 0, -7.54979e-08, -0.5, 0, 0, 0, 0.5, 20, -6.631, 101.432)
 shoot_distance = 70.0
-cannon_material = SubResource("StandardMaterial3D_egla1")
-projectile_material = ExtResource("11_bpixh")
+cannon_material = ExtResource("8_u3mja")
+projectile_material = ExtResource("9_v6tyg")
 
 [node name="Canon5" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(-0.5, 7.54979e-08, 0, -7.54979e-08, -0.5, 0, 0, 0, 0.5, 20, -6.631, 111.53)
 shoot_distance = 70.0
 shoot_delay = 2.0
-cannon_material = SubResource("StandardMaterial3D_egla1")
-projectile_material = ExtResource("11_bpixh")
+cannon_material = ExtResource("8_u3mja")
+projectile_material = ExtResource("9_v6tyg")
 
 [node name="Canon6" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(-0.5, 7.54979e-08, 0, -7.54979e-08, -0.5, 0, 0, 0, 0.5, 20, -6.631, 121.43)
 shoot_distance = 70.0
-cannon_material = SubResource("StandardMaterial3D_egla1")
-projectile_material = ExtResource("11_bpixh")
+cannon_material = ExtResource("8_u3mja")
+projectile_material = ExtResource("9_v6tyg")
 
 [node name="Canon7" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -20, -6.631, 106.43)
 shoot_distance = 70.0
-cannon_material = SubResource("StandardMaterial3D_egla1")
-projectile_material = ExtResource("11_bpixh")
+cannon_material = ExtResource("8_u3mja")
+projectile_material = ExtResource("9_v6tyg")
 
 [node name="Canon8" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -20, -6.631, 116.43)
 shoot_distance = 70.0
 shoot_delay = 2.0
-cannon_material = SubResource("StandardMaterial3D_egla1")
-projectile_material = ExtResource("11_bpixh")
+cannon_material = ExtResource("8_u3mja")
+projectile_material = ExtResource("9_v6tyg")
 
 [node name="Canon9" parent="." instance=ExtResource("10_gg1sk")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -20, -6.631, 126.43)
 shoot_distance = 70.0
-cannon_material = SubResource("StandardMaterial3D_egla1")
-projectile_material = ExtResource("11_bpixh")
+cannon_material = ExtResource("8_u3mja")
+projectile_material = ExtResource("9_v6tyg")
 
 [node name="PathWithHoles1" parent="." groups=["Ground"] instance=ExtResource("10_c8kkf")]
 transform = Transform3D(1.05, 0, 0, 0, 1.05, 0, 0, 0, 2.508, 0, 0.25, -62.4371)
@@ -240,7 +200,7 @@ tile_enabled = {
 "r8": true,
 "r9": true
 }
-tile_material = SubResource("StandardMaterial3D_egla1")
+tile_material = ExtResource("8_u3mja")
 
 [node name="PathWithHoles2" parent="." groups=["Ground"] instance=ExtResource("10_c8kkf")]
 transform = Transform3D(0.640123, 0, 0, 0, 1, 0, 0, 0, 2.81029, 0.0129051, -9.75533, 93.0594)
@@ -264,7 +224,7 @@ tile_enabled = {
 "r8": true,
 "r9": true
 }
-tile_material = SubResource("StandardMaterial3D_egla1")
+tile_material = ExtResource("8_u3mja")
 
 [node name="TeleportPlatform" parent="." instance=ExtResource("14_mq0sh")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -9.614, 131.703)

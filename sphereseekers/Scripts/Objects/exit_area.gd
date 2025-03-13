@@ -25,4 +25,4 @@ func _on_animation_complete():
 	print("Current Level: ", Global.level_to_play)
 	_level_to_play()
 	print("Going to level: ", Global.level_to_play)
-	get_tree().change_scene_to_file("res://Scenes/interface/loading_screen.tscn")
+	get_tree().change_scene_to_file("res://Scenes/Interface/loading_screen.tscn")

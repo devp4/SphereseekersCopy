@@ -1,0 +1,21 @@
+[gd_resource type="StandardMaterial3D" load_steps=6 format=3 uid="uid://bm5qhhsjmred0"]
+
+[ext_resource type="Texture2D" uid="uid://bqq4eqd8um26w" path="res://Assets/Materials/cartoon/wood_planks_toon/WOOD_PLANKS_11_BaseColor.png" id="1_q7mgu"]
+[ext_resource type="Texture2D" uid="uid://ch5e4g2s807c6" path="res://Assets/Materials/cartoon/wood_planks_toon/WOOD_PLANKS_11_Displacement.png" id="2_yfv7u"]
+[ext_resource type="Texture2D" uid="uid://ccexwgl32whbj" path="res://Assets/Materials/cartoon/wood_planks_toon/WOOD_PLANKS_11_Metallic.png" id="2_ylulu"]
+[ext_resource type="Texture2D" uid="uid://cnq4jufvtvyk6" path="res://Assets/Materials/cartoon/wood_planks_toon/WOOD_PLANKS_11_Normal.png" id="3_yfv7u"]
+[ext_resource type="Texture2D" uid="uid://cul5yyigo5xny" path="res://Assets/Materials/cartoon/wood_planks_toon/WOOD_PLANKS_11_Roughness.png" id="4_ratg2"]
+
+[resource]
+albedo_texture = ExtResource("1_q7mgu")
+metallic = 1.0
+metallic_texture = ExtResource("2_ylulu")
+roughness_texture = ExtResource("4_ratg2")
+normal_enabled = true
+normal_texture = ExtResource("3_yfv7u")
+heightmap_texture = ExtResource("2_yfv7u")
+uv1_scale = Vector3(0.1, 0.1, 0.1)
+uv1_triplanar = true
+uv1_world_triplanar = true
+uv2_triplanar = true
+uv2_world_triplanar = true
