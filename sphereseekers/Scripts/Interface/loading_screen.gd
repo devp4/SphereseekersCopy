@@ -43,7 +43,7 @@ func set_objects(background, image):
 	var bg_size = background.size
 
 	# Image (TextureRect) - Remove label & center image
-	image.texture = load("res://Assets/interface/loading_screen/gear.png")
+	image.texture = load("res://Assets/Interface/loading_screen/gear.png")
 	var image_scale_factor = 0.4
 	var max_image_height = bg_size.y * 0.3
 
