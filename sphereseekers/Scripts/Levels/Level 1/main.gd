@@ -27,7 +27,7 @@ func _unhandled_input(event):
 			else:
 				unpause_game()
 				
-func _process(delta: float) -> void:
+func process(delta):
 	if Global.is_paused:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:

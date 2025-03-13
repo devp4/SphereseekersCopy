@@ -1,0 +1,50 @@
+[gd_scene load_steps=9 format=3 uid="uid://dd86yv0a58ro3"]
+
+[ext_resource type="PackedScene" uid="uid://bhfsenf56s678" path="res://Scenes/Objects/teleport_platform/platform.glb" id="1_o6ep8"]
+[ext_resource type="Material" uid="uid://w5n4a03t0r7u" path="res://Assets/Materials/cartoon/dragon_scales_toon/dragon_scales_toon.tres" id="2_g7qnx"]
+[ext_resource type="Script" uid="uid://dcu2dsxv1bfhd" path="res://Scenes/Objects/teleport_platform/middle.gd" id="2_heunl"]
+[ext_resource type="Material" uid="uid://bv6dr534vwcr1" path="res://Assets/Materials/ice/ice.tres" id="3_r7x4l"]
+[ext_resource type="Texture2D" uid="uid://bl1t61kwmu8r1" path="res://Assets/particles/trace_01.png" id="5_sqifr"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_n4mb1"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 1.0
+emission_ring_inner_radius = 0.0
+emission_ring_cone_angle = 90.0
+velocity_pivot = Vector3(0, 1, 0)
+direction = Vector3(0, 1, 0)
+gravity = Vector3(0, 9.8, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t3i4h"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("5_sqifr")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_bkub5"]
+material = SubResource("StandardMaterial3D_t3i4h")
+
+[node name="platform" instance=ExtResource("1_o6ep8")]
+
+[node name="external" parent="." index="0"]
+surface_material_override/0 = ExtResource("2_g7qnx")
+
+[node name="middle" parent="." index="1"]
+surface_material_override/0 = ExtResource("3_r7x4l")
+script = ExtResource("2_heunl")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="middle" index="1"]
+transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0, 3.08352, 0)
+gi_mode = 2
+amount = 50
+trail_enabled = true
+process_material = SubResource("ParticleProcessMaterial_n4mb1")
+draw_pass_1 = SubResource("QuadMesh_bkub5")
+
+[node name="internal" parent="." index="2"]
+surface_material_override/0 = ExtResource("2_g7qnx")

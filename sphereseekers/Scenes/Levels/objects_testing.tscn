@@ -1,0 +1,82 @@
+[gd_scene load_steps=16 format=3 uid="uid://8n4gt81jbg8n"]
+
+[ext_resource type="PackedScene" uid="uid://d3iv28gwwls83" path="res://Scenes/Objects/hammer/hammer.tscn" id="1_4eksy"]
+[ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_ymbfr"]
+[ext_resource type="PackedScene" uid="uid://bbkib2fbyyasc" path="res://Scenes/Objects/tutorial_platform/tutorial_platform.tscn" id="3_piu1v"]
+[ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="4_7mj8o"]
+[ext_resource type="Texture2D" uid="uid://dytrejtswgqmg" path="res://Assets/backgrounds/lonely_road_afternoon_puresky_4k.hdr" id="5_5je7x"]
+[ext_resource type="Script" uid="uid://c6ycpobav1k77" path="res://Scripts/Movement/ball.gd" id="6_aajvi"]
+[ext_resource type="Material" uid="uid://dv76cxap5uj7y" path="res://Assets/Materials/regular/cheese/cheese.tres" id="7_kveus"]
+[ext_resource type="PackedScene" uid="uid://bq5anrruu6lx" path="res://Scenes/Objects/sweeper/sweeper.tscn" id="8_piu1v"]
+[ext_resource type="Script" uid="uid://bnwvw1hk8phfr" path="res://Scenes/Objects/sweeper/sweeper.gd" id="9_7mj8o"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_piwtu"]
+panorama = ExtResource("5_5je7x")
+
+[sub_resource type="Sky" id="Sky_dfgn6"]
+sky_material = SubResource("PanoramaSkyMaterial_piwtu")
+
+[sub_resource type="Environment" id="Environment_xvckx"]
+background_mode = 2
+sky = SubResource("Sky_dfgn6")
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_8fieh"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_3hafp"]
+material = ExtResource("7_kveus")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_vi0fh"]
+
+[node name="Testing" type="Node3D"]
+script = ExtResource("1_ymbfr")
+
+[node name="hammer" parent="." groups=["hammer"] instance=ExtResource("1_4eksy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.88396, -13.9053)
+rotation_degree = 75.0
+
+[node name="tutorial_platform" parent="." instance=ExtResource("3_piu1v")]
+
+[node name="CameraRig" type="Node3D" parent="." groups=["hammer"]]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 10.782, -80.51)
+script = ExtResource("4_7mj8o")
+
+[node name="HRotation" type="Node3D" parent="CameraRig"]
+
+[node name="VRotation" type="Node3D" parent="CameraRig/HRotation"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraRig/HRotation/VRotation"]
+spring_length = 9.0
+margin = 1.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig/HRotation/VRotation/SpringArm3D"]
+environment = SubResource("Environment_xvckx")
+current = true
+fov = 80.0
+
+[node name="Marble" type="RigidBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 8.74228e-08, 8.74227e-08, 8.74227e-08, -1, 0, 8.74227e-08, 7.64274e-15, -1, 0, 5, -67.5)
+mass = 20.0
+physics_material_override = SubResource("PhysicsMaterial_8fieh")
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("6_aajvi")
+movement_speed = 18500.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Marble"]
+transform = Transform3D(-0.677543, 5.50161e-08, 0.735483, -1.50996e-07, -1, -6.42979e-08, 0.735483, -1.54619e-07, 0.677543, 0, 0, 0)
+mesh = SubResource("SphereMesh_3hafp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Marble"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_vi0fh")
+
+[node name="sweeper" parent="." instance=ExtResource("8_piu1v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.0133, -4.08883, -13.8737)
+script = ExtResource("9_7mj8o")
+arm1 = false
+arm2 = false
+rotation_speed = 100.0
+rotate_direction = -1
+
+[connection signal="body_entered" from="Marble" to="Marble" method="_on_body_entered"]
+[connection signal="body_shape_entered" from="Marble" to="Marble" method="_on_body_shape_entered"]

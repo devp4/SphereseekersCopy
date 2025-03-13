@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dfe2xiba6vq2s"]
 
-[ext_resource type="Script" path="res://Scripts/Interface/ControlsMenu.gd" id="1_eyda7"]
+[ext_resource type="Script" uid="uid://dgqacmehyluo" path="res://Scripts/Interface/ControlsMenu.gd" id="1_eyda7"]
 [ext_resource type="Texture2D" uid="uid://c2x1ealp1h621" path="res://Assets/ArrowKeys.png" id="2_f614k"]
 
 [node name="ControlsMenu" type="Control"]

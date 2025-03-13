@@ -1,0 +1,350 @@
+[gd_scene load_steps=29 format=3 uid="uid://bkhapywan2k7e"]
+
+[ext_resource type="Script" path="res://Scripts/Levels/Level 1/main.gd" id="1_bkrq4"]
+[ext_resource type="Texture2D" uid="uid://dytrejtswgqmg" path="res://Assets/backgrounds/lonely_road_afternoon_puresky_4k.hdr" id="2_4ihq7"]
+[ext_resource type="Script" path="res://Scripts/Camera/camera_rig.gd" id="2_6qjlu"]
+[ext_resource type="Script" path="res://Scripts/Movement/ball.gd" id="3_v4j33"]
+[ext_resource type="Material" uid="uid://2m1qsb0db4x3" path="res://Assets/Materials/stones/stones.tres" id="5_n5gfo"]
+[ext_resource type="Texture2D" uid="uid://gql73dyr0r3e" path="res://Vector/Textures/texture_02.svg" id="6_04phf"]
+[ext_resource type="Script" path="res://Scripts/Objects/limit.gd" id="7_ajsod"]
+[ext_resource type="Script" path="res://Scripts/Objects/exit_area.gd" id="9_mb8kl"]
+[ext_resource type="Material" uid="uid://dv76cxap5uj7y" path="res://Assets/Materials/cheese/cheese.tres" id="10_6y8dp"]
+[ext_resource type="PackedScene" uid="uid://dqeuanfk6o722" path="res://Scenes/Objects/path_with_holes/path_with_holes.tscn" id="10_c8kkf"]
+[ext_resource type="PackedScene" uid="uid://chy427wghii5s" path="res://Scenes/Objects/cannon/cannon.tscn" id="10_gg1sk"]
+[ext_resource type="Material" uid="uid://dtui5o3potpen" path="res://Assets/Materials/wool/wool.tres" id="11_bpixh"]
+[ext_resource type="Material" uid="uid://dfsu6vtygh0tc" path="res://Assets/Materials/bricks/brick.tres" id="11_jstjo"]
+[ext_resource type="PackedScene" uid="uid://copu860806ql0" path="res://Scenes/Objects/teleport_platform/teleport_platform.tscn" id="14_mq0sh"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_kcoyj"]
+panorama = ExtResource("2_4ihq7")
+
+[sub_resource type="Sky" id="Sky_1r2pv"]
+sky_material = SubResource("PanoramaSkyMaterial_kcoyj")
+
+[sub_resource type="Environment" id="Environment_vsdki"]
+background_mode = 2
+sky = SubResource("Sky_1r2pv")
+tonemap_mode = 2
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_cnoru"]
+panorama = ExtResource("2_4ihq7")
+
+[sub_resource type="Sky" id="Sky_dmkbo"]
+sky_material = SubResource("PanoramaSkyMaterial_cnoru")
+
+[sub_resource type="Environment" id="Environment_3585k"]
+background_mode = 2
+sky = SubResource("Sky_dmkbo")
+
+[sub_resource type="GDScript" id="GDScript_5len1"]
+script/source = "extends CanvasLayer
+
+func _ready():
+	pass
+"
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_44r5w"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_6jkj5"]
+material = ExtResource("10_6y8dp")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_lwhh4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q4olh"]
+size = Vector3(100, 1, 150)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_iwds3"]
+size = Vector3(20, 2, 66.9434)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eyy7g"]
+albedo_texture = ExtResource("6_04phf")
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0d7wx"]
+radius = 2.5
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_bkrq4")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vsdki")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 11.2913, 0)
+light_energy = 1.5
+shadow_enabled = true
+
+[node name="CameraRig" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 10.782, -80.51)
+script = ExtResource("2_6qjlu")
+
+[node name="HRotation" type="Node3D" parent="CameraRig"]
+
+[node name="VRotation" type="Node3D" parent="CameraRig/HRotation"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraRig/HRotation/VRotation"]
+spring_length = 9.0
+margin = 1.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig/HRotation/VRotation/SpringArm3D"]
+environment = SubResource("Environment_3585k")
+current = true
+fov = 80.0
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = SubResource("GDScript_5len1")
+
+[node name="StopwatchLabel" type="Label" parent="UI"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "00:00
+"
+
+[node name="BestTimeLabel" type="Label" parent="UI"]
+offset_left = 14.0
+offset_top = 613.0
+offset_right = 1010.0
+offset_bottom = 1149.0
+text = "Best: --:--"
+
+[node name="Marble" type="RigidBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 8.74228e-08, 8.74227e-08, 8.74227e-08, -1, 0, 8.74227e-08, 7.64274e-15, -1, 0, 5, -67.5)
+mass = 20.0
+physics_material_override = SubResource("PhysicsMaterial_44r5w")
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("3_v4j33")
+movement_speed = 18500.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Marble"]
+transform = Transform3D(-0.677543, 5.50161e-08, 0.735483, -1.50996e-07, -1, -6.42979e-08, 0.735483, -1.54619e-07, 0.677543, 0, 0, 0)
+mesh = SubResource("SphereMesh_6jkj5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Marble"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_lwhh4")
+
+[node name="FirstFloor" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Ground" type="CSGBox3D" parent="FirstFloor"]
+size = Vector3(100, 5, 150)
+material = ExtResource("5_n5gfo")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="FirstFloor/Ground"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 47.4067, 5, 50)
+operation = 2
+radius = 4.5
+height = 6.0
+sides = 32
+material = ExtResource("5_n5gfo")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="FirstFloor/Ground"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 47.3546, 5, 0)
+operation = 2
+radius = 4.4
+height = 6.0
+sides = 32
+material = ExtResource("5_n5gfo")
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="FirstFloor/Ground"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -47.7091, 5, 25)
+operation = 2
+radius = 4.4
+height = 6.0
+sides = 32
+material = ExtResource("5_n5gfo")
+
+[node name="GroundHole-Limits" type="CSGBox3D" parent="FirstFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+operation = 2
+size = Vector3(90, 3, 140)
+material = ExtResource("5_n5gfo")
+
+[node name="GroundHole" type="CSGBox3D" parent="FirstFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.106728, 0, -47.5)
+operation = 2
+size = Vector3(90, 5, 45)
+material = ExtResource("5_n5gfo")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="FirstFloor"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -10, 0, 70)
+snap = 0.01
+polygon = PackedVector2Array(-10, 0, 0, 4, 30, 4, 30, 0)
+depth = 20.0
+material = ExtResource("5_n5gfo")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="FirstFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 90)
+operation = 2
+radius = 4.0
+height = 5.1
+sides = 16
+material = ExtResource("5_n5gfo")
+
+[node name="LimitFirstFloor" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
+script = ExtResource("7_ajsod")
+restart_position = Vector3(0, 5, -67.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LimitFirstFloor"]
+shape = SubResource("BoxShape3D_q4olh")
+
+[node name="LimitSecondFloor" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 110)
+disable_mode = 2
+script = ExtResource("7_ajsod")
+restart_position = Vector3(0, 5, -67.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LimitSecondFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, -8.47168)
+shape = SubResource("BoxShape3D_iwds3")
+
+[node name="SecondFloor" type="CSGCombiner3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 150)
+use_collision = true
+
+[node name="ExitZone" type="CSGCylinder3D" parent="SecondFloor"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -5)
+radius = 3.0
+height = 6.0
+sides = 16
+material = SubResource("StandardMaterial3D_eyy7g")
+
+[node name="ExitZoneHole" type="CSGCylinder3D" parent="SecondFloor"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -6)
+operation = 2
+radius = 2.5
+height = 5.5
+sides = 16
+material = SubResource("StandardMaterial3D_eyy7g")
+
+[node name="Exit" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 145)
+script = ExtResource("9_mb8kl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Exit"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CylinderShape3D_0d7wx")
+
+[node name="Canon1" parent="." instance=ExtResource("10_gg1sk")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 47.409, 5, 0.066)
+shoot_distance = 90.0
+cannon_material = ExtResource("5_n5gfo")
+projectile_material = ExtResource("11_jstjo")
+rotate = true
+
+[node name="Canon2" parent="." instance=ExtResource("10_gg1sk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.534, 5, 25.136)
+shoot_distance = 90.0
+cannon_material = ExtResource("5_n5gfo")
+projectile_material = ExtResource("11_jstjo")
+rotate = true
+
+[node name="Canon3" parent="." instance=ExtResource("10_gg1sk")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 47.432, 5, 50.112)
+shoot_distance = 90.0
+cannon_material = ExtResource("5_n5gfo")
+projectile_material = ExtResource("11_jstjo")
+rotate = true
+
+[node name="Canon4" parent="." instance=ExtResource("10_gg1sk")]
+transform = Transform3D(-1, 1.50996e-07, 0, -1.50996e-07, -1, 0, 0, 0, 1, 20, -6.631, 101.432)
+shoot_distance = 35.0
+scale_factor = 0.5
+cannon_material = ExtResource("5_n5gfo")
+projectile_material = ExtResource("11_bpixh")
+
+[node name="Canon5" parent="." instance=ExtResource("10_gg1sk")]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 20, -6.631, 111.53)
+shoot_distance = 35.0
+shoot_delay = 2.0
+scale_factor = 0.5
+cannon_material = ExtResource("5_n5gfo")
+projectile_material = ExtResource("11_bpixh")
+
+[node name="Canon6" parent="." instance=ExtResource("10_gg1sk")]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 20, -6.631, 121.43)
+shoot_distance = 35.0
+scale_factor = 0.5
+cannon_material = ExtResource("5_n5gfo")
+projectile_material = ExtResource("11_bpixh")
+
+[node name="Canon7" parent="." instance=ExtResource("10_gg1sk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, -6.631, 106.43)
+shoot_distance = 35.0
+scale_factor = 0.5
+cannon_material = ExtResource("5_n5gfo")
+projectile_material = ExtResource("11_bpixh")
+
+[node name="Canon8" parent="." instance=ExtResource("10_gg1sk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, -6.631, 116.43)
+shoot_distance = 35.0
+shoot_delay = 2.0
+scale_factor = 0.5
+cannon_material = ExtResource("5_n5gfo")
+projectile_material = ExtResource("11_bpixh")
+
+[node name="Canon9" parent="." instance=ExtResource("10_gg1sk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, -6.631, 126.43)
+shoot_distance = 35.0
+scale_factor = 0.5
+cannon_material = ExtResource("5_n5gfo")
+projectile_material = ExtResource("11_bpixh")
+
+[node name="PathWithHoles1" parent="." instance=ExtResource("10_c8kkf")]
+transform = Transform3D(1.04815, 0, 0, 0, 1.04815, 0, 0, 0, 2.50277, 0, 0.25, -62.4371)
+tile_enabled = {
+"l1": true,
+"l2": false,
+"l3": false,
+"l4": true,
+"l5": true,
+"l6": true,
+"l7": false,
+"l8": false,
+"l9": true,
+"r1": true,
+"r2": true,
+"r3": true,
+"r4": false,
+"r5": false,
+"r6": false,
+"r7": true,
+"r8": true,
+"r9": true
+}
+tile_material = ExtResource("5_n5gfo")
+
+[node name="PathWithHoles2" parent="." instance=ExtResource("10_c8kkf")]
+transform = Transform3D(0.640123, 0, 0, 0, 1, 0, 0, 0, 2.81029, 0.0129051, -9.75533, 93.0594)
+tile_enabled = {
+"l1": true,
+"l2": true,
+"l3": true,
+"l4": false,
+"l5": true,
+"l6": false,
+"l7": true,
+"l8": true,
+"l9": true,
+"r1": true,
+"r2": true,
+"r3": false,
+"r4": true,
+"r5": false,
+"r6": true,
+"r7": false,
+"r8": true,
+"r9": true
+}
+tile_material = ExtResource("5_n5gfo")
+
+[node name="TeleportPlatform" parent="." instance=ExtResource("14_mq0sh")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.659352, -21.792)
+
+[connection signal="body_entered" from="Marble" to="Marble" method="_on_body_entered"]
+[connection signal="body_entered" from="LimitFirstFloor" to="LimitFirstFloor" method="_on_body_entered"]
+[connection signal="body_entered" from="LimitSecondFloor" to="LimitSecondFloor" method="_on_body_entered"]
+[connection signal="body_entered" from="Exit" to="Exit" method="_on_body_entered"]

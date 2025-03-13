@@ -1,0 +1,95 @@
+[gd_scene load_steps=16 format=3 uid="uid://bo84yrmciq5r"]
+
+[ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_66voi"]
+[ext_resource type="Script" uid="uid://c6ycpobav1k77" path="res://Scripts/Movement/ball.gd" id="3_5weku"]
+[ext_resource type="Material" uid="uid://dv76cxap5uj7y" path="res://Assets/Materials/regular/cheese/cheese.tres" id="4_gecyo"]
+[ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="5_5yx82"]
+[ext_resource type="Texture2D" uid="uid://dytrejtswgqmg" path="res://Assets/backgrounds/lonely_road_afternoon_puresky_4k.hdr" id="6_ovien"]
+[ext_resource type="PackedScene" uid="uid://blwcgg18dx5gs" path="res://Scenes/Objects/tower/tower.tscn" id="7_jv26f"]
+[ext_resource type="Script" uid="uid://c3nmstgb3dbw8" path="res://Scripts/Objects/limit.gd" id="8_jv26f"]
+[ext_resource type="PackedScene" uid="uid://copu860806ql0" path="res://Scenes/Objects/teleport_platform/teleport_platform.tscn" id="8_rb0md"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_1jlnc"]
+panorama = ExtResource("6_ovien")
+
+[sub_resource type="Sky" id="Sky_5rbo1"]
+sky_material = SubResource("PanoramaSkyMaterial_1jlnc")
+
+[sub_resource type="Environment" id="Environment_u40f0"]
+background_mode = 2
+sky = SubResource("Sky_5rbo1")
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0x4y1"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_uqiic"]
+material = ExtResource("4_gecyo")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_eopvx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rb0md"]
+size = Vector3(150, 1, 150)
+
+[node name="Level1" type="Node3D"]
+script = ExtResource("1_66voi")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 11.2913, 0)
+light_energy = 1.5
+shadow_enabled = true
+
+[node name="CameraRig" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 10.782, -80.51)
+script = ExtResource("5_5yx82")
+
+[node name="HRotation" type="Node3D" parent="CameraRig"]
+
+[node name="VRotation" type="Node3D" parent="CameraRig/HRotation"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraRig/HRotation/VRotation"]
+spring_length = 9.0
+margin = 1.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig/HRotation/VRotation/SpringArm3D"]
+environment = SubResource("Environment_u40f0")
+current = true
+fov = 80.0
+
+[node name="Marble" type="RigidBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 8.74228e-08, 8.74227e-08, 8.74227e-08, -1, 0, 8.74227e-08, 7.64274e-15, -1, 35.8731, 5, 0.349762)
+mass = 20.0
+physics_material_override = SubResource("PhysicsMaterial_0x4y1")
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("3_5weku")
+movement_speed = 18500.0
+jump_force = 250.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Marble"]
+transform = Transform3D(-0.677543, 5.50161e-08, 0.735483, -1.50996e-07, -1, -6.42979e-08, 0.735483, -1.54619e-07, 0.677543, 0, 0, 0)
+mesh = SubResource("SphereMesh_uqiic")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Marble"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_eopvx")
+
+[node name="tower" parent="." instance=ExtResource("7_jv26f")]
+
+[node name="Limit" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
+script = ExtResource("8_jv26f")
+restart_position = Vector3(35, 5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Limit"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
+shape = SubResource("BoxShape3D_rb0md")
+
+[node name="TeleportPlatform" parent="." instance=ExtResource("8_rb0md")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 100, 0)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 56.0734, 0)
+omni_range = 55.561
+
+[connection signal="body_entered" from="Marble" to="Marble" method="_on_body_entered"]
+[connection signal="body_shape_entered" from="Marble" to="Marble" method="_on_body_shape_entered"]
+[connection signal="body_entered" from="Limit" to="Limit" method="_on_body_entered"]

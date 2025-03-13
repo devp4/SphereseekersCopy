@@ -1,0 +1,20 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://3vg8xdyp66a4"]
+
+[ext_resource type="Texture2D" uid="uid://c3ad2j2xlujtm" path="res://Assets/Materials/cartoon/grass_toon/Stylized_Grass_basecolor.jpg" id="1_buisw"]
+[ext_resource type="Texture2D" uid="uid://dx8rjkjolyevn" path="res://Assets/Materials/cartoon/grass_toon/Stylized_Grass_ambientocclusion.jpg" id="2_x65jv"]
+[ext_resource type="Texture2D" uid="uid://bl6gn2d1cj72y" path="res://Assets/Materials/cartoon/grass_toon/Stylized_Grass_normal.jpg" id="3_3rqod"]
+[ext_resource type="Texture2D" uid="uid://ld3ioqj3i5hr" path="res://Assets/Materials/cartoon/grass_toon/Stylized_Grass_roughness.jpg" id="4_jmcc1"]
+
+[resource]
+albedo_texture = ExtResource("1_buisw")
+metallic_specular = 0.0
+roughness_texture = ExtResource("4_jmcc1")
+roughness_texture_channel = 3
+normal_enabled = true
+normal_texture = ExtResource("3_3rqod")
+ao_enabled = true
+ao_texture = ExtResource("2_x65jv")
+ao_texture_channel = 3
+uv1_scale = Vector3(0.1, 0.1, 0.1)
+uv1_triplanar = true
+uv1_world_triplanar = true

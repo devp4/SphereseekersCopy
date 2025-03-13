@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://copu860806ql0"]
+
+[ext_resource type="PackedScene" uid="uid://dd86yv0a58ro3" path="res://Scenes/Objects/teleport_platform/platform.tscn" id="1_x6d0l"]
+[ext_resource type="Script" uid="uid://bcck0syn6x4lh" path="res://Scripts/Objects/exit_area.gd" id="2_1sfpr"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_4f1rl"]
+radius = 2.5
+
+[node name="TeleportPlatform" type="Node3D"]
+
+[node name="platform" parent="." instance=ExtResource("1_x6d0l")]
+
+[node name="Exit" type="Area3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, -4.37114e-09, -0.5, 0, 0.1, -2.18557e-08, 0, 3.46295, 0)
+script = ExtResource("2_1sfpr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Exit"]
+transform = Transform3D(1, 0, 0, 0, -2.18557e-07, -1, 0, 5, -4.37114e-08, 0, 8.5176e-07, 3.8972)
+shape = SubResource("CylinderShape3D_4f1rl")
+
+[connection signal="body_entered" from="Exit" to="Exit" method="_on_body_entered"]

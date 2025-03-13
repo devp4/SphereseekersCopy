@@ -24,14 +24,21 @@ func _ready() -> void:
 		set_objects_for_desktop(background, title, continue_button, new_game_button, load_game_button, options_button, exit_button)
 
 func _on_Continue_pressed() -> void:
+	# Make sure to set Global.level_to_play to the correct enum value to load the resources
+	# to get a better example check _on_new_game_pressed()
 	pass
 
 # Signal handler for the "New Game" button
 func _on_new_game_pressed() -> void:
+	Global.in_main_menu = false
+	# New game is going to played, set the level to play to TUTORIAL
+	Global.level_to_play = Global.levels.TUTORIAL
 	# set name first
 	get_tree().change_scene_to_file("res://Scenes/Interface/SetNameMenu.tscn")
 
 func _on_load_game_pressed() -> void:
+	# Make sure to set Global.level_to_play to the correct enum value to load the resources
+	# to get a better example check _on_new_game_pressed()
 	get_tree().change_scene_to_file("res://Scenes/Interface/LoadGameMenu.tscn")
 	
 func _on_options_pressed() -> void:
@@ -49,7 +56,6 @@ func is_running_on_mobile_browser() -> bool:
 			return true
 	return false
 	
-
 func set_objects_for_desktop(background, title, continue_button, new_game_button, load_game_button, options_button, exit_button):
 	var screen_size = get_viewport_rect().size
 	var width = screen_size.x
