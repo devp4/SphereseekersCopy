@@ -1,7 +1,8 @@
-[gd_scene load_steps=36 format=3 uid="uid://bkhapywan2k7e"]
+[gd_scene load_steps=37 format=3 uid="uid://bkhapywan2k7e"]
 
 [ext_resource type="Script" path="res://Scripts/Levels/Level 1/main.gd" id="1_bkrq4"]
 [ext_resource type="Script" path="res://Scripts/Camera/camera_rig.gd" id="2_6qjlu"]
+[ext_resource type="Script" path="res://Scripts/Interface/best_time_label.gd" id="3_q4jqf"]
 [ext_resource type="Script" path="res://Scripts/Movement/ball.gd" id="3_v4j33"]
 [ext_resource type="Texture2D" uid="uid://nj5sw8i2r3wf" path="res://Vector/Textures/icon.svg" id="4_k6gek"]
 [ext_resource type="Texture2D" uid="uid://cawwrxtf326a5" path="res://Vector/Textures/texture_01.svg" id="5_v414d"]
@@ -158,6 +159,7 @@ offset_top = 613.0
 offset_right = 1010.0
 offset_bottom = 1149.0
 text = "Best: --:--"
+script = ExtResource("3_q4jqf")
 
 [node name="Marble" type="RigidBody3D" parent="." groups=["player"]]
 transform = Transform3D(1, 8.74228e-08, 8.74227e-08, 8.74227e-08, -1, 0, 8.74227e-08, 7.64274e-15, -1, 0, 5, -67.5)
