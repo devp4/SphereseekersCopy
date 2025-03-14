@@ -27,7 +27,10 @@ func _on_resume_button_pressed():
 func _on_restart_button_pressed():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	Global.is_paused = false
+	Global.stop_all_projectiles = true
 	get_tree().paused = false
+	await get_tree().process_frame
+	Global.stop_all_projectiles = false
 	get_tree().reload_current_scene()
 
 func _on_options_button_pressed():

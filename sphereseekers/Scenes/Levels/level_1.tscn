@@ -2,15 +2,15 @@
 
 [ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_66voi"]
 [ext_resource type="Script" uid="uid://c6ycpobav1k77" path="res://Scripts/Movement/ball.gd" id="3_5weku"]
-[ext_resource type="Material" uid="uid://dv76cxap5uj7y" path="res://Assets/Materials/regular/cheese/cheese.tres" id="4_gecyo"]
+[ext_resource type="Texture2D" uid="uid://cnv4wc7tvvivh" path="res://Assets/backgrounds/anime-style-clouds.jpg" id="3_jv26f"]
 [ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="5_5yx82"]
-[ext_resource type="Texture2D" uid="uid://dytrejtswgqmg" path="res://Assets/backgrounds/lonely_road_afternoon_puresky_4k.hdr" id="6_ovien"]
+[ext_resource type="Material" uid="uid://w5n4a03t0r7u" path="res://Assets/Materials/cartoon/dragon_scales_toon/dragon_scales_toon.tres" id="5_jv26f"]
 [ext_resource type="PackedScene" uid="uid://blwcgg18dx5gs" path="res://Scenes/Objects/tower/tower.tscn" id="7_jv26f"]
 [ext_resource type="Script" uid="uid://c3nmstgb3dbw8" path="res://Scripts/Objects/limit.gd" id="8_jv26f"]
 [ext_resource type="PackedScene" uid="uid://copu860806ql0" path="res://Scenes/Objects/teleport_platform/teleport_platform.tscn" id="8_rb0md"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_1jlnc"]
-panorama = ExtResource("6_ovien")
+panorama = ExtResource("3_jv26f")
 
 [sub_resource type="Sky" id="Sky_5rbo1"]
 sky_material = SubResource("PanoramaSkyMaterial_1jlnc")
@@ -22,7 +22,7 @@ sky = SubResource("Sky_5rbo1")
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0x4y1"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_uqiic"]
-material = ExtResource("4_gecyo")
+material = ExtResource("5_jv26f")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_eopvx"]
 

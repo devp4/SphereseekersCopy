@@ -1,9 +1,9 @@
 [gd_scene load_steps=23 format=3 uid="uid://bkhapywan2k7e"]
 
 [ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_bkrq4"]
-[ext_resource type="Texture2D" uid="uid://dytrejtswgqmg" path="res://Assets/backgrounds/lonely_road_afternoon_puresky_4k.hdr" id="2_4ihq7"]
 [ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="2_6qjlu"]
 [ext_resource type="Script" uid="uid://c6ycpobav1k77" path="res://Scripts/Movement/ball.gd" id="3_v4j33"]
+[ext_resource type="Texture2D" uid="uid://cnv4wc7tvvivh" path="res://Assets/backgrounds/anime-style-clouds.jpg" id="4_u3mja"]
 [ext_resource type="Script" uid="uid://c3nmstgb3dbw8" path="res://Scripts/Objects/limit.gd" id="7_ajsod"]
 [ext_resource type="Material" uid="uid://bypxjktybemk8" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="8_u3mja"]
 [ext_resource type="Material" uid="uid://bhrcvuaba1n8v" path="res://Assets/Materials/cartoon/purple_toon/purple_toon.tres" id="9_v6tyg"]
@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://copu860806ql0" path="res://Scenes/Objects/teleport_platform/teleport_platform.tscn" id="14_mq0sh"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_kcoyj"]
-panorama = ExtResource("2_4ihq7")
+panorama = ExtResource("4_u3mja")
 
 [sub_resource type="Sky" id="Sky_1r2pv"]
 sky_material = SubResource("PanoramaSkyMaterial_kcoyj")
@@ -24,7 +24,7 @@ sky = SubResource("Sky_1r2pv")
 tonemap_mode = 2
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_cnoru"]
-panorama = ExtResource("2_4ihq7")
+panorama = ExtResource("4_u3mja")
 
 [sub_resource type="Sky" id="Sky_u3mja"]
 sky_material = SubResource("PanoramaSkyMaterial_cnoru")

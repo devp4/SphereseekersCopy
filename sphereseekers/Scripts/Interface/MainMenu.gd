@@ -31,8 +31,13 @@ func _on_Continue_pressed() -> void:
 # Signal handler for the "New Game" button
 func _on_new_game_pressed() -> void:
 	Global.in_main_menu = false
+	
 	# New game is going to played, set the level to play to TUTORIAL
 	Global.level_to_play = Global.levels.TUTORIAL
+	
+	# Make sure that Cannons will shoot
+	Global.stop_all_projectiles = false
+	
 	# set name first
 	get_tree().change_scene_to_file("res://Scenes/Interface/SetNameMenu.tscn")
 

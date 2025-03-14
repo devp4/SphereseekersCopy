@@ -4,14 +4,14 @@
 [ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_ymbfr"]
 [ext_resource type="PackedScene" uid="uid://bbkib2fbyyasc" path="res://Scenes/Objects/tutorial_platform/tutorial_platform.tscn" id="3_piu1v"]
 [ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="4_7mj8o"]
-[ext_resource type="Texture2D" uid="uid://dytrejtswgqmg" path="res://Assets/backgrounds/lonely_road_afternoon_puresky_4k.hdr" id="5_5je7x"]
+[ext_resource type="Texture2D" uid="uid://cnv4wc7tvvivh" path="res://Assets/backgrounds/anime-style-clouds.jpg" id="5_dfgn6"]
 [ext_resource type="Script" uid="uid://c6ycpobav1k77" path="res://Scripts/Movement/ball.gd" id="6_aajvi"]
 [ext_resource type="Material" uid="uid://dv76cxap5uj7y" path="res://Assets/Materials/regular/cheese/cheese.tres" id="7_kveus"]
 [ext_resource type="PackedScene" uid="uid://bq5anrruu6lx" path="res://Scenes/Objects/sweeper/sweeper.tscn" id="8_piu1v"]
 [ext_resource type="Script" uid="uid://bnwvw1hk8phfr" path="res://Scenes/Objects/sweeper/sweeper.gd" id="9_7mj8o"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_piwtu"]
-panorama = ExtResource("5_5je7x")
+panorama = ExtResource("5_dfgn6")
 
 [sub_resource type="Sky" id="Sky_dfgn6"]
 sky_material = SubResource("PanoramaSkyMaterial_piwtu")
