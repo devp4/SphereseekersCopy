@@ -29,6 +29,7 @@ func _on_restart_button_pressed():
 	Global.is_paused = false
 	get_tree().paused = false
 	get_tree().reload_current_scene()
+	PlayerClass.current_level_time = 0
 
 func _on_options_button_pressed():
 	print("Options menu coming soon!")

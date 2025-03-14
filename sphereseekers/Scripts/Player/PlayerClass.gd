@@ -24,10 +24,11 @@ func get_current_level():
 	return current_level
 	
 func set_level_best_time():
-	if current_level not in best_times:
-		best_times[current_level] = current_level_time
-	elif current_level_time < best_times[current_level]:
-		best_times[current_level] = current_level_time
+	var string_current_level = str(current_level)
+	if string_current_level not in best_times:
+		best_times[string_current_level] = current_level_time
+	elif current_level_time < best_times[string_current_level]:
+		best_times[string_current_level] = current_level_time
 	
 func get_current_level_best_time():
 	return best_times.get(str(current_level), null)
