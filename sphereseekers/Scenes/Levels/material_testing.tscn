@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bbkib2fbyyasc" path="res://Scenes/Objects/tutorial_platform/tutorial_platform.tscn" id="1_8mdcv"]
 [ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_gt7pi"]
 [ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="2_mvygv"]
-[ext_resource type="Texture2D" uid="uid://dytrejtswgqmg" path="res://Assets/backgrounds/lonely_road_afternoon_puresky_4k.hdr" id="3_hukai"]
 [ext_resource type="Script" uid="uid://c6ycpobav1k77" path="res://Scripts/Movement/ball.gd" id="4_u1y0i"]
+[ext_resource type="Texture2D" uid="uid://cnv4wc7tvvivh" path="res://Assets/backgrounds/anime-style-clouds.jpg" id="4_ytbuo"]
 [ext_resource type="Material" uid="uid://dv76cxap5uj7y" path="res://Assets/Materials/regular/cheese/cheese.tres" id="5_b8n46"]
 [ext_resource type="Material" uid="uid://bhrcvuaba1n8v" path="res://Assets/Materials/cartoon/purple_toon/purple_toon.tres" id="6_u1y0i"]
 [ext_resource type="Material" uid="uid://y4yhjq6ftc3l" path="res://Assets/Materials/cartoon/orange_toon/orange_toon.tres" id="7_b8n46"]
@@ -16,7 +16,7 @@
 [ext_resource type="Material" uid="uid://bypxjktybemk8" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="10_tdihx"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_gt7pi"]
-panorama = ExtResource("3_hukai")
+panorama = ExtResource("4_ytbuo")
 
 [sub_resource type="Sky" id="Sky_356um"]
 sky_material = SubResource("PanoramaSkyMaterial_gt7pi")

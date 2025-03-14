@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bhfsenf56s678" path="res://Scenes/Objects/teleport_platform/platform.glb" id="1_o6ep8"]
 [ext_resource type="Material" uid="uid://w5n4a03t0r7u" path="res://Assets/Materials/cartoon/dragon_scales_toon/dragon_scales_toon.tres" id="2_g7qnx"]
 [ext_resource type="Script" uid="uid://dcu2dsxv1bfhd" path="res://Scenes/Objects/teleport_platform/middle.gd" id="2_heunl"]
-[ext_resource type="Material" uid="uid://bv6dr534vwcr1" path="res://Assets/Materials/ice/ice.tres" id="3_r7x4l"]
+[ext_resource type="Material" uid="uid://bv6dr534vwcr1" path="res://Assets/Materials/regular/ice/ice.tres" id="3_r7x4l"]
 [ext_resource type="Texture2D" uid="uid://bl1t61kwmu8r1" path="res://Assets/particles/trace_01.png" id="5_sqifr"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_n4mb1"]
@@ -42,7 +42,6 @@ script = ExtResource("2_heunl")
 transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0, 3.08352, 0)
 gi_mode = 2
 amount = 50
-trail_enabled = true
 process_material = SubResource("ParticleProcessMaterial_n4mb1")
 draw_pass_1 = SubResource("QuadMesh_bkub5")
 
