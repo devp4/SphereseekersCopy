@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://ybx6aveweucp"]
+
+[ext_resource type="Texture2D" uid="uid://y0pa7333aurf" path="res://Assets/Materials/skins/brain/Brain_diffuseOriginal.jpg" id="1_0idli"]
+[ext_resource type="Texture2D" uid="uid://bxnim35l7ckdh" path="res://Assets/Materials/skins/brain/Brain_normal.jpg" id="3_x2nnq"]
+
+[resource]
+albedo_color = Color(0.623529, 0.145098, 0.258824, 1)
+albedo_texture = ExtResource("1_0idli")
+albedo_texture_force_srgb = true
+albedo_texture_msdf = true
+normal_enabled = true
+normal_scale = 1.1
+normal_texture = ExtResource("3_x2nnq")
+uv1_scale = Vector3(3, 3, 3)

@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://cseuhpx0oub7m"]
+
+[ext_resource type="Texture2D" uid="uid://chs3u17d4154s" path="res://Assets/Materials/skins/monster/Monster_diffuseOriginal.jpg" id="1_nua0l"]
+[ext_resource type="Texture2D" uid="uid://tenginem3oi6" path="res://Assets/Materials/skins/monster/Monster_normal.jpg" id="3_6hf02"]
+
+[resource]
+albedo_texture = ExtResource("1_nua0l")
+normal_enabled = true
+normal_texture = ExtResource("3_6hf02")
+uv1_scale = Vector3(3, 3, 3)

@@ -7,3 +7,4 @@ var is_mobile = false
 var is_paused = false
 var in_main_menu = true
 var stop_all_projectiles: bool = false
+var player_skin: StandardMaterial3D = load("res://Assets/Materials/cartoon/orange_toon/orange_toon.tres")

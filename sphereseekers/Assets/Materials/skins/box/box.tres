@@ -1,0 +1,20 @@
+[gd_resource type="StandardMaterial3D" load_steps=7 format=3 uid="uid://cek257ku242h5"]
+
+[ext_resource type="Texture2D" uid="uid://dtiqj8gwx77at" path="res://Assets/Materials/skins/box/Box_diffuseOriginal.jpg" id="1_fuyqt"]
+[ext_resource type="Texture2D" uid="uid://cfdk5i0kl3nm1" path="res://Assets/Materials/skins/box/Box_ao.jpg" id="2_g1lfb"]
+[ext_resource type="Texture2D" uid="uid://j5ertwnn63u0" path="res://Assets/Materials/skins/box/Box_height.jpg" id="3_en1cg"]
+[ext_resource type="Texture2D" uid="uid://cu4ct7jax0psj" path="res://Assets/Materials/skins/box/Box_metallic.jpg" id="4_cyqll"]
+[ext_resource type="Texture2D" uid="uid://bltnraax1s7x8" path="res://Assets/Materials/skins/box/Box_normal.jpg" id="5_exsjg"]
+[ext_resource type="Texture2D" uid="uid://causw3trxnvwl" path="res://Assets/Materials/skins/box/Box_smoothness.jpg" id="6_dd14q"]
+
+[resource]
+albedo_texture = ExtResource("1_fuyqt")
+metallic = 1.0
+metallic_texture = ExtResource("4_cyqll")
+roughness_texture = ExtResource("6_dd14q")
+normal_enabled = true
+normal_texture = ExtResource("5_exsjg")
+ao_enabled = true
+ao_texture = ExtResource("2_g1lfb")
+heightmap_texture = ExtResource("3_en1cg")
+uv1_scale = Vector3(5, 5, 5)

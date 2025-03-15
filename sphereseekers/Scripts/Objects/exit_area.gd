@@ -20,6 +20,7 @@ func _level_to_play():
 			Global.level_to_play = Global.levels.LEVEL1
 		Global.levels.LEVEL1:
 			Global.level_to_play = Global.levels.LEVEL2
+			
 
 func _on_animation_complete():
 	print("Current Level: ", Global.level_to_play)

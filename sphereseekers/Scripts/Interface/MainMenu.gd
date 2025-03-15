@@ -11,6 +11,7 @@ func _ready() -> void:
 	var new_game_button = $new_game_button
 	var load_game_button = $load_game_button
 	var options_button = $options_button
+	var skins_button = $skins
 	var exit_button = $exit_button
 	
 	# You can perform any setup for your menu here if needed
@@ -21,7 +22,7 @@ func _ready() -> void:
 		get_window().size = Vector2(screen_size.x, screen_size.y)
 		set_objects_for_mobile(background, title, continue_button, new_game_button, load_game_button, options_button, exit_button)
 	else:
-		set_objects_for_desktop(background, title, continue_button, new_game_button, load_game_button, options_button, exit_button)
+		set_objects_for_desktop(background, title, continue_button, new_game_button, load_game_button, options_button, exit_button, skins_button)
 
 func _on_Continue_pressed() -> void:
 	# Make sure to set Global.level_to_play to the correct enum value to load the resources
@@ -48,6 +49,10 @@ func _on_load_game_pressed() -> void:
 	
 func _on_options_pressed() -> void:
 	pass
+	
+func _on_skins_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/Levels/display_room.tscn")
+	
 
 func _on_exit_pressed() -> void:
 	get_tree().quit()
@@ -61,7 +66,7 @@ func is_running_on_mobile_browser() -> bool:
 			return true
 	return false
 	
-func set_objects_for_desktop(background, title, continue_button, new_game_button, load_game_button, options_button, exit_button):
+func set_objects_for_desktop(background, title, continue_button, new_game_button, load_game_button, options_button, exit_button, skins_button):
 	var screen_size = get_viewport_rect().size
 	var width = screen_size.x
 	var height = screen_size.y
@@ -120,6 +125,14 @@ func set_objects_for_desktop(background, title, continue_button, new_game_button
 		bg_position.x + (bg_size.x - options_button.size.x) / 2,
 		bg_position.y + bg_size.y * 0.75
 	))
+	
+	skins_button.text = "."
+	skins_button.set_size(Vector2(50,50))
+	skins_button.set_position(Vector2(
+		bg_position.x + (bg_size.x),
+		50	
+	))
+	
 	
 	# Exit
 	exit_button.text = "Exit"

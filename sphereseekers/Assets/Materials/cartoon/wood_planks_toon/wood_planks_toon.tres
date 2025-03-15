@@ -1,0 +1,15 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://b66mn6xqdkhka"]
+
+[ext_resource type="Texture2D" uid="uid://bga31lo2h5bhp" path="res://Assets/Materials/cartoon/wood_planks_toon/Stylized_Wood_basecolor.jpg" id="1_lpatw"]
+[ext_resource type="Texture2D" uid="uid://cl0fs1rxwx8hi" path="res://Assets/Materials/cartoon/wood_planks_toon/Stylized_Wood_ambientocclusion.jpg" id="2_782us"]
+[ext_resource type="Texture2D" uid="uid://qsde7idkjpwj" path="res://Assets/Materials/cartoon/wood_planks_toon/Stylized_Wood_normal.jpg" id="3_xutq4"]
+[ext_resource type="Texture2D" uid="uid://csl6b5e1mqon2" path="res://Assets/Materials/cartoon/wood_planks_toon/Stylized_Wood_roughness.jpg" id="4_qjme5"]
+
+[resource]
+albedo_texture = ExtResource("1_lpatw")
+roughness_texture = ExtResource("4_qjme5")
+normal_enabled = true
+normal_texture = ExtResource("3_xutq4")
+ao_enabled = true
+ao_texture = ExtResource("2_782us")
+uv1_scale = Vector3(10, 10, 10)
