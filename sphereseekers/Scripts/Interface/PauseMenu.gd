@@ -32,6 +32,7 @@ func _on_restart_button_pressed():
 	await get_tree().process_frame
 	Global.stop_all_projectiles = false
 	get_tree().reload_current_scene()
+	PlayerClass.current_level_time = 0
 
 func _on_options_button_pressed():
 	print("Options menu coming soon!")

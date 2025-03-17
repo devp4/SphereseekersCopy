@@ -1,7 +1,8 @@
-[gd_scene load_steps=23 format=3 uid="uid://bkhapywan2k7e"]
+[gd_scene load_steps=37 format=3 uid="uid://bkhapywan2k7e"]
 
 [ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_bkrq4"]
 [ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="2_6qjlu"]
+[ext_resource type="Script" path="res://Scripts/Interface/best_time_label.gd" id="3_q4jqf"]
 [ext_resource type="Script" uid="uid://c6ycpobav1k77" path="res://Scripts/Movement/ball.gd" id="3_v4j33"]
 [ext_resource type="Texture2D" uid="uid://cnv4wc7tvvivh" path="res://Assets/backgrounds/anime-style-clouds.jpg" id="4_u3mja"]
 [ext_resource type="Script" uid="uid://c3nmstgb3dbw8" path="res://Scripts/Objects/limit.gd" id="7_ajsod"]
@@ -92,6 +93,7 @@ offset_top = 613.0
 offset_right = 1010.0
 offset_bottom = 1149.0
 text = "Best: --:--"
+script = ExtResource("3_q4jqf")
 
 [node name="Marble" type="RigidBody3D" parent="." groups=["player"]]
 transform = Transform3D(1, 8.74228e-08, 8.74227e-08, 8.74227e-08, -1, 0, 8.74227e-08, 7.64274e-15, -1, 0, 5, -67.5)

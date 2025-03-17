@@ -38,8 +38,8 @@ func _on_continue_pressed():
 		
 		# Change the scene to Level1
 		Global.is_paused = false
-		get_tree().change_scene_to_file("res://Scenes/Interface/loading_screen.tscn")
-		# get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
+		PlayerClass.playerName = trimmed_text
+		get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 
 func _on_override_confirm(save_name):
 	var popup = ConfirmationDialog.new()
@@ -53,6 +53,7 @@ func _on_override_confirm(save_name):
 
 func _on_override_pressed(_save_name):
 	Global.is_paused = false
+	PlayerClass.playerName = save_name
 	get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 
 func set_objects_for_desktop(label, name_input, continue_button, error_label):
