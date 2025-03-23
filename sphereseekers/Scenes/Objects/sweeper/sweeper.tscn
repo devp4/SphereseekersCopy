@@ -1,10 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://bq5anrruu6lx"]
+[gd_scene load_steps=5 format=3 uid="uid://bq5anrruu6lx"]
 
 [ext_resource type="PackedScene" uid="uid://ckl5ok43nrfai" path="res://Scenes/Objects/sweeper/sweeper.glb" id="1_leewc"]
+[ext_resource type="Script" uid="uid://bnwvw1hk8phfr" path="res://Scenes/Objects/sweeper/sweeper.gd" id="2_puj4b"]
 [ext_resource type="Material" uid="uid://y4yhjq6ftc3l" path="res://Assets/Materials/cartoon/orange_toon/orange_toon.tres" id="3_puj4b"]
 [ext_resource type="Material" uid="uid://bhrcvuaba1n8v" path="res://Assets/Materials/cartoon/purple_toon/purple_toon.tres" id="3_tdlo2"]
 
 [node name="sweeper" instance=ExtResource("1_leewc")]
+script = ExtResource("2_puj4b")
 
 [node name="base" parent="." index="0"]
 surface_material_override/0 = ExtResource("3_puj4b")
@@ -12,22 +14,14 @@ surface_material_override/0 = ExtResource("3_puj4b")
 [node name="arm1" parent="base" index="0"]
 surface_material_override/0 = ExtResource("3_tdlo2")
 
-[node name="StaticBody3D" parent="base/arm1" index="0" groups=["killing_obstacle"]]
-
 [node name="arm2" parent="base" index="1"]
 surface_material_override/0 = ExtResource("3_tdlo2")
-
-[node name="StaticBody3D" parent="base/arm2" index="0" groups=["killing_obstacle"]]
 
 [node name="arm3" parent="base" index="2"]
 surface_material_override/0 = ExtResource("3_tdlo2")
 
-[node name="StaticBody3D" parent="base/arm3" index="0" groups=["killing_obstacle"]]
-
 [node name="arm4" parent="base" index="3"]
 surface_material_override/0 = ExtResource("3_tdlo2")
-
-[node name="StaticBody3D" parent="base/arm4" index="0" groups=["killing_obstacle"]]
 
 [node name="base_arm1" parent="base" index="4"]
 surface_material_override/0 = ExtResource("3_puj4b")

@@ -1,0 +1,81 @@
+[gd_scene load_steps=6 format=3 uid="uid://iajm84bugmvs"]
+
+[ext_resource type="PackedScene" uid="uid://dy023x7dctv8f" path="res://Scenes/Objects/level_2_floor/level_2_path.glb" id="1_neo1i"]
+[ext_resource type="Material" uid="uid://bypxjktybemk8" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="2_jajn6"]
+[ext_resource type="Material" uid="uid://y4yhjq6ftc3l" path="res://Assets/Materials/cartoon/orange_toon/orange_toon.tres" id="3_vfcf3"]
+[ext_resource type="Script" uid="uid://b35gvk3d67ft2" path="res://Scenes/Objects/level_2_floor/moving_platform.gd" id="4_dbg33"]
+[ext_resource type="Material" uid="uid://bhrcvuaba1n8v" path="res://Assets/Materials/cartoon/purple_toon/purple_toon.tres" id="5_dbvob"]
+
+[node name="level_2_path" instance=ExtResource("1_neo1i")]
+
+[node name="left-right" parent="." index="0"]
+surface_material_override/0 = ExtResource("2_jajn6")
+
+[node name="StaticBody3D" parent="left-right" index="0" groups=["Ground"]]
+
+[node name="first_platform" parent="." index="1"]
+surface_material_override/0 = ExtResource("3_vfcf3")
+script = ExtResource("4_dbg33")
+is_left_to_right = true
+
+[node name="StaticBody3D" parent="first_platform" index="0" groups=["Ground"]]
+
+[node name="second_platform" parent="." index="2"]
+surface_material_override/0 = ExtResource("3_vfcf3")
+script = ExtResource("4_dbg33")
+is_left_to_right = true
+direction = -1.0
+
+[node name="StaticBody3D" parent="second_platform" index="0" groups=["Ground"]]
+
+[node name="far_platform" parent="." index="3"]
+surface_material_override/0 = ExtResource("5_dbvob")
+script = ExtResource("4_dbg33")
+distance = 15.0
+
+[node name="StaticBody3D" parent="far_platform" index="0" groups=["Ground"]]
+
+[node name="sweeper-platform" parent="." index="4"]
+surface_material_override/0 = ExtResource("2_jajn6")
+
+[node name="StaticBody3D" parent="sweeper-platform" index="0" groups=["Ground"]]
+
+[node name="no-movement" parent="." index="5"]
+surface_material_override/0 = ExtResource("2_jajn6")
+
+[node name="StaticBody3D" parent="no-movement" index="0" groups=["Ground"]]
+
+[node name="up_down_first_platform" parent="." index="6"]
+surface_material_override/0 = ExtResource("5_dbvob")
+script = ExtResource("4_dbg33")
+is_up_and_down = true
+distance = 10.0
+
+[node name="StaticBody3D" parent="up_down_first_platform" index="0" groups=["Ground"]]
+
+[node name="up_down_second_platform" parent="." index="7"]
+surface_material_override/0 = ExtResource("3_vfcf3")
+script = ExtResource("4_dbg33")
+is_up_and_down = true
+distance = 10.0
+direction = -1.0
+
+[node name="StaticBody3D" parent="up_down_second_platform" index="0" groups=["Ground"]]
+
+[node name="up_down_third_platform" parent="." index="8"]
+surface_material_override/0 = ExtResource("5_dbvob")
+script = ExtResource("4_dbg33")
+is_up_and_down = true
+distance = 10.0
+
+[node name="StaticBody3D" parent="up_down_third_platform" index="0" groups=["Ground"]]
+
+[node name="final_platform" parent="." index="9"]
+surface_material_override/0 = ExtResource("2_jajn6")
+
+[node name="StaticBody3D" parent="final_platform" index="0" groups=["Ground"]]
+
+[node name="snake-path" parent="." index="10"]
+surface_material_override/0 = ExtResource("2_jajn6")
+
+[node name="StaticBody3D" parent="snake-path" index="0" groups=["Ground"]]
