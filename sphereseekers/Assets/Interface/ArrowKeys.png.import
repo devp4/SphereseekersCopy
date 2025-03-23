@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cloahbnjwm8yj"
-path="res://.godot/imported/Phone.png-6b2585fd81a7cc1976485cc0aa461c79.ctex"
+uid="uid://c2x1ealp1h621"
+path="res://.godot/imported/ArrowKeys.png-b5bc7f88cb90c53e29ff97c65a97e2bf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Phone.png"
-dest_files=["res://.godot/imported/Phone.png-6b2585fd81a7cc1976485cc0aa461c79.ctex"]
+source_file="res://Assets/Interface/ArrowKeys.png"
+dest_files=["res://.godot/imported/ArrowKeys.png-b5bc7f88cb90c53e29ff97c65a97e2bf.ctex"]
 
 [params]
 
