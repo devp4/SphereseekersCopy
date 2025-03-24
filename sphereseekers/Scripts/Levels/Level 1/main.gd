@@ -34,8 +34,6 @@ func process(delta):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		PlayerClass.current_level_time += delta
-		$UI/StopwatchLabel.text = str(PlayerClass.current_level_time).pad_decimals(2)
 
 func show_controls_menu():
 	controls_menu_instance = preload("res://Scenes/Interface/ControlsMenu.tscn").instantiate()

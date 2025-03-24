@@ -33,6 +33,10 @@ func set_level_best_time():
 func get_current_level_best_time():
 	return best_times.get(str(current_level), null)
 
+func clear_player():
+	current_level_time = 0
+	set_player({})
+
 func set_player(data: Dictionary):
 	playerName = data.get("name", "Player")
 	current_level = data.get("current_level", 1)
@@ -40,6 +44,9 @@ func set_player(data: Dictionary):
 
 func save_player():
 	LocalStorage.save_player_data(playerName, get_player())
+
+func delete_player(player_name):
+	LocalStorage.delete_player(player_name)
 
 func load_game(player_name):
 	var data = LocalStorage.get_player_data(player_name)

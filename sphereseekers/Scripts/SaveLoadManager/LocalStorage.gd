@@ -18,6 +18,10 @@ func set_save_names(save_names):
 	var save_names_string = JSON.stringify(save_names)
 	var complete_string = "localStorage.setItem('saves', '%s')" % save_names_string
 	JavaScriptBridge.eval(complete_string)
+
+func delete_player(player_name):
+	var complete_string = "localStorage.removeItem('%s')" % player_name
+	JavaScriptBridge.eval(complete_string)
 	
 func save_player_data(player_name, player_data):
 	# convert int keys to string
