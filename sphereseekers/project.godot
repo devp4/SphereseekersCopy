@@ -19,6 +19,7 @@ config/icon="res://Vector/Textures/icon.svg"
 
 Global="*res://Scripts/Interface/Global.gd"
 LocalStorage="*res://Scripts/SaveLoadManager/LocalStorage.gd"
+PlayerClass="*res://Scripts/Player/PlayerClass.gd"
 
 [dotnet]
 

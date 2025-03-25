@@ -78,7 +78,16 @@ func _on_main_menu_pressed():
 	get_tree().change_scene_to_file("res://Scenes/Interface/MainMenu.tscn")
 
 func _on_load_pressed(save_name):
-	print("Loading save: ", save_name)
+	PlayerClass.clear_player()
+	PlayerClass.load_game(save_name)
+	Global.in_main_menu = false
+	
+	# New game is going to played, set the level to play to TUTORIAL
+	Global.level_to_play = Global.levels.TUTORIAL
+	
+	# Make sure that Cannons will shoot
+	Global.stop_all_projectiles = false
+	get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 	
 func _on_delete_confirm(save_name):
 	var popup = ConfirmationDialog.new()
@@ -99,6 +108,7 @@ func _on_delete_pressed(save_name):
 			new_saves.append(save)
 	
 	LocalStorage.set_save_names(new_saves)
+	PlayerClass.delete_player(save_name)
 	get_tree().change_scene_to_file("res://Scenes/Interface/LoadGameMenu.tscn")
 	 
 	

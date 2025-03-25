@@ -18,6 +18,16 @@ func _ready():
 		# we assume that is a smartphone
 		set_objects_for_smartphone(label_instance, name_input_instance, continue_button_instance, error_label_instance)
 
+func start_game():
+	Global.is_paused = false
+	Global.in_main_menu = false
+	
+	# New game is going to played, set the level to play to TUTORIAL
+	Global.level_to_play = Global.levels.TUTORIAL
+	
+	# Make sure that Cannons will shoot
+	Global.stop_all_projectiles = false
+
 func _on_continue_pressed():
 	var trimmed_text = name_input_instance.text.strip_edges()
 	
@@ -36,10 +46,13 @@ func _on_continue_pressed():
 		save_names.append(trimmed_text)
 		LocalStorage.set_save_names(save_names)
 		
-		# Change the scene to Level1
-		Global.is_paused = false
-		get_tree().change_scene_to_file("res://Scenes/Interface/loading_screen.tscn")
-		# get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
+		PlayerClass.clear_player()
+		PlayerClass.playerName = trimmed_text
+		PlayerClass.save_player()
+		
+		start_game()
+		
+		get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 
 func _on_override_confirm(save_name):
 	var popup = ConfirmationDialog.new()
@@ -52,7 +65,12 @@ func _on_override_confirm(save_name):
 	popup.popup_centered()
 
 func _on_override_pressed(_save_name):
-	Global.is_paused = false
+	PlayerClass.delete_player(_save_name)
+	PlayerClass.clear_player()
+	PlayerClass.playerName = _save_name
+	PlayerClass.save_player()
+	
+	start_game()
 	get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 
 func set_objects_for_desktop(label, name_input, continue_button, error_label):
