@@ -2,9 +2,9 @@ extends Control
 
 var title_label: TextureRect
 var error_label: Label
-var name_input: LineEdit
 var continue_btn: TextureButton
 var bg_rect: ColorRect
+var name_input: LineEdit
 
 func _ready() -> void:
 	title_label = $title
@@ -14,13 +14,44 @@ func _ready() -> void:
 	bg_rect = $background
 
 	if Global.is_mobile:
+		name_input.focus_entered.connect(_on_mobile_input_focus)
+		name_input.focus_exited.connect(_on_mobile_input_unfocus)
+
+	if Global.is_mobile:
 		set_mobile_layout()
 	else:
 		set_desktop_layout()
+			
+func _on_mobile_input_focus() -> void:
+	_show_mobile_keyboard()
+	
+func _on_mobile_input_unfocus() -> void:
+	DisplayServer.virtual_keyboard_hide()
+	
+func _show_mobile_keyboard() -> void:
+	DisplayServer.virtual_keyboard_show("")
+	
+	if OS.get_name() == "Web":
+		_trigger_keyboard_js()
+
+func _trigger_keyboard_js() -> void:
+	# JavaScript method to force keyboard on mobile web
+	if OS.get_name() == "Web":
+		JavaScriptBridge.eval("""
+		function showKeyboard() {
+			// Try to focus on the input
+			var input = document.querySelector('textarea');
+			if (input) {
+				input.focus();
+				input.click();
+			}
+		}
+		showKeyboard();
+		""")
 
 func _on_continue_pressed() -> void:
 	var name = name_input.text.strip_edges()
-
+		
 	if name == "":
 		error_label.text = "Please enter your name"
 		error_label.modulate = Color(1, 0, 0, 0) # Start transparent
@@ -56,6 +87,7 @@ func _on_override_confirmed(_name: String) -> void:
 	get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 
 func set_desktop_layout() -> void:
+	
 	var size = get_viewport_rect().size
 	var w = size.x
 	var h = size.y
@@ -93,6 +125,7 @@ func set_desktop_layout() -> void:
 	error_label.visible = false
 
 func set_mobile_layout() -> void:
+	
 	var size = get_viewport_rect().size
 	var w = size.x
 	var h = size.y
@@ -117,8 +150,7 @@ func set_mobile_layout() -> void:
 	var input_target_pos = Vector2((w - name_input.size.x) / 2, title_target_pos.y + title_label.size.y + h * 0.05)
 	name_input.position = Vector2(-name_input.size.x, input_target_pos.y)
 	animate_property(name_input, "position", input_target_pos, 0.6)
-
-	name_input.placeholder_text = "Enter your name"
+	name_input.editable = true
 	name_input.visible = true
 
 	# Continue Button

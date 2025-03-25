@@ -195,33 +195,33 @@ Team members can update the website by:
    - Click "Export Project".
    - Choose Sphereseekers/sphereseekersWebsite/public/game and replace the previous files.
 
-This project uses **Git Large File Storage (Git LFS)** to track and store large files such as `.pck` files used in Godot projects.
+4. Modify ```index.html```
+   Add the following line:
 
-- Before pushing or pulling large files, install Git LFS:
-
-   ```bash
-   git lfs install
+   ```html
+   <script src="pako_inflate.min.js"></script>
    ```
 
-- To track `.pck**` files with GIT LFS:
+   directly before this line:
 
-   ```bash
-   git lfs track "*.pck"
+   ```html
+   <script src="index.js"></script>
    ```
 
-   this will update the .gitattributes file, this step only needs to be done oncee per file type.
+5. Modify ```index.js```
+   Replace the entire ```Preloader``` method with the template provided in
+   ```sphereseekersWebsite\public\game\preloader.js```
 
-- Pushing All LFS Files
-
-   If you need to ensure all LFS-tracked files (including past commits) are uploaded to the remote for a specific brancj:
+6. Compress ```index.pck``` and ```index.wasm``` to ```.gz``` format.
+   you can compress the files using ```Git Bash``` with the following commands
 
    ```bash
-   git lfs push --all origin <your-branch-name>
+   gzip index.pck
    ```
 
-   Use this if you are syncing LFS history or migrating to a new branch or remote.
-
----
+   ```bash
+   gzip index.wasm
+   ```
 
 ## **Contact**
 

@@ -16,10 +16,10 @@ func _ready():
 	menu = $menu_button
 	
 	if not Global.is_mobile:
-		var targets = set_objects_for_desktop()
+		var _targets = set_objects_for_desktop()
 	else:
 		# we assume that is a smartphone
-		var targets = set_objects_for_smartphone()
+		var _targets = set_objects_for_smartphone()
 		
 	process_mode = Node.PROCESS_MODE_ALWAYS
 

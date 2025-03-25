@@ -43,7 +43,7 @@ func setup_ui() -> void:
 	bg_rect.color = Color(173 / 255.0, 216 / 255.0, 230 / 255.0)
 
 	# Load gear texture
-	gear_image.texture = load("res://Assets/Interface/loading_screen/gear.png")
+	gear_image.texture = load("res://Assets/Interface/ui_images/gear.png")
 
 	if gear_image.texture:
 		var texture_size = gear_image.texture.get_size()

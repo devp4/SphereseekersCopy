@@ -14,6 +14,7 @@ func _ready():
 		set_objects_for_smartphone(background, label, image, button)
 	
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	
 
 func _on_continue_pressed():
 	Global.controls_shown = true
@@ -21,7 +22,7 @@ func _on_continue_pressed():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	queue_free()
 	get_parent().controls_menu_instance = null
-	
+
 func set_objects_for_desktop(background, label, image, button):
 	var screen_size = get_viewport_rect().size
 	var width = screen_size.x
@@ -47,7 +48,7 @@ func set_objects_for_desktop(background, label, image, button):
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	
 	# Image (TextureRect)
-	image.texture = load("res://Assets/ArrowKeys.png")
+	image.texture = load("res://Assets/Interface/ui_images/ArrowKeys.png")
 	var image_scale_factor = 0.4
 	var max_image_height = bg_size.y * 0.3
 
@@ -103,7 +104,7 @@ func set_objects_for_smartphone(background, label, image, button):
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 	# Image (TextureRect)
-	image.texture = load("res://Assets/Phone.png")
+	image.texture = load("res://Assets/Interface/ui_images/Phone.png")
 	var image_scale_factor = 0.6
 	var max_image_height = bg_size.y * 0.35
 
