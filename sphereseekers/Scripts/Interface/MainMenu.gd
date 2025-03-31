@@ -35,10 +35,9 @@ func _ready() -> void:
 func _on_Continue_pressed() -> void:
 	pass
 
-func _on_new_game_pressed() -> void:
-	Global.in_main_menu = false
-	Global.level_to_play = Global.levels.TUTORIAL
-	Global.stop_all_projectiles = false
+# Signal handler for the "New Game" button
+func _on_new_game_pressed() -> void:	
+	# set name first
 	get_tree().change_scene_to_file("res://Scenes/Interface/SetNameMenu.tscn")
 
 func _on_load_game_pressed() -> void:

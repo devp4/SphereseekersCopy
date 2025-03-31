@@ -27,3 +27,6 @@ func _on_animation_complete():
 	_level_to_play()
 	print("Going to level: ", Global.level_to_play)
 	get_tree().change_scene_to_file("res://Scenes/Interface/loading_screen.tscn")
+	
+	PlayerClass.set_level_best_time()
+	PlayerClass.save_player()

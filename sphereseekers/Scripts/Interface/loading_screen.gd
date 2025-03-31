@@ -67,6 +67,7 @@ func setup_ui() -> void:
 		))
 
 func get_path_to_level() -> String:
+	PlayerClass.current_level_time = 0
 	match Global.level_to_play:
 		Global.levels.TUTORIAL:
 			return "res://Scenes/Levels/Tutorial.tscn"

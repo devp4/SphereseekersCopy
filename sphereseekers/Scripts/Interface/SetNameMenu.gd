@@ -49,16 +49,23 @@ func _trigger_keyboard_js() -> void:
 		showKeyboard();
 		""")
 
-func _on_continue_pressed() -> void:
-	var name = name_input.text.strip_edges()
-		
-	if name == "":
-		error_label.text = "Please enter your name"
-		error_label.modulate = Color(1, 0, 0, 0) # Start transparent
-		error_label.visible = true
+func start_game():
+	Global.is_paused = false
+	Global.in_main_menu = false
+	
+	# New game is going to played, set the level to play to TUTORIAL
+	Global.level_to_play = Global.levels.TUTORIAL
+	
+	# Make sure that Cannons will shoot
+	Global.stop_all_projectiles = false
 
-		var tween = create_tween()
-		tween.tween_property(error_label, "modulate", Color.RED, 0.4)
+func _on_continue_pressed():
+	var trimmed_text = name_input_instance.text.strip_edges()
+	
+	if trimmed_text == "":
+		error_label_instance.text = "Please enter your name"
+		error_label_instance.modulate = Color(1, 0, 0)
+		error_label_instance.visible = true
 		return
 
 	error_label.visible = false
@@ -69,8 +76,14 @@ func _on_continue_pressed() -> void:
 	else:
 		save_names.append(name)
 		LocalStorage.set_save_names(save_names)
-		Global.is_paused = false
-		get_tree().change_scene_to_file("res://Scenes/Interface/loading_screen.tscn")
+		
+		PlayerClass.clear_player()
+		PlayerClass.playerName = trimmed_text
+		PlayerClass.save_player()
+		
+		start_game()
+		
+		get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 
 func show_override_dialog(name: String) -> void:
 	var dialog := ConfirmationDialog.new()
@@ -82,8 +95,13 @@ func show_override_dialog(name: String) -> void:
 	dialog.confirmed.connect(_on_override_confirmed.bind(name))
 	dialog.popup_centered()
 
-func _on_override_confirmed(_name: String) -> void:
-	Global.is_paused = false
+func _on_override_pressed(_save_name):
+	PlayerClass.delete_player(_save_name)
+	PlayerClass.clear_player()
+	PlayerClass.playerName = _save_name
+	PlayerClass.save_player()
+	
+	start_game()
 	get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 
 func set_desktop_layout() -> void:
