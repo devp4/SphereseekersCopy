@@ -223,6 +223,8 @@ Team members can update the website by:
    gzip index.wasm
    ```
 
+7. Remove ```index.pck``` and ```index.wasm```
+
 ## **Contact**
 
 For questions or suggestions, please contact:

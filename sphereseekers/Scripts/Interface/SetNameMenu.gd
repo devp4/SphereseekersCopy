@@ -60,12 +60,12 @@ func start_game():
 	Global.stop_all_projectiles = false
 
 func _on_continue_pressed():
-	var trimmed_text = name_input_instance.text.strip_edges()
+	var trimmed_text = name_input.text.strip_edges()
 	
 	if trimmed_text == "":
-		error_label_instance.text = "Please enter your name"
-		error_label_instance.modulate = Color(1, 0, 0)
-		error_label_instance.visible = true
+		error_label.text = "Please enter your name"
+		error_label.modulate = Color(1, 0, 0)
+		error_label.visible = true
 		return
 
 	error_label.visible = false
@@ -92,7 +92,7 @@ func show_override_dialog(name: String) -> void:
 	dialog.cancel_button_text = "Exit"
 	dialog.get_ok_button().modulate = Color.RED
 	add_child(dialog)
-	dialog.confirmed.connect(_on_override_confirmed.bind(name))
+	dialog.confirmed.connect(_on_override_pressed.bind(name))
 	dialog.popup_centered()
 
 func _on_override_pressed(_save_name):
