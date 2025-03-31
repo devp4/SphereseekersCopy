@@ -71,10 +71,10 @@ func _on_continue_pressed():
 	error_label.visible = false
 	var save_names: Array = LocalStorage.get_save_names()
 
-	if name in save_names:
-		show_override_dialog(name)
+	if trimmed_text in save_names:
+		show_override_dialog(trimmed_text)
 	else:
-		save_names.append(name)
+		save_names.append(trimmed_text)
 		LocalStorage.set_save_names(save_names)
 		
 		PlayerClass.clear_player()
