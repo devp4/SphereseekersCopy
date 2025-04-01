@@ -7,9 +7,12 @@ extends RigidBody3D
 @export var jump_force : float = 100.0;
 
 @onready var camera_3d: Camera3D = $"../CameraRig/HRotation/VRotation/SpringArm3D/Camera3D"
-
 var can_move: bool = true
 var is_on_ground: bool = true
+
+func _ready():
+	var mesh = $MeshInstance3D
+	mesh.set_surface_override_material(0, Global.player_skin)
 
 func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	

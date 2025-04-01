@@ -1,30 +1,60 @@
-[gd_scene load_steps=2 format=3 uid="uid://2jm1027hjbde"]
+[gd_scene load_steps=7 format=3 uid="uid://2jm1027hjbde"]
 
 [ext_resource type="Script" uid="uid://ddjyxn7i6exo5" path="res://Scripts/Interface/SetNameMenu.gd" id="1_ulw0x"]
+[ext_resource type="Texture2D" uid="uid://c0b80fl8lnlub" path="res://Assets/Interface/ui_images/set_name_label.png" id="2_iyoe4"]
+[ext_resource type="Texture2D" uid="uid://ibswd5l1qge2" path="res://Assets/buttons/continue_button.png" id="3_407c1"]
+[ext_resource type="Texture2D" uid="uid://s5aajjcc3k8" path="res://Assets/Interface/ui_images/background.png" id="4_c6cfq"]
 
-[node name="SetSaveName" type="Node2D"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c6cfq"]
+texture = ExtResource("4_c6cfq")
+texture_margin_left = 100.0
+texture_margin_right = 100.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4olj1"]
+texture = ExtResource("4_c6cfq")
+
+[node name="SetSaveName" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_ulw0x")
 
-[node name="title" type="Label" parent="."]
+[node name="background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="title" type="TextureRect" parent="."]
+layout_mode = 0
 offset_right = 79.0
 offset_bottom = 23.0
-text = "Set Name"
-horizontal_alignment = 1
-vertical_alignment = 1
+texture = ExtResource("2_iyoe4")
+expand_mode = 1
 
-[node name="name_input" type="LineEdit" parent="."]
-offset_top = 27.0
-offset_right = 79.0
-offset_bottom = 58.0
-
-[node name="continue" type="Button" parent="."]
+[node name="continue" type="TextureButton" parent="."]
+layout_mode = 0
 offset_top = 62.0
 offset_right = 79.0
 offset_bottom = 93.0
-text = "Continue"
+texture_normal = ExtResource("3_407c1")
+ignore_texture_size = true
+stretch_mode = 0
 
 [node name="error" type="Label" parent="."]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+
+[node name="name_input" type="LineEdit" parent="."]
+layout_mode = 0
+offset_top = 27.0
+offset_right = 79.0
+offset_bottom = 58.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_c6cfq")
+
+[node name="name_input_mobile" type="TextEdit" parent="."]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_4olj1")
 
 [connection signal="pressed" from="continue" to="." method="_on_continue_pressed"]

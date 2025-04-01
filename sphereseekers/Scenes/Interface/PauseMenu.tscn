@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://ck146mn70mgda"]
+[gd_scene load_steps=7 format=3 uid="uid://ck146mn70mgda"]
 
 [ext_resource type="Script" uid="uid://s1k8af8c8f75" path="res://Scripts/Interface/PauseMenu.gd" id="1_haljc"]
+[ext_resource type="Texture2D" uid="uid://bn4nrdvvgmfow" path="res://Assets/Interface/ui_images/sphereseekers_label.png" id="2_hy1yl"]
+[ext_resource type="Texture2D" uid="uid://cbsom0esktj26" path="res://Assets/buttons/resume_button.png" id="3_mf4co"]
+[ext_resource type="Texture2D" uid="uid://bq8q872bp20rw" path="res://Assets/buttons/restart_button.png" id="4_ed0kl"]
+[ext_resource type="Texture2D" uid="uid://dwc2r4kipj1er" path="res://Assets/buttons/options_button.png" id="5_4frau"]
+[ext_resource type="Texture2D" uid="uid://ctcaxoevo5h8s" path="res://Assets/buttons/menu_button.png" id="6_mf4co"]
 
 [node name="PauseMenu" type="Control"]
 layout_mode = 3
@@ -17,32 +22,44 @@ offset_right = 800.0
 offset_bottom = 500.0
 color = Color(0.321569, 0.321569, 0.321569, 1)
 
-[node name="title" type="Label" parent="."]
+[node name="title" type="TextureRect" parent="."]
 layout_mode = 0
-offset_bottom = 23.0
-text = "
-"
+offset_bottom = 49.0
+texture = ExtResource("2_hy1yl")
+expand_mode = 1
 
-[node name="resume_button" type="Button" parent="."]
+[node name="resume_button" type="TextureButton" parent="."]
 layout_mode = 2
 offset_right = 8.0
 offset_bottom = 8.0
 action_mode = 0
+texture_normal = ExtResource("3_mf4co")
+ignore_texture_size = true
+stretch_mode = 0
 
-[node name="restart_button" type="Button" parent="."]
+[node name="restart_button" type="TextureButton" parent="."]
 layout_mode = 2
 offset_right = 8.0
 offset_bottom = 8.0
+texture_normal = ExtResource("4_ed0kl")
+ignore_texture_size = true
+stretch_mode = 0
 
-[node name="options_button" type="Button" parent="."]
+[node name="options_button" type="TextureButton" parent="."]
 layout_mode = 2
 offset_right = 8.0
 offset_bottom = 8.0
+texture_normal = ExtResource("5_4frau")
+ignore_texture_size = true
+stretch_mode = 0
 
-[node name="menu_button" type="Button" parent="."]
+[node name="menu_button" type="TextureButton" parent="."]
 layout_mode = 2
 offset_right = 8.0
 offset_bottom = 8.0
+texture_normal = ExtResource("6_mf4co")
+ignore_texture_size = true
+stretch_mode = 0
 
 [connection signal="pressed" from="resume_button" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="restart_button" to="." method="_on_restart_button_pressed"]

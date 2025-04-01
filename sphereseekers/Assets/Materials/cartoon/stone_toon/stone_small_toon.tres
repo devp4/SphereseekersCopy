@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://2y70wwrllqwj"]
+
+[ext_resource type="Texture2D" uid="uid://dqc0jbm7qlsbf" path="res://Assets/Materials/cartoon/stone_toon/Toon Rocks_diffuseOriginal.jpg" id="1_fhx0r"]
+[ext_resource type="Texture2D" uid="uid://kntwrpv5bipy" path="res://Assets/Materials/cartoon/stone_toon/Toon Rocks_height.jpg" id="2_vy1l5"]
+[ext_resource type="Texture2D" uid="uid://d1dyet2artxsk" path="res://Assets/Materials/cartoon/stone_toon/Toon Rocks_normal.jpg" id="3_eioql"]
+[ext_resource type="Texture2D" uid="uid://dpbghveol8gmd" path="res://Assets/Materials/cartoon/stone_toon/r_Roughness.jpg" id="4_hqpu1"]
+
+[resource]
+albedo_texture = ExtResource("1_fhx0r")
+roughness_texture = ExtResource("4_hqpu1")
+normal_enabled = true
+normal_texture = ExtResource("3_eioql")
+heightmap_texture = ExtResource("2_vy1l5")
+uv1_scale = Vector3(2, 2, 2)

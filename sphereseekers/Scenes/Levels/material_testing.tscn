@@ -11,9 +11,9 @@
 [ext_resource type="Material" uid="uid://dv5esmm34fpg2" path="res://Assets/Materials/cartoon/brick_toon/brick_toon.tres" id="7_gt7pi"]
 [ext_resource type="Material" uid="uid://3vg8xdyp66a4" path="res://Assets/Materials/cartoon/grass_toon/grass_toon.tres" id="8_7ppab"]
 [ext_resource type="Material" uid="uid://dy6tyj3t7v5kw" path="res://Assets/Materials/cartoon/white_bricks_toon/white_bricks_toon.tres" id="8_aebg8"]
-[ext_resource type="Material" uid="uid://bm5qhhsjmred0" path="res://Assets/Materials/cartoon/wood_planks_toon/wood_plank_toon.tres" id="8_ljyd5"]
 [ext_resource type="Material" uid="uid://d17bn5nh0y3me" path="res://Assets/Materials/cartoon/leaves_toon/leaves_toon.tres" id="8_ytbuo"]
 [ext_resource type="Material" uid="uid://bypxjktybemk8" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="10_tdihx"]
+[ext_resource type="Material" uid="uid://b66mn6xqdkhka" path="res://Assets/Materials/cartoon/wood_planks_toon/wood_planks_toon.tres" id="11_ytbuo"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_gt7pi"]
 panorama = ExtResource("4_ytbuo")
@@ -104,7 +104,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, -2.194, 0)
 radius = 1.0
 radial_segments = 32
 rings = 32
-material = ExtResource("8_ljyd5")
+material = ExtResource("11_ytbuo")
 
 [node name="brick_toon" type="CSGSphere3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -2.194, 0)

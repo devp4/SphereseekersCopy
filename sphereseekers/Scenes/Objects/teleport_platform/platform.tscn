@@ -35,6 +35,7 @@ material = SubResource("StandardMaterial3D_t3i4h")
 surface_material_override/0 = ExtResource("2_g7qnx")
 
 [node name="middle" parent="." index="1"]
+material_override = ExtResource("3_r7x4l")
 surface_material_override/0 = ExtResource("3_r7x4l")
 script = ExtResource("2_heunl")
 

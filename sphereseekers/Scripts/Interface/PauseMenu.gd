@@ -1,19 +1,26 @@
 extends Control
 
+var background = ColorRect
+var label = TextureRect
+var resume = TextureButton
+var restart = TextureButton
+var options = TextureButton
+var menu = TextureButton
+
 func _ready():
-	var background = $background
-	var label = $title
-	var resume = $resume_button
-	var restart = $restart_button
-	var options = $options_button
-	var menu = $menu_button
+	background = $background
+	label = $title
+	resume = $resume_button
+	restart = $restart_button
+	options = $options_button
+	menu = $menu_button
 	
 	if not Global.is_mobile:
-		set_objects_for_desktop(background, label, resume, restart, options, menu)
+		var _targets = set_objects_for_desktop()
 	else:
 		# we assume that is a smartphone
-		set_objects_for_smartphone(background, label, resume, restart, options, menu)
-	
+		var _targets = set_objects_for_smartphone()
+		
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 func _unhandled_input(event):
@@ -50,123 +57,76 @@ func _on_main_menu_button_pressed():
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Scenes/Interface/MainMenu.tscn")
 
-func set_objects_for_desktop(background, label, resume, restart, options, menu):
+func set_objects_for_desktop():
 	var screen_size = get_viewport_rect().size
-	var width = screen_size.x
-	var height = screen_size.y
+	var w = screen_size.x
+	var h = screen_size.y
 
-	# Background (ColorRect)
-	background.set_size(Vector2(width * 0.4, height * 0.8))
-	background.set_position(Vector2(width * 0.3, height * 0.1))
+	background.set_size(Vector2(w * 0.4, h * 0.8))
+	background.set_position(Vector2(w * 0.3, h * 0.1))
 	background.color = Color(0, 0, 0, 0.5)
 
-	# Background position
-	var bg_size = background.size
-	var bg_position = background.position
+	label.set_size(Vector2(250, 125))
+	label.set_position(Vector2((w - label.size.x) / 2, h * 0.1))
 
-	# Label (Title)
-	label.text = "Sphereseekers"
-	label.set_size(Vector2(bg_size.x * 0.75, bg_size.y * 0.15))
-	label.set_position(Vector2(
-		bg_position.x + (bg_size.x - label.size.x) / 2,
-		bg_position.y + bg_size.y * 0.05
-	))
-	label.add_theme_font_size_override("font_size", 48)
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var buttons = [resume, restart, options, menu]
+	var button_count = buttons.size()
 
-	# Resume
-	resume.text = "Resume"
-	resume.set_size(Vector2(bg_size.x * 0.5, bg_size.y * 0.1))
+	var button_width = 100
+	var button_height = 50
+	var spacing = 20
+	var total_height = button_count * button_height + (button_count - 1) * spacing
 
-	resume.set_position(Vector2(
-		bg_position.x + (bg_size.x - resume.size.x) / 2,
-		bg_position.y + bg_size.y * 0.30
-	))
-	
-	# Restart
-	restart.text = "Restart"
-	restart.set_size(Vector2(bg_size.x * 0.5, bg_size.y * 0.1))
+	var start_y = 50 + background.position.y + (background.size.y - total_height) / 2
 
-	restart.set_position(Vector2(
-		bg_position.x + (bg_size.x - restart.size.x) / 2,
-		bg_position.y + bg_size.y * 0.45
-	))
-	
-	# Options
-	options.text = "Options"
-	options.set_size(Vector2(bg_size.x * 0.5, bg_size.y * 0.1))
+	for i in range(button_count):
+		var btn = buttons[i]
+		btn.set_size(Vector2(button_width, button_height))
 
-	options.set_position(Vector2(
-		bg_position.x + (bg_size.x - options.size.x) / 2,
-		bg_position.y + bg_size.y * 0.60
-	))
-	
-	# Menu
-	menu.text = "Main Menu"
-	menu.set_size(Vector2(bg_size.x * 0.5, bg_size.y * 0.1))
+		var x = background.position.x + (background.size.x - button_width) / 2
+		var y = start_y + i * (button_height + spacing)
 
-	menu.set_position(Vector2(
-		bg_position.x + (bg_size.x - menu.size.x) / 2,
-		bg_position.y + bg_size.y * 0.75
-	))
-	
-func set_objects_for_smartphone(background, label, resume, restart, options, menu):
+		btn.position = Vector2(x, y)
+
+func set_objects_for_smartphone():
 	var screen_size = get_viewport_rect().size
-	var width = screen_size.x
-	var height = screen_size.y
+	var w = screen_size.x
+	var h = screen_size.y
 
-	# Background (ColorRect)
-	background.set_size(Vector2(width * 0.85, height * 0.6))  # Wider for readability
-	background.set_position(Vector2(width * 0.075, height * 0.2))  # Centered
+	# Background setup (smaller but centered)
+	background.set_size(Vector2(w * 0.85, h * 0.75))
+	background.set_position(Vector2(w * 0.075, h * 0.125))
 	background.color = Color(0, 0, 0, 0.5)
 
-	# Background position
 	var bg_size = background.size
-	var bg_position = background.position
+	var bg_pos = background.position
 
 	# Label (Title)
 	label.text = "Sphereseekers"
 	label.set_size(Vector2(bg_size.x * 0.9, bg_size.y * 0.12))
 	label.set_position(Vector2(
-		bg_position.x + (bg_size.x - label.size.x) / 2,
-		bg_position.y + bg_size.y * 0.05
+		bg_pos.x + (bg_size.x - label.size.x) / 2,
+		bg_pos.y + bg_size.y * 0.05
 	))
 	label.add_theme_font_size_override("font_size", 42)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
-	# Button size
+	# Buttons
+	var buttons = [resume, restart, options, menu]
+	var button_count = buttons.size()
+
 	var button_width = bg_size.x * 0.7
 	var button_height = bg_size.y * 0.12
-	var button_spacing = bg_size.y * 0.02
+	var spacing = bg_size.y * 0.02
+	var total_height = button_count * button_height + (button_count - 1) * spacing
 
-	# Resume
-	resume.text = "Resume"
-	resume.set_size(Vector2(button_width, button_height))
-	resume.set_position(Vector2(
-		bg_position.x + (bg_size.x - resume.size.x) / 2,
-		bg_position.y + bg_size.y * 0.25
-	))
-	
-	# Restart
-	restart.text = "Restart"
-	restart.set_size(Vector2(button_width, button_height))
-	restart.set_position(Vector2(
-		bg_position.x + (bg_size.x - restart.size.x) / 2,
-		resume.position.y + button_height + button_spacing
-	))
-	
-	# Options
-	options.text = "Options"
-	options.set_size(Vector2(button_width, button_height))
-	options.set_position(Vector2(
-		bg_position.x + (bg_size.x - options.size.x) / 2,
-		restart.position.y + button_height + button_spacing
-	))
-	
-	# Menu
-	menu.text = "Main Menu"
-	menu.set_size(Vector2(button_width, button_height))
-	menu.set_position(Vector2(
-		bg_position.x + (bg_size.x - menu.size.x) / 2,
-		options.position.y + button_height + button_spacing
-	))
+	var start_y = bg_pos.y + (bg_size.y - total_height) / 2
+
+	for i in range(button_count):
+		var btn = buttons[i]
+		btn.set_size(Vector2(button_width, button_height))
+
+		var x = bg_pos.x + (bg_size.x - button_width) / 2
+		var y = start_y + i * (button_height + spacing)
+
+		btn.position = Vector2(x, y)

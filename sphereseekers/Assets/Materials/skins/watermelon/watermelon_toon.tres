@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://c5fdvljmhb3vr"]
+
+[ext_resource type="Texture2D" uid="uid://ecm0jpvv0rt0" path="res://Assets/Materials/skins/watermelon/Watermelon_Base_Color.jpg" id="1_vddfh"]
+[ext_resource type="Texture2D" uid="uid://5w4h8avl03vh" path="res://Assets/Materials/skins/watermelon/Watermelon_Normal.jpg" id="2_af04s"]
+[ext_resource type="Texture2D" uid="uid://dhpc3i674fsqc" path="res://Assets/Materials/skins/watermelon/Watermelon_Roughness.jpg" id="3_be820"]
+
+[resource]
+albedo_texture = ExtResource("1_vddfh")
+roughness_texture = ExtResource("3_be820")
+normal_enabled = true
+normal_texture = ExtResource("2_af04s")

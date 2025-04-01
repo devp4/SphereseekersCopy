@@ -1,31 +1,38 @@
 extends Control
 
+# UI References
+var bg_rect: ColorRect
+var title_label: TextureRect
+var continue_btn: TextureButton
+var new_game_btn: TextureButton
+var load_game_btn: TextureButton
+var options_btn: TextureButton
+var skins_btn: TextureButton
+var exit_btn: TextureButton
+
 const MOBILE_KEYWORDS = ["Android", "iPhone", "iPad", "iPod", "Windows Phone", "Mobile"]
 
-# Called when the node enters the scene tree for the first time
 func _ready() -> void:
-	
-	var background = $background
-	var title = $title
-	var continue_button = $continue_button
-	var new_game_button = $new_game_button
-	var load_game_button = $load_game_button
-	var options_button = $options_button
-	var exit_button = $exit_button
-	
-	# You can perform any setup for your menu here if needed
+	bg_rect = $background
+	title_label = $title
+	continue_btn = $continue_button
+	new_game_btn = $new_game_button
+	load_game_btn = $load_game_button
+	options_btn = $options_button
+	skins_btn = $skins_button
+	exit_btn = $exit_button
+
 	Global.is_mobile = is_running_on_mobile_browser()
-	
+
 	if Global.is_mobile:
-		var screen_size = get_viewport_rect().size
-		get_window().size = Vector2(screen_size.x, screen_size.y)
-		set_objects_for_mobile(background, title, continue_button, new_game_button, load_game_button, options_button, exit_button)
+		var targets = set_objects_for_mobile()
+		await animate_mobile_buttons(targets)
 	else:
-		set_objects_for_desktop(background, title, continue_button, new_game_button, load_game_button, options_button, exit_button)
+		var targets = set_objects_for_desktop()
+		animate_title(title_label)
+		await animate_buttons_in(targets)
 
 func _on_Continue_pressed() -> void:
-	# Make sure to set Global.level_to_play to the correct enum value to load the resources
-	# to get a better example check _on_new_game_pressed()
 	pass
 
 # Signal handler for the "New Game" button
@@ -34,16 +41,17 @@ func _on_new_game_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/Interface/SetNameMenu.tscn")
 
 func _on_load_game_pressed() -> void:
-	# Make sure to set Global.level_to_play to the correct enum value to load the resources
-	# to get a better example check _on_new_game_pressed()
 	get_tree().change_scene_to_file("res://Scenes/Interface/LoadGameMenu.tscn")
-	
+
 func _on_options_pressed() -> void:
 	pass
 
+func _on_skins_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/Levels/display_room.tscn")
+
 func _on_exit_pressed() -> void:
 	get_tree().quit()
-	
+
 func is_running_on_mobile_browser() -> bool:
 	if not OS.has_feature("web"):
 		return false
@@ -52,141 +60,111 @@ func is_running_on_mobile_browser() -> bool:
 		if keyword in user_agent:
 			return true
 	return false
-	
-func set_objects_for_desktop(background, title, continue_button, new_game_button, load_game_button, options_button, exit_button):
+
+func set_objects_for_desktop() -> Array:
 	var screen_size = get_viewport_rect().size
-	var width = screen_size.x
-	var height = screen_size.y
+	var w = screen_size.x
+	var h = screen_size.y
 
-	# Background (ColorRect)
-	background.set_size(Vector2(width * 0.4, height * 0.8))
-	background.set_position(Vector2(width * 0.3, height * 0.1))
-	background.color = Color(77 / 255.0, 77 / 255.0, 77 / 255.0)
+	bg_rect.set_size(screen_size)
+	bg_rect.set_position(Vector2.ZERO)
+	bg_rect.color = Color(173 / 255.0, 216 / 255.0, 230 / 255.0)
 
-	# Background position
-	var bg_size = background.size
-	var bg_position = background.position
+	title_label.set_size(Vector2(500, 250))
+	title_label.set_position(Vector2((w - title_label.size.x) / 2, h * 0.1))
 
-	# title
-	title.text = "Sphereseekers"
-	title.set_size(Vector2(bg_size.x * 0.75, bg_size.y * 0.15))
-	title.set_position(Vector2(
-		bg_position.x + (bg_size.x - title.size.x) / 2,
-		bg_position.y + bg_size.y * 0.05
-	))
-	title.add_theme_font_size_override("font_size", 48)
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var button_width = w * 0.12
+	var button_height = 50
+	var spacing = w * 0.04
+	var y_pos = h * 0.75
 
-	# Continue
-	continue_button.text = "Continue"
-	continue_button.set_size(Vector2(bg_size.x * 0.5, bg_size.y * 0.1))
+	var buttons = [
+		continue_btn, new_game_btn, load_game_btn,
+		options_btn, skins_btn, exit_btn
+	]
 
-	continue_button.set_position(Vector2(
-		bg_position.x + (bg_size.x - continue_button.size.x) / 2,
-		bg_position.y + bg_size.y * 0.30
-	))
-	
-	# New Game
-	new_game_button.text = "New Game"
-	new_game_button.set_size(Vector2(bg_size.x * 0.5, bg_size.y * 0.1))
+	var button_targets = []
 
-	new_game_button.set_position(Vector2(
-		bg_position.x + (bg_size.x - new_game_button.size.x) / 2,
-		bg_position.y + bg_size.y * 0.45
-	))
-	
-	# Load Game
-	load_game_button.text = "Load Game"
-	load_game_button.set_size(Vector2(bg_size.x * 0.5, bg_size.y * 0.1))
+	for i in buttons.size():
+		var btn = buttons[i]
+		btn.set_size(Vector2(button_width, button_height))
+		btn.position = Vector2(-button_width, y_pos)
 
-	load_game_button.set_position(Vector2(
-		bg_position.x + (bg_size.x - load_game_button.size.x) / 2,
-		bg_position.y + bg_size.y * 0.60
-	))
-	
-	# Options
-	options_button.text = "Options"
-	options_button.set_size(Vector2(bg_size.x * 0.5, bg_size.y * 0.1))
+		var target = Vector2(spacing + i * (button_width + spacing), y_pos)
+		button_targets.append({ "button": btn, "target": target })
 
-	options_button.set_position(Vector2(
-		bg_position.x + (bg_size.x - options_button.size.x) / 2,
-		bg_position.y + bg_size.y * 0.75
-	))
-	
-	# Exit
-	exit_button.text = "Exit"
-	exit_button.set_size(Vector2(bg_size.x * 0.5, bg_size.y * 0.1))
+	return button_targets
 
-	exit_button.set_position(Vector2(
-		bg_position.x + (bg_size.x - exit_button.size.x) / 2,
-		bg_position.y + bg_size.y * 0.9
-	))
-	
-func set_objects_for_mobile(background, title, continue_button, new_game_button, load_game_button, options_button, exit_button):
+func set_objects_for_mobile() -> Array:
 	var screen_size = get_viewport_rect().size
-	var width = screen_size.x
-	var height = screen_size.y
+	var w = screen_size.x
+	var h = screen_size.y
 
-	# Background (ColorRect)
-	background.set_size(Vector2(width * 0.85, height * 0.6))  # Wider for readability
-	background.set_position(Vector2(width * 0.075, height * 0.2))  # Centered
-	background.color = Color(0, 0, 0, 0.5)
+	bg_rect.set_size(screen_size)
+	bg_rect.set_position(Vector2.ZERO)
+	bg_rect.color = Color(173 / 255.0, 216 / 255.0, 230 / 255.0)
 
-	# Background position
-	var bg_size = background.size
-	var bg_position = background.position
+	title_label.set_size(Vector2(500, 250))
+	var title_target = Vector2((w - title_label.size.x) / 2, h * 0.2)
+	title_label.position = Vector2(title_target.x, -title_label.size.y)
 
-	# Label (Title)
-	title.text = "Sphereseekers"
-	title.set_size(Vector2(bg_size.x * 0.9, bg_size.y * 0.12))
-	title.set_position(Vector2(
-		bg_position.x + (bg_size.x - title.size.x) / 2,
-		bg_position.y + bg_size.y * 0.05
-	))
-	title.add_theme_font_size_override("font_size", 42)
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var title_tween = create_tween()
+	title_tween.tween_property(title_label, "position", title_target, 1.0)\
+		.set_trans(Tween.TRANS_BOUNCE)\
+		.set_ease(Tween.EASE_OUT)
 
-	# Button size
-	var button_width = bg_size.x * 0.7
-	var button_height = bg_size.y * 0.12
-	var button_spacing = bg_size.y * 0.02
+	var button_width = w * 0.5
+	var button_height = h * 0.05
+	var spacing = h * 0.015
+	var start_y = title_target.y + title_label.size.y + h * 0.04
 
-	# Continue
-	continue_button.text = "Continue"
-	continue_button.set_size(Vector2(button_width, button_height))
-	continue_button.set_position(Vector2(
-		bg_position.x + (bg_size.x - continue_button.size.x) / 2,
-		bg_position.y + bg_size.y * 0.25
-	))
-	
-	# New Game
-	new_game_button.text = "New Game"
-	new_game_button.set_size(Vector2(button_width, button_height))
-	new_game_button.set_position(Vector2(
-		bg_position.x + (bg_size.x - new_game_button.size.x) / 2,
-		continue_button.position.y + button_height + button_spacing
-	))
-	
-	# Load Game
-	load_game_button.text = "Load Game"
-	load_game_button.set_size(Vector2(button_width, button_height))
-	load_game_button.set_position(Vector2(
-		bg_position.x + (bg_size.x - load_game_button.size.x) / 2,
-		new_game_button.position.y + button_height + button_spacing
-	))
-	
-	# Options
-	options_button.text = "Options"
-	options_button.set_size(Vector2(button_width, button_height))
-	options_button.set_position(Vector2(
-		bg_position.x + (bg_size.x - options_button.size.x) / 2,
-		load_game_button.position.y + button_height + button_spacing
-	))
-	
-	# Exit
-	exit_button.text = "Exit"
-	exit_button.set_size(Vector2(button_width, button_height))
-	exit_button.set_position(Vector2(
-		bg_position.x + (bg_size.x - exit_button.size.x) / 2,
-		options_button.position.y + button_height + button_spacing
-	))
+	var buttons = [
+		continue_btn, new_game_btn, load_game_btn,
+		options_btn, skins_btn, exit_btn
+	]
+
+	var button_targets = []
+
+	for i in buttons.size():
+		var btn = buttons[i]
+		btn.set_size(Vector2(button_width, button_height))
+		var target_x = (w - button_width) / 2
+		var target_y = start_y + i * (button_height + spacing)
+		btn.position = Vector2(target_x, h + button_height)
+
+		button_targets.append({ "button": btn, "target": Vector2(target_x, target_y) })
+
+	return button_targets
+
+func animate_title(title: TextureRect) -> void:
+	var final_pos = title.position
+	title.position = Vector2(final_pos.x, -title.size.y)
+
+	var tween = create_tween()
+	tween.tween_property(title, "position", final_pos, 1.2)\
+		.set_trans(Tween.TRANS_BOUNCE)\
+		.set_ease(Tween.EASE_OUT)
+
+func animate_buttons_in(button_targets: Array) -> void:
+	for entry in button_targets:
+		var btn = entry["button"]
+		var target = entry["target"]
+
+		var tween = create_tween()
+		tween.tween_property(btn, "position", target, 0.6)\
+			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_OUT)
+
+		await get_tree().create_timer(0.1).timeout
+
+func animate_mobile_buttons(button_targets: Array) -> void:
+	for entry in button_targets:
+		var btn = entry["button"]
+		var target = entry["target"]
+
+		var tween = create_tween()
+		tween.tween_property(btn, "position", target, 0.5)\
+			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_OUT)
+
+		await get_tree().create_timer(0.1).timeout

@@ -1,22 +1,53 @@
-extends Node2D
+extends Control
 
-var label_instance: Label
-var error_label_instance: Label
-var name_input_instance: LineEdit
-var continue_button_instance: Button
-	
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	label_instance = $title
-	name_input_instance = $name_input
-	continue_button_instance = $continue
-	error_label_instance = $error
-	
-	if not Global.is_mobile:
-		set_objects_for_desktop(label_instance, name_input_instance, continue_button_instance, error_label_instance)
+var title_label: TextureRect
+var error_label: Label
+var continue_btn: TextureButton
+var bg_rect: ColorRect
+var name_input: LineEdit
+
+func _ready() -> void:
+	title_label = $title
+	name_input = $name_input
+	continue_btn = $continue
+	error_label = $error
+	bg_rect = $background
+
+	if Global.is_mobile:
+		name_input.focus_entered.connect(_on_mobile_input_focus)
+		name_input.focus_exited.connect(_on_mobile_input_unfocus)
+
+	if Global.is_mobile:
+		set_mobile_layout()
 	else:
-		# we assume that is a smartphone
-		set_objects_for_smartphone(label_instance, name_input_instance, continue_button_instance, error_label_instance)
+		set_desktop_layout()
+			
+func _on_mobile_input_focus() -> void:
+	_show_mobile_keyboard()
+	
+func _on_mobile_input_unfocus() -> void:
+	DisplayServer.virtual_keyboard_hide()
+	
+func _show_mobile_keyboard() -> void:
+	DisplayServer.virtual_keyboard_show("")
+	
+	if OS.get_name() == "Web":
+		_trigger_keyboard_js()
+
+func _trigger_keyboard_js() -> void:
+	# JavaScript method to force keyboard on mobile web
+	if OS.get_name() == "Web":
+		JavaScriptBridge.eval("""
+		function showKeyboard() {
+			// Try to focus on the input
+			var input = document.querySelector('textarea');
+			if (input) {
+				input.focus();
+				input.click();
+			}
+		}
+		showKeyboard();
+		""")
 
 func start_game():
 	Global.is_paused = false
@@ -29,19 +60,19 @@ func start_game():
 	Global.stop_all_projectiles = false
 
 func _on_continue_pressed():
-	var trimmed_text = name_input_instance.text.strip_edges()
+	var trimmed_text = name_input.text.strip_edges()
 	
 	if trimmed_text == "":
-		error_label_instance.text = "Please enter your name"
-		error_label_instance.modulate = Color(1, 0, 0)
-		error_label_instance.visible = true
+		error_label.text = "Please enter your name"
+		error_label.modulate = Color(1, 0, 0)
+		error_label.visible = true
 		return
-		
-	error_label_instance.visible = false
+
+	error_label.visible = false
 	var save_names: Array = LocalStorage.get_save_names()
-	
+
 	if trimmed_text in save_names:
-		_on_override_confirm(trimmed_text)
+		show_override_dialog(trimmed_text)
 	else:
 		save_names.append(trimmed_text)
 		LocalStorage.set_save_names(save_names)
@@ -54,15 +85,15 @@ func _on_continue_pressed():
 		
 		get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 
-func _on_override_confirm(save_name):
-	var popup = ConfirmationDialog.new()
-	popup.dialog_text = "Save with this name already exists. Are you sure you want to override that save?"
-	popup.ok_button_text = "Override"
-	popup.cancel_button_text = "Exit"
-	popup.get_ok_button().modulate = Color.RED
-	add_child(popup)
-	popup.confirmed.connect(_on_override_pressed.bind(save_name))
-	popup.popup_centered()
+func show_override_dialog(name: String) -> void:
+	var dialog := ConfirmationDialog.new()
+	dialog.dialog_text = "Save with this name already exists. Are you sure you want to override that save?"
+	dialog.ok_button_text = "Override"
+	dialog.cancel_button_text = "Exit"
+	dialog.get_ok_button().modulate = Color.RED
+	add_child(dialog)
+	dialog.confirmed.connect(_on_override_pressed.bind(name))
+	dialog.popup_centered()
 
 func _on_override_pressed(_save_name):
 	PlayerClass.delete_player(_save_name)
@@ -73,91 +104,89 @@ func _on_override_pressed(_save_name):
 	start_game()
 	get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 
-func set_objects_for_desktop(label, name_input, continue_button, error_label):
-	var screen_size = get_viewport_rect().size
-	var width = screen_size.x
-	var height = screen_size.y
-
-	# Title
-	label.set_size(Vector2(width * 0.75, height * 0.15))
-	label.text = "Set Name"
-	label.set_position(Vector2(
-		(width - label.size.x) / 2,
-		(height - label.size.y) / 10
-	))
-	label.add_theme_font_size_override("font_size", 48)
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.visible = true
-
-	# LineEdit
-	name_input.set_size(Vector2(width * 0.75, height * 0.08))
-	name_input.set_position(Vector2(
-		(width - name_input.size.x) / 2,
-		label.position.y + label.size.y + height * 0.2
-	))
-	name_input.placeholder_text = "Enter your name"
-	name_input.visible = true
-
-	# Continue Button
-	continue_button.set_size(Vector2(width * 0.5, height * 0.08))
-	continue_button.set_position(Vector2(
-		(width - continue_button.size.x) / 2,
-		name_input.position.y + name_input.size.y + height * 0.1 
-	))
-	continue_button.text = "Continue"
-	continue_button.visible = true
-
-	# Error Label
-	error_label.set_size(Vector2(width * 0.75, height * 0.05))
-	error_label.set_position(Vector2(
-		(width - error_label.size.x) / 2,
-		continue_button.position.y + continue_button.size.y + height * 0.1
-	))
-	error_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	error_label.modulate = Color(1, 0, 0)
-	error_label.visible = false
-
-func set_objects_for_smartphone(label, name_input, continue_button, error_label):
-	var screen_size = get_viewport_rect().size
-	var width = screen_size.x
-	var height = screen_size.y
-
-	# Title
-	label.set_size(Vector2(width * 0.75, height * 0.15))
-	label.text = "Set Name"
-	label.set_position(Vector2(
-		(width - label.size.x) / 2,
-		(height - label.size.y) / 10
-	))
-	label.add_theme_font_size_override("font_size", 48)
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.visible = true
-
-	# LineEdit
-	name_input.set_size(Vector2(width * 0.75, height * 0.08))
-	name_input.set_position(Vector2(
-		(width - name_input.size.x) / 2,
-		label.position.y + label.size.y + height * 0.2
-	))
-	name_input.placeholder_text = "Enter your name"
-	name_input.visible = true
-
-	# Continue Button
-	continue_button.set_size(Vector2(width * 0.5, height * 0.08))
-	continue_button.set_position(Vector2(
-		(width - continue_button.size.x) / 2,
-		name_input.position.y + name_input.size.y + height * 0.1 
-	))
-	continue_button.text = "Continue"
-	continue_button.visible = true
-
-	# Error Label
-	error_label.set_size(Vector2(width * 0.75, height * 0.05))
-	error_label.set_position(Vector2(
-		(width - error_label.size.x) / 2,
-		continue_button.position.y + continue_button.size.y + height * 0.1
-	))
-	error_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	error_label.modulate = Color(1, 0, 0)
-	error_label.visible = false
+func set_desktop_layout() -> void:
 	
+	var size = get_viewport_rect().size
+	var w = size.x
+	var h = size.y
+
+	bg_rect.set_size(size)
+	bg_rect.set_position(Vector2.ZERO)
+	bg_rect.color = Color(173 / 255.0, 216 / 255.0, 230 / 255.0)
+
+	# Title
+	title_label.set_size(Vector2(400, 200))
+	var title_target_pos = Vector2((w - title_label.size.x) / 2, h * 0.08)
+	title_label.position = Vector2(title_target_pos.x, -title_label.size.y)  # start above
+	animate_property(title_label, "position", title_target_pos, 1.0, Tween.TRANS_BOUNCE)
+
+	# Input
+	name_input.set_size(Vector2(w * 0.75, h * 0.08))
+	var input_target_pos = Vector2((w - name_input.size.x) / 2, title_target_pos.y + title_label.size.y + h * 0.2)
+	name_input.position = Vector2(-name_input.size.x, input_target_pos.y)
+	animate_property(name_input, "position", input_target_pos, 0.6)
+
+	name_input.placeholder_text = "Enter your name"
+	name_input.visible = true
+
+	# Continue Button
+	continue_btn.set_size(Vector2(200, 100))
+	var button_target_pos = Vector2((w - continue_btn.size.x) / 2, input_target_pos.y + name_input.size.y + h * 0.1)
+	continue_btn.position = Vector2(w + continue_btn.size.x, button_target_pos.y)
+	animate_property(continue_btn, "position", button_target_pos, 0.6, Tween.TRANS_SINE, Tween.EASE_OUT)
+
+	# Error Label
+	error_label.set_size(Vector2(100, 50))
+	error_label.set_position(Vector2((w - error_label.size.x) / 2, button_target_pos.y + continue_btn.size.y + h * 0.1))
+	error_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	error_label.modulate = Color.RED
+	error_label.visible = false
+
+func set_mobile_layout() -> void:
+	
+	var size = get_viewport_rect().size
+	var w = size.x
+	var h = size.y
+
+	bg_rect.set_size(size)
+	bg_rect.set_position(Vector2.ZERO)
+	bg_rect.color = Color(173 / 255.0, 216 / 255.0, 230 / 255.0)
+
+	# Title
+	title_label.text = "Set Name"
+	title_label.set_size(Vector2(w * 0.75, h * 0.15))
+	var title_target_pos = Vector2((w - title_label.size.x) / 2, h * 0.08)
+	title_label.position = Vector2(title_target_pos.x, -title_label.size.y)
+	animate_property(title_label, "position", title_target_pos, 1.0, Tween.TRANS_BOUNCE)
+
+	title_label.add_theme_font_size_override("font_size", 48)
+	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title_label.visible = true
+
+	# Input
+	name_input.set_size(Vector2(w * 0.8, h * 0.08))
+	var input_target_pos = Vector2((w - name_input.size.x) / 2, title_target_pos.y + title_label.size.y + h * 0.05)
+	name_input.position = Vector2(-name_input.size.x, input_target_pos.y)
+	animate_property(name_input, "position", input_target_pos, 0.6)
+	name_input.editable = true
+	name_input.visible = true
+
+	# Continue Button
+	continue_btn.set_size(Vector2(w * 0.5, h * 0.08))
+	var button_target_pos = Vector2((w - continue_btn.size.x) / 2, input_target_pos.y + name_input.size.y + h * 0.05)
+	continue_btn.position = Vector2(w + continue_btn.size.x, button_target_pos.y)
+	animate_property(continue_btn, "position", button_target_pos, 0.6)
+
+	continue_btn.text = "Continue"
+	continue_btn.visible = true
+
+	# Error Label
+	error_label.set_size(Vector2(w * 0.8, h * 0.05))
+	error_label.set_position(Vector2((w - error_label.size.x) / 2, button_target_pos.y + continue_btn.size.y + h * 0.05))
+	error_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	error_label.modulate = Color.RED
+	error_label.visible = false
+
+func animate_property(node: Node, property: String, target_value: Variant, duration: float, transition := Tween.TRANS_SINE, ease := Tween.EASE_OUT) -> void:
+	var tween = create_tween()
+	tween.tween_property(node, property, target_value, duration).set_trans(transition).set_ease(ease)

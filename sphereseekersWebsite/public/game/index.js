@@ -126,6 +126,9 @@ const Features = {
 };
 
 const Preloader = /** @constructor */ function () { // eslint-disable-line no-unused-vars
+
+	this.tracker = {};
+	
 	function getTrackedResponse(response, load_status) {
 		function onloadprogress(reader, controller) {
 			return reader.read().then(function (result) {
@@ -154,22 +157,39 @@ const Preloader = /** @constructor */ function () { // eslint-disable-line no-un
 	}
 
 	function loadFetch(file, tracker, fileSize, raw) {
-		tracker[file] = {
+		const originalFile = file;
+	
+		tracker[originalFile] = {
 			total: fileSize || 0,
 			loaded: 0,
 			done: false,
 		};
-		return fetch(file).then(function (response) {
+	
+		let fetchFile = file;
+		const isCompressed = file.endsWith(".wasm") || file.endsWith(".pck");
+	
+		if (isCompressed) {
+			fetchFile += ".gz"; // download compressed file
+		}
+	
+		return fetch(fetchFile).then(response => {
 			if (!response.ok) {
-				return Promise.reject(new Error(`Failed loading file '${file}'`));
+				throw new Error(`Failed loading file '${fetchFile}'`);
 			}
-			const tr = getTrackedResponse(response, tracker[file]);
-			if (raw) {
-				return Promise.resolve(tr);
-			}
-			return tr.arrayBuffer();
+	
+			const tr = getTrackedResponse(response, tracker[originalFile]);
+	
+			return tr.arrayBuffer().then(compressedBuffer => {
+				if (isCompressed) {
+					// Decompress using pako
+					const inflated = pako.inflate(new Uint8Array(compressedBuffer));
+					return inflated.buffer;
+				} else {
+					return compressedBuffer;
+				}
+			});
 		});
-	}
+	}	
 
 	function retry(func, attempts = 1) {
 		function onerror(err) {
@@ -227,36 +247,44 @@ const Preloader = /** @constructor */ function () { // eslint-disable-line no-un
 		progressFunc = callback;
 	};
 
-	this.loadPromise = function (file, fileSize, raw = false) {
-		return retry(loadFetch.bind(null, file, loadingFiles, fileSize, raw), DOWNLOAD_ATTEMPTS_MAX);
+	this.loadPromise = (file, fileSize) => {
+		return loadFetch(file, this.tracker, fileSize, true).then(buffer => {
+			return new Response(buffer);
+		});
 	};
+	
 
 	this.preloadedFiles = [];
 	this.preload = function (pathOrBuffer, destPath, fileSize) {
 		let buffer = null;
+	
 		if (typeof pathOrBuffer === 'string') {
 			const me = this;
-			return this.loadPromise(pathOrBuffer, fileSize).then(function (buf) {
-				me.preloadedFiles.push({
-					path: destPath || pathOrBuffer,
-					buffer: buf,
+			return this.loadPromise(pathOrBuffer, fileSize).then(response => {
+				return response.arrayBuffer().then(data => {
+					me.preloadedFiles.push({
+						path: destPath || pathOrBuffer,
+						buffer: data,
+					});
 				});
-				return Promise.resolve();
 			});
 		} else if (pathOrBuffer instanceof ArrayBuffer) {
 			buffer = new Uint8Array(pathOrBuffer);
 		} else if (ArrayBuffer.isView(pathOrBuffer)) {
 			buffer = new Uint8Array(pathOrBuffer.buffer);
 		}
+	
 		if (buffer) {
 			this.preloadedFiles.push({
 				path: destPath,
-				buffer: pathOrBuffer,
+				buffer: buffer.buffer,
 			});
 			return Promise.resolve();
 		}
+	
 		return Promise.reject(new Error('Invalid object for preloading'));
 	};
+	
 };
 
 /**

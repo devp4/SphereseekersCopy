@@ -1,5 +1,11 @@
 # Sphereseekers: Marble Maze Game
 
+<!-- markdownlint-disable MD033 -->
+<p align="center">
+  <img src="sphereseekers\Assets\logo\sphereseekers_logo.png" alt="Description" width="300" height="100"/>
+</p>
+<!-- markdownlint-enable MD033 -->
+
 ## **Project Description**
 
 Sphereseekers is a 3D maze navigation game where players control a ball through challenging mazes filled with obstacles, reset zones, and timers. The game is designed to leverage iPhone’s gyroscope and accelerometer sensors, allowing players to tilt their device to navigate the ball. The ultimate goal is to navigate the maze and reach the exit as quickly as possible, while avoiding pitfalls and reset zones.
@@ -90,46 +96,23 @@ The project is currently being developed using the Godot Engine with GDScript. I
 ``` bash
 sphereseekers/
 ├── Assets/
-│   ├── *Images for the game*
+│   ├── *Contains all images and materials used in the game.*
 ├── Scenes/
 │   ├── Interface/
-│   │   ├── ControlsMenu.tscn
-│   │   ├── MainMenu.tscn
-│   │   ├── PauseMenu.tscn
+│   │   ├── *Contains all UI menus.*
 │   ├── Levels/
-│   │   ├── Tutorial.tscn
+│   │   ├── *Contains all level scenes.*
 │   ├── Objects/
-│   │   ├── Cannon/
-│   │   │   ├── cannon.gd
-│   │   │   ├── cannon.tscn
-│   │   ├── path_with_holes/
-│   │   │   ├── path_with_holes.gd
-│   │   │   ├── path_with_holes.tscn
-│   │   │   ├── path_with_holes_map.png
+│   │   ├── *Contains all game objects and their associated scripts.*
 ├── Scripts/
-│   ├── Camera/
-│   │   ├── camera_rig.gd
-│   ├── Interface/
-│   │   ├── ControlsMenu.gd
-│   │   ├── Global.gd
-│   │   ├── MainMenu.gd
-│   │   ├── PauseMenu.gd
-│   │   ├── SaveManager.gd
-│   ├── Levels/
-│   │   ├── main.gd
-│   ├── Movement/
-│   │   ├── ball.gd
-│   ├── Objects/
-│   │   ├── exit_area.gd
-│   │   ├── ground.gd
-│   │   ├── limit.gd
+│   ├── *Contains all general-purpose scripts not linked to specific objects.*
 ├── Vector/Textures/
-│   ├── *Textures for the game*
+│   ├── *Contains vector-based textures for the game.*
 ├── project.godot
 sphereseekersWebsite/
 ├── Public/
 │   ├── game/
-│   │   ├── index.html
+│   │   ├── *Game data*
 ├── src/app/
 │   ├── GameEmbed.jsx
 │   ├── globals.css
@@ -145,19 +128,20 @@ Readme.md
    - Fully designed and functional with a working exit.
 
 2. **Level Progression**:
-   - Itemazing objects for easy development on further levels.
+   - Development of levels is planned as at least one new level per week.
 
 3. **GitHub Repository**:
    - All game files and website files are tracked in the repository.
    - Large files (e.g., executables) are excluded using `.gitignore`.
+   - .pck files are accepted using git LFS.
 
 ---
 
 ## **Future Plans**
 
-1. Add more levels with increasing complexity.
-2. Enhance visuals and UI for a polished look.
-3. Implement leaderboards and scoring systems.
+1. Implement leaderboards and scoring systems.
+2. Continue the development of new levels.
+3. Implemet mobile controlls
 
 ---
 
@@ -211,7 +195,35 @@ Team members can update the website by:
    - Click "Export Project".
    - Choose Sphereseekers/sphereseekersWebsite/public/game and replace the previous files.
 
----
+4. Modify ```index.html```
+   Add the following line:
+
+   ```html
+   <script src="pako_inflate.min.js"></script>
+   ```
+
+   directly before this line:
+
+   ```html
+   <script src="index.js"></script>
+   ```
+
+5. Modify ```index.js```
+   Replace the entire ```Preloader``` method with the template provided in
+   ```sphereseekersWebsite\public\game\preloader.js```
+
+6. Compress ```index.pck``` and ```index.wasm``` to ```.gz``` format.
+   you can compress the files using ```Git Bash``` with the following commands
+
+   ```bash
+   gzip index.pck
+   ```
+
+   ```bash
+   gzip index.wasm
+   ```
+
+7. Remove ```index.pck``` and ```index.wasm```
 
 ## **Contact**
 
