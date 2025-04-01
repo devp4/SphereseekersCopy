@@ -11,6 +11,7 @@
 surface_material_override/0 = ExtResource("2_3q3w3")
 
 [node name="floor" parent="." index="2"]
+material_override = ExtResource("3_3q3w3")
 surface_material_override/0 = ExtResource("3_3q3w3")
 
 [node name="wall" parent="." index="3"]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ctbedti6p56qx"
-path="res://.godot/imported/Toon Rocks_height.jpg-78a87567df1df0d04d33ed5c0f4ae5f7.ctex"
+uid="uid://cfgw6hvo76qt1"
+path="res://.godot/imported/trival.png-bcb108a74c39abd23c3632653bb644d7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Materials/cartoon/white_bricks_toon/Toon Rocks_height.jpg"
-dest_files=["res://.godot/imported/Toon Rocks_height.jpg-78a87567df1df0d04d33ed5c0f4ae5f7.ctex"]
+source_file="res://Assets/previews/trival.png"
+dest_files=["res://.godot/imported/trival.png-bcb108a74c39abd23c3632653bb644d7.ctex"]
 
 [params]
 

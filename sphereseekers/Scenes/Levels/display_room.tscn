@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bhjcdhclie0db"]
+[gd_scene load_steps=16 format=3 uid="uid://bhjcdhclie0db"]
 
 [ext_resource type="PackedScene" uid="uid://3s77ttww565r" path="res://Scenes/Objects/display_room/display_room.tscn" id="1_mthct"]
 [ext_resource type="Script" uid="uid://jtfqwqev8r0i" path="res://Scenes/Objects/display_room/display_room.gd" id="1_vqcex"]
@@ -6,12 +6,21 @@
 [ext_resource type="Material" uid="uid://0bnrrijx370p" path="res://Assets/Materials/skins/leopard/leopard.tres" id="3_eycr5"]
 [ext_resource type="Material" uid="uid://cseuhpx0oub7m" path="res://Assets/Materials/skins/monster/monster.tres" id="4_eycr5"]
 [ext_resource type="Material" uid="uid://brei42kcqgope" path="res://Assets/Materials/skins/mexican/mexican.tres" id="5_eycr5"]
-[ext_resource type="Material" uid="uid://cek257ku242h5" path="res://Assets/Materials/skins/box/box.tres" id="6_86qp0"]
+[ext_resource type="Material" uid="uid://c5fdvljmhb3vr" path="res://Assets/Materials/skins/watermelon/watermelon_toon.tres" id="6_strqh"]
 [ext_resource type="Material" uid="uid://b8vex1k4mpgtr" path="res://Assets/Materials/skins/trival/trival.tres" id="7_wrnkh"]
+[ext_resource type="Texture2D" uid="uid://vajy0juux867" path="res://Assets/previews/brain.png" id="8_65aqy"]
+[ext_resource type="Texture2D" uid="uid://dk3tulko3xlf2" path="res://Assets/previews/fur.png" id="9_65aqy"]
+[ext_resource type="Texture2D" uid="uid://byrjhlpnhms2a" path="res://Assets/previews/monster.png" id="10_brv46"]
+[ext_resource type="Texture2D" uid="uid://h1ylcdbej8hk" path="res://Assets/previews/mexican.png" id="11_brv46"]
+[ext_resource type="Texture2D" uid="uid://dewd3rgpdgl83" path="res://Assets/previews/watermelon.png" id="12_strqh"]
+[ext_resource type="Texture2D" uid="uid://cfgw6hvo76qt1" path="res://Assets/previews/trival.png" id="13_strqh"]
+[ext_resource type="Texture2D" uid="uid://cgv6q7dm5i8sc" path="res://Assets/buttons/confirm_button.png" id="15_strqh"]
 
 [node name="DisplayRoom" type="Node3D"]
 script = ExtResource("1_vqcex")
-skins = Array[StandardMaterial3D]([ExtResource("2_86qp0"), ExtResource("3_eycr5"), ExtResource("4_eycr5"), ExtResource("5_eycr5"), ExtResource("6_86qp0"), ExtResource("7_wrnkh")])
+skins = Array[StandardMaterial3D]([ExtResource("2_86qp0"), ExtResource("3_eycr5"), ExtResource("4_eycr5"), ExtResource("5_eycr5"), ExtResource("6_strqh"), ExtResource("7_wrnkh")])
+skin_previews = Array[Texture2D]([ExtResource("8_65aqy"), ExtResource("9_65aqy"), ExtResource("10_brv46"), ExtResource("11_brv46"), ExtResource("12_strqh"), ExtResource("13_strqh")])
+skin_names = Array[String](["The Brain of the Developers", "Leopard", "Kitty", "Fiesta", "Watermelon", "Magnus"])
 
 [node name="display_room" parent="." instance=ExtResource("1_mthct")]
 
@@ -27,8 +36,8 @@ omni_shadow_mode = 0
 
 [node name="bottom-light" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-light_energy = 5.0
-omni_range = 10.0
+light_energy = 16.0
+light_volumetric_fog_energy = 5.0
 omni_shadow_mode = 0
 
 [node name="front-left-light" type="OmniLight3D" parent="."]
@@ -48,36 +57,25 @@ omni_shadow_mode = 0
 [node name="Control" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 400.0
-offset_bottom = 100.0
 
-[node name="prev" type="Button" parent="CanvasLayer/Control"]
-layout_mode = 0
-offset_left = 50.0
-offset_top = 30.0
-offset_right = 100.0
-offset_bottom = 65.0
-text = "prev
-"
-
-[node name="select" type="Button" parent="CanvasLayer/Control"]
+[node name="confirm_btn" type="TextureButton" parent="CanvasLayer/Control"]
 layout_mode = 0
 offset_left = 170.0
 offset_top = 30.0
 offset_right = 230.0
 offset_bottom = 65.0
-text = "select
-"
+texture_normal = ExtResource("15_strqh")
+ignore_texture_size = true
+stretch_mode = 0
 
-[node name="next" type="Button" parent="CanvasLayer/Control"]
+[node name="skin_button_container" type="HBoxContainer" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_left = 300.0
-offset_top = 30.0
-offset_right = 350.0
-offset_bottom = 65.0
-text = "next
-"
+offset_right = 40.0
+offset_bottom = 40.0
 
-[connection signal="pressed" from="CanvasLayer/Control/prev" to="." method="prev_skin"]
-[connection signal="pressed" from="CanvasLayer/Control/select" to="." method="select_skin"]
-[connection signal="pressed" from="CanvasLayer/Control/next" to="." method="next_skin"]
+[node name="skin_name_label" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[connection signal="pressed" from="CanvasLayer/Control/confirm_btn" to="." method="_on_select_button_pressed"]

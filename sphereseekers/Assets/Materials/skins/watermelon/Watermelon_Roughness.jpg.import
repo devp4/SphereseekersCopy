@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtiqj8gwx77at"
-path.s3tc="res://.godot/imported/Box_diffuseOriginal.jpg-79e53e173e5a08dd16ec281b43e83877.s3tc.ctex"
-path.etc2="res://.godot/imported/Box_diffuseOriginal.jpg-79e53e173e5a08dd16ec281b43e83877.etc2.ctex"
+uid="uid://dhpc3i674fsqc"
+path.s3tc="res://.godot/imported/Watermelon_Roughness.jpg-19cf842e0c1878f826bbac34d7c8b2ca.s3tc.ctex"
+path.etc2="res://.godot/imported/Watermelon_Roughness.jpg-19cf842e0c1878f826bbac34d7c8b2ca.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Materials/skins/box/Box_diffuseOriginal.jpg"
-dest_files=["res://.godot/imported/Box_diffuseOriginal.jpg-79e53e173e5a08dd16ec281b43e83877.s3tc.ctex", "res://.godot/imported/Box_diffuseOriginal.jpg-79e53e173e5a08dd16ec281b43e83877.etc2.ctex"]
+source_file="res://Assets/Materials/skins/watermelon/Watermelon_Roughness.jpg"
+dest_files=["res://.godot/imported/Watermelon_Roughness.jpg-19cf842e0c1878f826bbac34d7c8b2ca.s3tc.ctex", "res://.godot/imported/Watermelon_Roughness.jpg-19cf842e0c1878f826bbac34d7c8b2ca.etc2.ctex"]
 
 [params]
 

@@ -1,10 +1,23 @@
-[gd_scene load_steps=6 format=3 uid="uid://blwcgg18dx5gs"]
+[gd_scene load_steps=8 format=3 uid="uid://blwcgg18dx5gs"]
 
 [ext_resource type="PackedScene" uid="uid://cl6h6kyaw7o02" path="res://Scenes/Objects/tower/tower.glb" id="1_ywwek"]
 [ext_resource type="Material" uid="uid://3vg8xdyp66a4" path="res://Assets/Materials/cartoon/grass_toon/grass_toon.tres" id="2_a6oy8"]
 [ext_resource type="Material" uid="uid://bypxjktybemk8" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="3_a6oy8"]
 [ext_resource type="Script" uid="uid://m4a6l6si5st4" path="res://Scenes/Objects/tower/disappearing_platform.gd" id="4_a6oy8"]
-[ext_resource type="Material" uid="uid://dy6tyj3t7v5kw" path="res://Assets/Materials/cartoon/white_bricks_toon/white_bricks_toon.tres" id="4_fqnd7"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_a6oy8"]
+load_path = "res://.godot/imported/Toon Rocks_diffuseOriginal.jpg-183bb426d6c1be306288f5396a8133a9.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fqnd7"]
+load_path = "res://.godot/imported/Toon Rocks_normal.jpg-b8bff6381305058ade8ea58c0e38ee21.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ftc01"]
+albedo_texture = SubResource("CompressedTexture2D_a6oy8")
+normal_enabled = true
+normal_texture = SubResource("CompressedTexture2D_fqnd7")
+uv1_scale = Vector3(0.1, 0.1, 0.1)
+uv1_triplanar = true
+uv1_world_triplanar = true
 
 [node name="tower" instance=ExtResource("1_ywwek")]
 
@@ -17,97 +30,112 @@ surface_material_override/0 = ExtResource("2_a6oy8")
 surface_material_override/0 = ExtResource("3_a6oy8")
 
 [node name="p1" parent="." index="2"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+surface_material_override/0 = ExtResource("3_a6oy8")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p1" index="0" groups=["Ground"]]
 
 [node name="p2" parent="." index="3"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+material_override = ExtResource("3_a6oy8")
+surface_material_override/0 = SubResource("StandardMaterial3D_ftc01")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p2" index="0" groups=["Ground"]]
 
 [node name="p3" parent="." index="4"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+material_override = ExtResource("3_a6oy8")
+surface_material_override/0 = SubResource("StandardMaterial3D_ftc01")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p3" index="0" groups=["Ground"]]
 
 [node name="p4" parent="." index="5"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+material_override = ExtResource("3_a6oy8")
+surface_material_override/0 = SubResource("StandardMaterial3D_ftc01")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p4" index="0" groups=["Ground"]]
 
 [node name="p5" parent="." index="6"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+material_override = ExtResource("3_a6oy8")
+surface_material_override/0 = SubResource("StandardMaterial3D_ftc01")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p5" index="0" groups=["Ground"]]
 
 [node name="p6" parent="." index="7"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+material_override = ExtResource("3_a6oy8")
+surface_material_override/0 = SubResource("StandardMaterial3D_ftc01")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p6" index="0" groups=["Ground"]]
 
 [node name="p7" parent="." index="8"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+material_override = ExtResource("3_a6oy8")
+surface_material_override/0 = SubResource("StandardMaterial3D_ftc01")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p7" index="0" groups=["Ground"]]
 
 [node name="p8" parent="." index="9"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+material_override = ExtResource("3_a6oy8")
+surface_material_override/0 = SubResource("StandardMaterial3D_ftc01")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p8" index="0" groups=["Ground"]]
 
 [node name="p9" parent="." index="10"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+material_override = ExtResource("3_a6oy8")
+surface_material_override/0 = SubResource("StandardMaterial3D_ftc01")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p9" index="0" groups=["Ground"]]
 
 [node name="p10" parent="." index="11"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+material_override = ExtResource("3_a6oy8")
+surface_material_override/0 = SubResource("StandardMaterial3D_ftc01")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p10" index="0" groups=["Ground"]]
 
 [node name="p11" parent="." index="12"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+material_override = ExtResource("3_a6oy8")
+surface_material_override/0 = SubResource("StandardMaterial3D_ftc01")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p11" index="0" groups=["Ground"]]
 
 [node name="p12" parent="." index="13"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+material_override = ExtResource("3_a6oy8")
+surface_material_override/0 = SubResource("StandardMaterial3D_ftc01")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p12" index="0" groups=["Ground"]]
 
 [node name="p13" parent="." index="14"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+material_override = ExtResource("3_a6oy8")
+surface_material_override/0 = SubResource("StandardMaterial3D_ftc01")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p13" index="0" groups=["Ground"]]
 
 [node name="p14" parent="." index="15"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+material_override = ExtResource("3_a6oy8")
+surface_material_override/0 = SubResource("StandardMaterial3D_ftc01")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p14" index="0" groups=["Ground"]]
 
 [node name="p15" parent="." index="16"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+material_override = ExtResource("3_a6oy8")
+surface_material_override/0 = SubResource("StandardMaterial3D_ftc01")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p15" index="0" groups=["Ground"]]
 
 [node name="p16" parent="." index="17"]
-surface_material_override/0 = ExtResource("4_fqnd7")
+material_override = ExtResource("3_a6oy8")
+surface_material_override/0 = SubResource("StandardMaterial3D_ftc01")
 script = ExtResource("4_a6oy8")
 
 [node name="StaticBody3D" parent="p16" index="0" groups=["Ground"]]
