@@ -43,7 +43,6 @@ func generate_skin_buttons():
 		skin_container.add_child(btn)
 		skin_buttons.append(btn)
 
-
 func _on_skin_button_pressed(index: int):
 	current_skin_index = index
 	update_skin()

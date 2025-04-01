@@ -8,7 +8,7 @@ var new_game_btn: TextureButton
 var load_game_btn: TextureButton
 var options_btn: TextureButton
 var skins_btn: TextureButton
-var exit_btn: TextureButton
+var credits_btn: TextureButton
 
 const MOBILE_KEYWORDS = ["Android", "iPhone", "iPad", "iPod", "Windows Phone", "Mobile"]
 
@@ -20,7 +20,7 @@ func _ready() -> void:
 	load_game_btn = $load_game_button
 	options_btn = $options_button
 	skins_btn = $skins_button
-	exit_btn = $exit_button
+	credits_btn = $credits_button
 
 	Global.is_mobile = is_running_on_mobile_browser()
 
@@ -49,8 +49,8 @@ func _on_options_pressed() -> void:
 func _on_skins_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/Levels/display_room.tscn")
 
-func _on_exit_pressed() -> void:
-	get_tree().quit()
+func _on_credits_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/Interface/Credits.tscn")
 
 func is_running_on_mobile_browser() -> bool:
 	if not OS.has_feature("web"):
@@ -80,7 +80,7 @@ func set_objects_for_desktop() -> Array:
 
 	var buttons = [
 		continue_btn, new_game_btn, load_game_btn,
-		options_btn, skins_btn, exit_btn
+		options_btn, skins_btn, credits_btn
 	]
 
 	var button_targets = []
@@ -120,7 +120,7 @@ func set_objects_for_mobile() -> Array:
 
 	var buttons = [
 		continue_btn, new_game_btn, load_game_btn,
-		options_btn, skins_btn, exit_btn
+		options_btn, skins_btn, credits_btn
 	]
 
 	var button_targets = []

@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://d18axqtl0dv3k" path="res://Assets/buttons/load_game_button.png" id="4_a66ve"]
 [ext_resource type="Texture2D" uid="uid://dwc2r4kipj1er" path="res://Assets/buttons/options_button.png" id="5_a66ve"]
 [ext_resource type="Texture2D" uid="uid://dgpqpadns13ba" path="res://Assets/buttons/skins_button.png" id="6_o8m6i"]
-[ext_resource type="Texture2D" uid="uid://b13ashx6bhx68" path="res://Assets/buttons/quit_button.png" id="7_o8m6i"]
+[ext_resource type="Texture2D" uid="uid://d0afk2ggfd3cg" path="res://Assets/buttons/credits_button.png" id="8_sffqo"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -73,15 +73,15 @@ texture_normal = ExtResource("6_o8m6i")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="exit_button" type="TextureButton" parent="."]
+[node name="credits_button" type="TextureButton" parent="."]
 layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
-texture_normal = ExtResource("7_o8m6i")
+texture_normal = ExtResource("8_sffqo")
 ignore_texture_size = true
 stretch_mode = 0
 
 [connection signal="pressed" from="new_game_button" to="." method="_on_new_game_pressed"]
 [connection signal="pressed" from="load_game_button" to="." method="_on_load_game_pressed"]
 [connection signal="pressed" from="skins_button" to="." method="_on_skins_pressed"]
-[connection signal="pressed" from="exit_button" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="credits_button" to="." method="_on_credits_pressed"]
