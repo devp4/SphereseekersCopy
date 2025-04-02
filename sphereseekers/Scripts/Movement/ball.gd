@@ -13,32 +13,38 @@ var is_on_ground: bool = true
 func _ready():
 	var mesh = $MeshInstance3D
 	mesh.set_surface_override_material(0, Global.player_skin)
+	if Global.is_mobile: Accelerometer.create_accelerometer()
 
 func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
-	
 	if not can_move:
 		linear_velocity = Vector3.ZERO
 		angular_velocity = Vector3.ZERO
 		return
-		
-	# Set speed limits for speed and rotation speed of marble
+	
+	# Set speed limits
 	linear_velocity.z = clamp(linear_velocity.z, -max_linear_velocity, max_linear_velocity)
 	linear_velocity.x = clamp(linear_velocity.x, -max_linear_velocity, max_linear_velocity)
-	
 	angular_velocity.x = clamp(angular_velocity.x, -max_angular_velocity, max_angular_velocity)
-	
-	# Get inputs from user to calculate intended direction
-	var forward_input = Input.get_action_raw_strength("ui_down") - Input.get_action_raw_strength("ui_up")
-	var horizontal_input = Input.get_action_raw_strength("ui_right") - Input.get_action_raw_strength("ui_left")
-	
-	# Get position (a/k/a "transform") of camera
-	var _camera_tranform = camera_3d.get_camera_transform()
-	
-	# Cancel out y-component to keep movement horizontal
+
+	# Get camera direction
 	var cam_forward = (camera_3d.global_transform.basis.z * Vector3(1, 0, 1)).normalized()
 	var cam_horizontal = (camera_3d.global_transform.basis.x * Vector3(1, 0, 1)).normalized()
-	
-	# Calculate forward/backward direction relative to camera position
+
+	var forward_input = 0.0
+	var horizontal_input = 0.0
+
+	# Use accelerometer on mobile
+	if Global.is_mobile:
+		var accel = Accelerometer.get_acceleration()
+		if accel:
+			forward_input = -accel.y
+			horizontal_input = accel.x
+	else:
+		# Use keyboard on desktop
+		forward_input = Input.get_action_raw_strength("ui_down") - Input.get_action_raw_strength("ui_up")
+		horizontal_input = Input.get_action_raw_strength("ui_right") - Input.get_action_raw_strength("ui_left")
+
+	# Calculate movement direction
 	var direction_forward = forward_input * cam_forward
 	var direction_horizontal = horizontal_input * cam_horizontal
 	
@@ -88,6 +94,7 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	#print("==========================================")
 	#print("Angular velocity (magnitude): ", get_angular_velocity().length())
 	#print("Angular velocity (vector): ", get_angular_velocity())
+
 	apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
 	apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
 
