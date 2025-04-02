@@ -14,10 +14,6 @@ func _ready() -> void:
 
 	setup_ui()
 
-	# Center the image rotation around its midpoint
-	if gear_image.texture:
-		gear_image.pivot_offset = gear_image.texture.get_size() / 2
-
 	# Begin async loading
 	scene_path = get_path_to_level()
 	ResourceLoader.load_threaded_request(scene_path)
@@ -56,7 +52,7 @@ func setup_ui() -> void:
 		if desired_height > max_height:
 			desired_height = max_height
 			desired_width = desired_height * aspect_ratio
-
+		
 		gear_image.set_size(Vector2(desired_width, desired_height))
 		gear_image.pivot_offset = gear_image.size / 2
 

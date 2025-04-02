@@ -16,5 +16,6 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="line" type="Label" parent="credits_container"]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
