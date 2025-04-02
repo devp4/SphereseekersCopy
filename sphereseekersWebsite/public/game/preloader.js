@@ -1,4 +1,4 @@
-const Preloader = /** @constructor */ function () { // eslint-disable-line no-unused-vars
+export const Preloader = /** @constructor */ function () { // eslint-disable-line no-unused-vars
 
 	this.tracker = {};
 	
