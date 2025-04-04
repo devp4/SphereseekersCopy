@@ -6,7 +6,9 @@ const GameEmbed = () => {
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        setIsMounted(true);
+			const screen_orientation = screen.orientation.type
+			screen.orientation.lock(screen_orientation)
+      setIsMounted(true);
     }, []);
 
     if (!isMounted) {

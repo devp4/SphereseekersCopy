@@ -12,6 +12,23 @@ extends RigidBody3D
 var can_move: bool = true
 var is_on_ground: bool = true
 
+var initial_accel := Vector3.ZERO
+
+func normalize_tilt(value: float) -> float:
+	if value > 0:
+		return 1
+	elif value < 0:
+		return -1
+	return 0
+
+func calibrate_accelerometer() -> void:
+	if Global.is_mobile:
+		initial_accel = Accelerometer.get_acceleration()
+		print("Accelerometer calibrated to:", initial_accel)
+
+func get_calibrated_acceleration() -> Vector3:
+	return Accelerometer.get_acceleration() - initial_accel
+	
 func _ready():
 	var mesh = $MeshInstance3D
 	mesh.set_surface_override_material(0, Global.player_skin)
@@ -98,8 +115,8 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	#print("Angular velocity (magnitude): ", get_angular_velocity().length())
 	#print("Angular velocity (vector): ", get_angular_velocity())
 
-	#apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
-	#apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
+	apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
+	apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
 
 
 func disable_controls():
