@@ -15,11 +15,12 @@ var is_on_ground: bool = true
 var initial_accel := Vector3.ZERO
 
 func normalize_tilt(value: float) -> float:
-	if value > 0:
-		return 1
-	elif value < 0:
-		return -1
-	return 0
+	var deadzone = 0.1
+	if abs(value) < deadzone:
+		return 0.0
+		
+	return 1 if value > 0 else -1
+
 
 func calibrate_accelerometer() -> void:
 	if Global.is_mobile:
