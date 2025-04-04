@@ -54,7 +54,7 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 
 	# Use accelerometer on mobile
 	if Global.is_mobile:
-		var accel = Accelerometer.get_acceleration()
+		var accel = get_calibrated_acceleration()
 		if accel:
 			forward_input = -accel.y
 			horizontal_input = accel.x
