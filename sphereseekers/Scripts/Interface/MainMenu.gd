@@ -104,7 +104,7 @@ func set_objects_for_mobile() -> Array:
 	bg_rect.set_position(Vector2.ZERO)
 	bg_rect.color = Color(173 / 255.0, 216 / 255.0, 230 / 255.0)
 
-	title_label.set_size(Vector2(500, 250))
+	title_label.set_size(Vector2(800, 400))
 	var title_target = Vector2((w - title_label.size.x) / 2, h * 0.2)
 	title_label.position = Vector2(title_target.x, -title_label.size.y)
 

@@ -6,6 +6,8 @@ const BASE_SPEED := 100
 const SPEED_UP_MULTIPLIER := 10.0
 const TITLE_COLOR := Color(173 / 255.0, 216 / 255.0, 230 / 255.0)
 
+var title_font_size : int
+var regular_font_size: int
 var scroll_speed := BASE_SPEED
 var speed_up := false
 
@@ -25,32 +27,33 @@ var lines: Array[Label] = []
 
 var credits = [
 	["A game by Sphereseekers"],
-	["Programming", "", "Kenet Ortiz", "Dev Patel", "Ernesto Rendon", "Scott Willard"],
-	["Game Design", "", "Kenet Ortiz", "Dev Patel", "Ernesto Rendon", "Scott Willard"],
+	["Programming", "", "Kenet Ortiz", "", "Dev Patel", "", "Ernesto Rendon", "", "Scott Willard"],
+	["Game Design", "", "Kenet Ortiz", "", "Dev Patel", "", "Ernesto Rendon", "", "Scott Willard"],
 	["Team Lead", "", "Scott Willard"],
 	["QA Test", "", "Kenet Ortiz"],
 	["Sound Design", "", "Dev Patel"],
 	["Art", "", "Ernesto Rendon"],
-	["Testers", "", "Kenet Ortiz", "Dev Patel", "Ernesto Rendon", "Scott Willard"],
+	["Testers", "", "Kenet Ortiz", "", "Dev Patel", "", "Ernesto Rendon", "", "Scott Willard"],
 	["Advisor", "", "Carsten Thur-Bludworth"],
 	[
 		"Tools used", "",
-		"Developed with Godot Engine",
+		"Developed with Godot Engine", "",
 		"https://godotengine.org/license",
 		"",
-		"Designed in Blender",
+		"Designed in Blender", "",
 		"https://blender.org/about/license/",
 		"",
-		"Hosted in Vercel",
-		"https://vercel.com/aboutm"
+		"Hosted in Vercel", "",
+		"https://vercel.com/about"
 	],
-	["Special thanks", "", "Our Families", "Our friends", "Our Advisor"],
+	["Special thanks", "", "Our Families", "", "Our friends", "", "Our Advisor"],
 	[""],
 	[""],
 	["Thank you for playing!"]
 ]
 
 func _ready():
+	_set_font_size()
 	var screen_size = get_viewport().get_visible_rect().size
 	color_rect.size = screen_size
 	color_rect.color = Color(0, 0, 0)
@@ -98,7 +101,9 @@ func add_line():
 
 	if curr_line == 0:
 		new_line.add_theme_color_override("font_color", TITLE_COLOR)
-		new_line.add_theme_font_size_override("font_size", 28)
+		new_line.add_theme_font_size_override("font_size", title_font_size)
+	else:
+		new_line.add_theme_font_size_override("font_size", regular_font_size)
 
 	container.add_child(new_line)
 	lines.append(new_line)
@@ -124,3 +129,13 @@ func _unhandled_input(event):
 		speed_up = true
 	if event.is_action_released("ui_down") and not event.is_echo():
 		speed_up = false
+
+func _set_font_size():
+	if Global.is_mobile:
+		title_font_size = 56
+		regular_font_size = 48
+	else:
+		print("not mobile")
+		title_font_size = 36
+		regular_font_size = 30
+			

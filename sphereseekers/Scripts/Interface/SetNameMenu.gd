@@ -154,8 +154,8 @@ func set_mobile_layout() -> void:
 
 	# Title
 	title_label.text = "Set Name"
-	title_label.set_size(Vector2(w * 0.75, h * 0.15))
-	var title_target_pos = Vector2((w - title_label.size.x) / 2, h * 0.08)
+	title_label.set_size(Vector2(w * 0.75, h * 0.15 ))
+	var title_target_pos = Vector2((w - title_label.size.x) / 2, h * 0.15)
 	title_label.position = Vector2(title_target_pos.x, -title_label.size.y)
 	animate_property(title_label, "position", title_target_pos, 1.0, Tween.TRANS_BOUNCE)
 
@@ -165,15 +165,16 @@ func set_mobile_layout() -> void:
 
 	# Input
 	name_input.set_size(Vector2(w * 0.8, h * 0.08))
-	var input_target_pos = Vector2((w - name_input.size.x) / 2, title_target_pos.y + title_label.size.y + h * 0.05)
+	var input_target_pos = Vector2((w - name_input.size.x) / 2, title_target_pos.y + title_label.size.y + h * 0.15)
 	name_input.position = Vector2(-name_input.size.x, input_target_pos.y)
+	name_input.add_theme_font_size_override("font_size", 36)
 	animate_property(name_input, "position", input_target_pos, 0.6)
 	name_input.editable = true
 	name_input.visible = true
 
 	# Continue Button
 	continue_btn.set_size(Vector2(w * 0.5, h * 0.08))
-	var button_target_pos = Vector2((w - continue_btn.size.x) / 2, input_target_pos.y + name_input.size.y + h * 0.05)
+	var button_target_pos = Vector2((w - continue_btn.size.x) / 2, input_target_pos.y + name_input.size.y + h * 0.15)
 	continue_btn.position = Vector2(w + continue_btn.size.x, button_target_pos.y)
 	animate_property(continue_btn, "position", button_target_pos, 0.6)
 
@@ -182,10 +183,11 @@ func set_mobile_layout() -> void:
 
 	# Error Label
 	error_label.set_size(Vector2(w * 0.8, h * 0.05))
-	error_label.set_position(Vector2((w - error_label.size.x) / 2, button_target_pos.y + continue_btn.size.y + h * 0.05))
+	error_label.set_position(Vector2((w - error_label.size.x) / 2, button_target_pos.y + continue_btn.size.y + h * 0.15))
 	error_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	error_label.modulate = Color.RED
 	error_label.visible = false
+	error_label.add_theme_font_size_override("font_size", 36)
 
 func animate_property(node: Node, property: String, target_value: Variant, duration: float, transition := Tween.TRANS_SINE, ease := Tween.EASE_OUT) -> void:
 	var tween = create_tween()
