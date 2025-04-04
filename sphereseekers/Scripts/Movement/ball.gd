@@ -34,6 +34,9 @@ func _ready():
 	mesh.set_surface_override_material(0, Global.player_skin)
 	if Global.is_mobile: Accelerometer.create_accelerometer()
 
+func round_place(num,places):
+	return (round(num*pow(10,places))/pow(10,places))
+
 func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	if not can_move:
 		linear_velocity = Vector3.ZERO
@@ -58,7 +61,8 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 		if accel:
 			forward_input = -accel.y
 			horizontal_input = accel.x
-			accel_label.text = "x " + str(accel.x) + " y " + str(accel.y) + " z " + str(accel.z)
+			accel_label.text = "x: " + str(round_place(accel.x, 3)) + " y: " + str(round_place(accel.y, 3)) + " z: " + str(round_place(accel.z, 3))
+
 	else:
 		# Use keyboard on desktop
 		forward_input = Input.get_action_raw_strength("ui_down") - Input.get_action_raw_strength("ui_up")
@@ -115,8 +119,8 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	#print("Angular velocity (magnitude): ", get_angular_velocity().length())
 	#print("Angular velocity (vector): ", get_angular_velocity())
 
-	apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
-	apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
+	#apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
+	#apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
 
 
 func disable_controls():
