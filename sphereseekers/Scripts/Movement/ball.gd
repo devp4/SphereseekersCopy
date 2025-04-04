@@ -61,7 +61,7 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 		if accel:
 			forward_input = normalize_tilt(-accel.y)
 			horizontal_input = normalize_tilt(accel.x)
-			accel_label.text = "x: " + str(round_place(accel.x, 3)) + " y: " + str(round_place(accel.y, 3)) + " z: " + str(round_place(accel.z, 3))
+			accel_label.text = "x: " + str(normalize_tilt(accel.x)) + " y: " + str(normalize_tilt(-accel.y)) + " z: " + str(normalize_tilt(accel.z))
 
 	else:
 		# Use keyboard on desktop
@@ -119,8 +119,8 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	#print("Angular velocity (magnitude): ", get_angular_velocity().length())
 	#print("Angular velocity (vector): ", get_angular_velocity())
 
-	#apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
-	#apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
+	apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
+	apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
 
 
 func disable_controls():
