@@ -7,6 +7,8 @@ extends RigidBody3D
 @export var jump_force : float = 100.0;
 
 @onready var camera_3d: Camera3D = $"../CameraRig/HRotation/VRotation/SpringArm3D/Camera3D"
+@onready var accel_label: Label = $"../UI/accel"
+
 var can_move: bool = true
 var is_on_ground: bool = true
 
@@ -39,11 +41,12 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 		if accel:
 			forward_input = -accel.y
 			horizontal_input = accel.x
+			accel_label.text = "x " + str(accel.x) + " y " + str(accel.y) + " z " + str(accel.z)
 	else:
 		# Use keyboard on desktop
 		forward_input = Input.get_action_raw_strength("ui_down") - Input.get_action_raw_strength("ui_up")
 		horizontal_input = Input.get_action_raw_strength("ui_right") - Input.get_action_raw_strength("ui_left")
-
+		
 	# Calculate movement direction
 	var direction_forward = forward_input * cam_forward
 	var direction_horizontal = horizontal_input * cam_horizontal
@@ -51,7 +54,7 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	if Input.is_action_pressed("ui_end") and is_on_ground:
 		apply_impulse(Vector3(0, jump_force, 0))
 		is_on_ground = false
-	
+
 	# Ball will not move around while shift is being held down...
 	if (Input.is_action_pressed("shift")):
 		# Apply braking force gradually (lerp to zero) while leaving gravity intact
@@ -95,8 +98,8 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	#print("Angular velocity (magnitude): ", get_angular_velocity().length())
 	#print("Angular velocity (vector): ", get_angular_velocity())
 
-	apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
-	apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
+	#apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
+	#apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
 
 
 func disable_controls():

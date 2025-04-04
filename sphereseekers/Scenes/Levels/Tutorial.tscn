@@ -97,6 +97,12 @@ offset_bottom = 1149.0
 text = "Best: --:--"
 script = ExtResource("3_q4jqf")
 
+[node name="accel" type="Label" parent="UI"]
+offset_top = 69.0
+offset_right = 68.0
+offset_bottom = 92.0
+text = "abc"
+
 [node name="Marble" type="RigidBody3D" parent="." groups=["player"]]
 transform = Transform3D(1, 8.74228e-08, 8.74227e-08, 8.74227e-08, -1, 0, 8.74227e-08, 7.64274e-15, -1, 0, 5, -67.5)
 mass = 20.0
