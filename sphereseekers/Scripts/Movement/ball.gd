@@ -59,8 +59,8 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	if Global.is_mobile:
 		var accel = get_calibrated_acceleration()
 		if accel:
-			forward_input = -accel.y
-			horizontal_input = accel.x
+			forward_input = normalize_tilt(-accel.y)
+			horizontal_input = normalize_tilt(accel.x)
 			accel_label.text = "x: " + str(round_place(accel.x, 3)) + " y: " + str(round_place(accel.y, 3)) + " z: " + str(round_place(accel.z, 3))
 
 	else:
