@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dcqsy6vwxhbwq"]
+[gd_scene load_steps=10 format=3 uid="uid://dcqsy6vwxhbwq"]
 
 [ext_resource type="Script" uid="uid://cfosts6m02p2v" path="res://Scripts/Interface/MainMenu.gd" id="1_buu5b"]
 [ext_resource type="Texture2D" uid="uid://ibswd5l1qge2" path="res://Assets/buttons/continue_button.png" id="2_poxen"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dwc2r4kipj1er" path="res://Assets/buttons/options_button.png" id="5_a66ve"]
 [ext_resource type="Texture2D" uid="uid://dgpqpadns13ba" path="res://Assets/buttons/skins_button.png" id="6_o8m6i"]
 [ext_resource type="Texture2D" uid="uid://d0afk2ggfd3cg" path="res://Assets/buttons/credits_button.png" id="8_sffqo"]
+[ext_resource type="AudioStream" uid="uid://dywpl6glqo4lh" path="res://Assets/Audio/Green Pastures.mp3" id="9_i1btt"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -80,6 +81,9 @@ offset_bottom = 8.0
 texture_normal = ExtResource("8_sffqo")
 ignore_texture_size = true
 stretch_mode = 0
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_i1btt")
 
 [connection signal="pressed" from="new_game_button" to="." method="_on_new_game_pressed"]
 [connection signal="pressed" from="load_game_button" to="." method="_on_load_game_pressed"]

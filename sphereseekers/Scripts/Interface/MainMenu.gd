@@ -9,6 +9,7 @@ var load_game_btn: TextureButton
 var options_btn: TextureButton
 var skins_btn: TextureButton
 var credits_btn: TextureButton
+var music_player: AudioStreamPlayer2D
 
 const MOBILE_KEYWORDS = ["Android", "iPhone", "iPad", "iPod", "Windows Phone", "Mobile"]
 
@@ -21,6 +22,7 @@ func _ready() -> void:
 	options_btn = $options_button
 	skins_btn = $skins_button
 	credits_btn = $credits_button
+	music_player = $AudioStreamPlayer2D
 
 	Global.is_mobile = is_running_on_mobile_browser()
 
@@ -31,7 +33,9 @@ func _ready() -> void:
 		var targets = set_objects_for_desktop()
 		animate_title(title_label)
 		await animate_buttons_in(targets)
-
+	
+	music_player.playing = true
+	
 func _on_Continue_pressed() -> void:
 	pass
 
@@ -68,7 +72,7 @@ func set_objects_for_desktop() -> Array:
 
 	bg_rect.set_size(screen_size)
 	bg_rect.set_position(Vector2.ZERO)
-	bg_rect.color = Color(173 / 255.0, 216 / 255.0, 230 / 255.0)
+	bg_rect.color = Color(173.0/255.0, 216.0/255.0, 230.0/255.0, 1.0)
 
 	title_label.set_size(Vector2(500, 250))
 	title_label.set_position(Vector2((w - title_label.size.x) / 2, h * 0.1))

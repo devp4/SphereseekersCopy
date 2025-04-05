@@ -13,7 +13,9 @@ config_version=5
 config/name="Sphereseekers"
 run/main_scene="res://Scenes/Interface/MainMenu.tscn"
 config/features=PackedStringArray("4.4", "GL Compatibility")
+boot_splash/bg_color=Color(0.678431, 0.847059, 1, 1)
 config/icon="res://Vector/Textures/icon.svg"
+boot_splash/minimum_display_time=5000
 
 [autoload]
 

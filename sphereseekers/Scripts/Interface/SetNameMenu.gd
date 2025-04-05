@@ -16,39 +16,128 @@ func _ready() -> void:
 	if Global.is_mobile:
 		name_input.focus_entered.connect(_on_mobile_input_focus)
 		name_input.focus_exited.connect(_on_mobile_input_unfocus)
+		bg_rect.gui_input.connect(_on_background_touch)
+		
+		if OS.get_name() == "Web":
+			_setup_prevent_zoom()
 
 	if Global.is_mobile:
 		set_mobile_layout()
 	else:
 		set_desktop_layout()
+		
+func _setup_prevent_zoom():
+	JavaScriptBridge.eval("""
+	(function() {
+		// Check if we've already setup our handlers to avoid duplicating them
+		if (!window.zoomPreventionSetup) {
+			// Create or update viewport meta tag
+			var viewportMeta = document.querySelector('meta[name=viewport]');
+			if (!viewportMeta) {
+				viewportMeta = document.createElement('meta');
+				viewportMeta.name = 'viewport';
+				document.head.appendChild(viewportMeta);
+			}
 			
+			// Add anti-zoom styles if not already added
+			if (!document.getElementById('anti-zoom-styles')) {
+				var style = document.createElement('style');
+				style.id = 'anti-zoom-styles';
+				style.textContent = `
+					input, textarea {
+						font-size: 16px !important; /* Prevent iOS zoom */
+						max-height: 999999px; /* Prevent Android zoom */
+					}
+				`;
+				document.head.appendChild(style);
+			}
+			
+			// Prevent double-tap zoom
+			document.addEventListener('touchstart', function(event) {
+				if (event.touches.length > 1) {
+					event.preventDefault();
+				}
+			}, { passive: false });
+			
+			// Mark that we've set up our handlers
+			window.zoomPreventionSetup = true;
+		}
+		
+		// Always refresh the viewport settings - this is crucial
+		var viewportMeta = document.querySelector('meta[name=viewport]');
+		viewportMeta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+		
+		console.log('Zoom prevention refreshed');
+	})();
+	""")	
+	
 func _on_mobile_input_focus() -> void:
-	_show_mobile_keyboard()
+	if OS.get_name() == "Web":
+		_setup_prevent_zoom()
+		_trigger_keyboard_js()
 	
 func _on_mobile_input_unfocus() -> void:
 	DisplayServer.virtual_keyboard_hide()
 	
-func _show_mobile_keyboard() -> void:
-	DisplayServer.virtual_keyboard_show("")
-	
-	if OS.get_name() == "Web":
-		_trigger_keyboard_js()
+#func _show_mobile_keyboard() -> void:
+	#DisplayServer.virtual_keyboard_show("")
+	#
+	#if OS.get_name() == "Web":
+		#_trigger_keyboard_js()
 
 func _trigger_keyboard_js() -> void:
-	# JavaScript method to force keyboard on mobile web
 	if OS.get_name() == "Web":
 		JavaScriptBridge.eval("""
-		function showKeyboard() {
-			// Try to focus on the input
-			var input = document.querySelector('textarea');
-			if (input) {
-				input.focus();
-				input.click();
-			}
-		}
-		showKeyboard();
+			(function() {
+				var input = document.querySelector('textarea');
+				if (input) {
+					// Clear any existing text selection first
+					if (document.getSelection) {
+						document.getSelection().removeAllRanges();
+					}
+					
+					// Use a slight delay to allow anti-zoom measures to apply
+					setTimeout(function() {
+						// Make sure input is actually visible and in the viewport
+						input.scrollIntoView(false);
+						
+						// Focus the input
+						input.focus();
+						
+						// Position cursor at end
+						var len = input.value.length;
+						try {
+							input.setSelectionRange(len, len);
+						} catch (e) {
+							console.log('Error setting selection range:', e);
+						}
+						
+						// Added this to ensure text input works
+						input.setAttribute('inputmode', 'text');
+						input.click();
+					}, 50);
+				}
+			})();
 		""")
 
+func _on_background_touch(event: InputEvent) -> void:
+	if event is InputEventScreenTouch and event.pressed:
+		_force_unfocus()
+	
+func _force_unfocus():
+	name_input.release_focus()
+	
+	if OS.get_name() == "Web":
+		JavaScriptBridge.eval("""
+			(function() {
+				if(document.activeElement) {
+					document.activeElement.blur();
+				}
+			})();
+		""")
+		
+	DisplayServer.virtual_keyboard_hide()
+	
 func start_game():
 	Global.is_paused = false
 	Global.in_main_menu = false
@@ -60,6 +149,8 @@ func start_game():
 	Global.stop_all_projectiles = false
 
 func _on_continue_pressed():
+	_force_unfocus()
+	
 	var trimmed_text = name_input.text.strip_edges()
 	
 	if trimmed_text == "":
