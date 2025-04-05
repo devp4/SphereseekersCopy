@@ -4,6 +4,7 @@ func create_accelerometer():
 	if not OS.has_feature('web'): pass
 	JavaScriptBridge.eval("""
 		var acceleration = { x: 0, y: 0, z: 0 }
+		var gyro_data = {x: 0, y: 0, z: 0, beta: 0, gamma: 0};
 
 		function registerMotionListener() {
 			window.ondevicemotion = function(event) {
@@ -12,18 +13,15 @@ func create_accelerometer():
 				acceleration.y = event.acceleration.y
 				acceleration.z = event.acceleration.z
 			}
+			
+			window.ondeviceorientation = function(event) {
+				gyro_data.beta = event.beta
+				gyro_data.gamma = event.gamma
+			}
 		}
 		
 		let gyro = new Gyroscope();
-		var gyro_data = {x: 0, y: 0, z: 0};
-		gyro.start();
 		
-		gyro.onreading = () => {
-			gyro_data.x = gyro.x;
-			gyro_data.y = gyro.y;
-			gyro_data.z = gyro.z;
-		}
-
 		if (typeof DeviceOrientationEvent.requestPermission === 'function') {
 			DeviceOrientationEvent.requestPermission().then(function(state) {
 				if (state === 'granted') registerMotionListener()
@@ -48,5 +46,7 @@ func get_gyro():
 	var x = JavaScriptBridge.eval('gyro_data.x')
 	var y = JavaScriptBridge.eval('gyro_data.y')
 	var z = JavaScriptBridge.eval('gyro_data.z')
-	return Vector3(x, y, z)
+	var beta = JavaScriptBridge.eval('gyro_data.beta')
+	var gamma = JavaScriptBridge.eval('gyro_data.gamma')
+	return {x: x, y: y, z: z, beta: beta, gamma: gamma}
 	

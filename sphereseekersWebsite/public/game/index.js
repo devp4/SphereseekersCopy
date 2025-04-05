@@ -124,7 +124,6 @@ const Features = {
 		return missing;
 	},
 };
-
 const Preloader = /** @constructor */ function () { // eslint-disable-line no-unused-vars
 
 	this.tracker = {};
