@@ -38,7 +38,7 @@ func _ready():
 	if Global.is_mobile: Accelerometer.create_accelerometer()
 
 func round_place(num):
-	return int(num * 1000) / 1000
+	return int(num * 1000) / float(1000)
 
 func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	if not can_move:
