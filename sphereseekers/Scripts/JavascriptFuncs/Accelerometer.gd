@@ -38,12 +38,9 @@ func get_acceleration():
 	var z = JavaScriptBridge.eval('acceleration.z')
 	return Vector3(x, y, z)
 
-func get_gyro():
+func get_tilt():
 	if not OS.has_feature('web'): return null
 	
-	var x = JavaScriptBridge.eval('gyro_data.x')
-	var y = JavaScriptBridge.eval('gyro_data.y')
-	var z = JavaScriptBridge.eval('gyro_data.z')
 	var beta = JavaScriptBridge.eval('gyro_data.beta')
 	var gamma = JavaScriptBridge.eval('gyro_data.gamma')
 

@@ -15,6 +15,7 @@ var can_move: bool = true
 var is_on_ground: bool = true
 
 var initial_accel := Vector3.ZERO
+var initial_tilt = {"beta": 0, "gamma": 0}
 
 func normalize_tilt(value: float) -> float:
 	var deadzone = 0.1
@@ -26,15 +27,21 @@ func normalize_tilt(value: float) -> float:
 func calibrate_accelerometer() -> void:
 	if Global.is_mobile:
 		initial_accel = Accelerometer.get_acceleration()
-		print("Accelerometer calibrated to:", initial_accel)
+		initial_tilt = Accelerometer.get_tilt()
 
 func get_calibrated_acceleration() -> Vector3:
 	return Accelerometer.get_acceleration() - initial_accel
 	
+func get_calibrated_tilt():
+	var new_tilt = Accelerometer.get_tilt()
+	return {"beta": new_tilt["beta"] - initial_tilt["beta"], "gamma": new_tilt["gamma"] - initial_tilt["gamma"]}
+	
 func _ready():
 	var mesh = $MeshInstance3D
 	mesh.set_surface_override_material(0, Global.player_skin)
-	if Global.is_mobile: Accelerometer.create_accelerometer()
+	if Global.is_mobile: 
+		Accelerometer.create_accelerometer()
+		calibrate_accelerometer()
 
 func round_place(num):
 	return int(num * 1000) / float(1000)
@@ -59,12 +66,14 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	# Use accelerometer on mobile
 	if Global.is_mobile:
 		var accel = get_calibrated_acceleration()
-		var gyro = Accelerometer.get_gyro()
+		var gyro = get_calibrated_tilt()
 		#if accel:
 		forward_input = normalize_tilt(-accel.y)
 		horizontal_input = normalize_tilt(accel.x)
-		x_label.text = "beta: " + str(round_place(gyro["beta"]))
-		y_label.text = " gamma: " + str(round_place(gyro["gamma"]))
+		var beta = gyro["beta"]
+		var gamma = gyro["gamma"]
+		x_label.text = "beta: " + str(round_place(beta))
+		y_label.text = " gamma: " + str(round_place(gamma))
 
 	else:
 		# Use keyboard on desktop
