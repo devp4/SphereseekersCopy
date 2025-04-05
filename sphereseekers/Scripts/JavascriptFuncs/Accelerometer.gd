@@ -47,5 +47,5 @@ func get_gyro():
 	var beta = JavaScriptBridge.eval('gyro_data.beta')
 	var gamma = JavaScriptBridge.eval('gyro_data.gamma')
 
-	return {x: x, y: y, z: z, beta: beta, gamma: gamma}
+	return {"beta": beta, "gamma": gamma}
 	

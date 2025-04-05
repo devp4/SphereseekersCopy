@@ -23,7 +23,6 @@ func normalize_tilt(value: float) -> float:
 		
 	return 1 if value > 0 else -1
 
-
 func calibrate_accelerometer() -> void:
 	if Global.is_mobile:
 		initial_accel = Accelerometer.get_acceleration()
@@ -57,16 +56,15 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 
 	var forward_input = 0.0
 	var horizontal_input = 0.0
-
 	# Use accelerometer on mobile
 	if Global.is_mobile:
 		var accel = get_calibrated_acceleration()
-		var gryo = Accelerometer.get_gyro()
+		var gyro = Accelerometer.get_gyro()
 		#if accel:
 		forward_input = normalize_tilt(-accel.y)
 		horizontal_input = normalize_tilt(accel.x)
-		x_label.text = "beta: " + str(round_place(gryo.beta))
-		y_label.text = " gamma: " + str(round_place(gryo.gamma))
+		x_label.text = "beta: " + str(round_place(gyro["beta"]))
+		y_label.text = " gamma: " + str(round_place(gyro["gamma"]))
 
 	else:
 		# Use keyboard on desktop
