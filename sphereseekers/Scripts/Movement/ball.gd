@@ -7,7 +7,9 @@ extends RigidBody3D
 @export var jump_force : float = 100.0;
 
 @onready var camera_3d: Camera3D = $"../CameraRig/HRotation/VRotation/SpringArm3D/Camera3D"
-@onready var accel_label: Label = $"../UI/accel"
+@onready var x_label: Label = $"../UI/x"
+@onready var y_label: Label = $"../UI/y"
+@onready var z_label: Label = $"../UI/z"
 
 var can_move: bool = true
 var is_on_ground: bool = true
@@ -35,8 +37,8 @@ func _ready():
 	mesh.set_surface_override_material(0, Global.player_skin)
 	if Global.is_mobile: Accelerometer.create_accelerometer()
 
-func round_place(num,places):
-	return (round(num*pow(10,places))/pow(10,places))
+func round_place(num):
+	return int(num * 1000) / 1000
 
 func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	if not can_move:
@@ -62,7 +64,9 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 		if accel:
 			forward_input = normalize_tilt(-accel.y)
 			horizontal_input = normalize_tilt(accel.x)
-			accel_label.text = "x: " + str(normalize_tilt(accel.x)) + " y: " + str(normalize_tilt(-accel.y)) + " z: " + str(normalize_tilt(accel.z))
+			x_label.text = "x: " + str(round_place(accel.x))
+			y_label.text = " y: " + str(round_place(accel.y))
+			z_label.text = " z: " + str(round_place(accel.z))
 
 	else:
 		# Use keyboard on desktop
@@ -120,8 +124,8 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	#print("Angular velocity (magnitude): ", get_angular_velocity().length())
 	#print("Angular velocity (vector): ", get_angular_velocity())
 
-	apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
-	apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
+	#apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
+	#apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
 
 
 func disable_controls():

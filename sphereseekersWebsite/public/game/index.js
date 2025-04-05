@@ -286,7 +286,6 @@ const Preloader = /** @constructor */ function () { // eslint-disable-line no-un
 	};
 	
 };
-
 /**
  * An object used to configure the Engine instance based on godot export options, and to override those in custom HTML
  * templates if needed.
