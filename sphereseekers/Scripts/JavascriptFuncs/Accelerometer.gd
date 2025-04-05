@@ -3,7 +3,7 @@ extends Node
 func create_accelerometer():
 	if not OS.has_feature('web'): pass
 	JavaScriptBridge.eval("""
-		var acceleration = { x: 0, y: 0, z: 0 }
+		var acceleration = { x: 0, y: 0, z: 0 };
 		var gyro_data = {x: 0, y: 0, z: 0, beta: 0, gamma: 0};
 
 		function registerMotionListener() {
@@ -15,12 +15,10 @@ func create_accelerometer():
 			}
 			
 			window.ondeviceorientation = function(event) {
-				gyro_data.beta = event.beta
-				gyro_data.gamma = event.gamma
+				gyro_data.beta = event.beta || 0;
+				gyro_data.gamma = event.gamma || 0;
 			}
 		}
-		
-		let gyro = new Gyroscope();
 		
 		if (typeof DeviceOrientationEvent.requestPermission === 'function') {
 			DeviceOrientationEvent.requestPermission().then(function(state) {
@@ -48,5 +46,6 @@ func get_gyro():
 	var z = JavaScriptBridge.eval('gyro_data.z')
 	var beta = JavaScriptBridge.eval('gyro_data.beta')
 	var gamma = JavaScriptBridge.eval('gyro_data.gamma')
+
 	return {x: x, y: y, z: z, beta: beta, gamma: gamma}
 	
