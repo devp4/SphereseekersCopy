@@ -13,6 +13,16 @@ func create_accelerometer():
 				acceleration.z = event.acceleration.z
 			}
 		}
+		
+		let gyro = new Gyroscope();
+		var gyro_data = {x: 0, y: 0, z: 0};
+		gyro.start();
+		
+		gyro.onreading = () => {
+			gyro_data.x = gyro.x;
+			gyro_data.y = gyro.y;
+			gyro_data.z = gyro.z;
+		}
 
 		if (typeof DeviceOrientationEvent.requestPermission === 'function') {
 			DeviceOrientationEvent.requestPermission().then(function(state) {
@@ -31,3 +41,12 @@ func get_acceleration():
 	var y = JavaScriptBridge.eval('acceleration.y')
 	var z = JavaScriptBridge.eval('acceleration.z')
 	return Vector3(x, y, z)
+
+func get_gyro():
+	if not OS.has_feature('web'): return null
+	
+	var x = JavaScriptBridge.eval('gyro_data.x')
+	var y = JavaScriptBridge.eval('gyro_data.y')
+	var z = JavaScriptBridge.eval('gyro_data.z')
+	return Vector3(x, y, z)
+	

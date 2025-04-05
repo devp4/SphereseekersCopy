@@ -61,12 +61,13 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	# Use accelerometer on mobile
 	if Global.is_mobile:
 		var accel = get_calibrated_acceleration()
+		var gryo = Accelerometer.get_gyro()
 		if accel:
 			forward_input = normalize_tilt(-accel.y)
 			horizontal_input = normalize_tilt(accel.x)
-			x_label.text = "x: " + str(round_place(accel.x))
-			y_label.text = " y: " + str(round_place(accel.y))
-			z_label.text = " z: " + str(round_place(accel.z))
+			x_label.text = "x: " + str(round_place(gryo.x))
+			y_label.text = " y: " + str(round_place(gryo.y))
+			z_label.text = " z: " + str(round_place(gryo.z))
 
 	else:
 		# Use keyboard on desktop
@@ -124,8 +125,8 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	#print("Angular velocity (magnitude): ", get_angular_velocity().length())
 	#print("Angular velocity (vector): ", get_angular_velocity())
 
-	#apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
-	#apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
+	apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
+	apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
 
 
 func disable_controls():
