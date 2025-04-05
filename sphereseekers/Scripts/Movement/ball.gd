@@ -62,11 +62,11 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	if Global.is_mobile:
 		var accel = get_calibrated_acceleration()
 		var gryo = Accelerometer.get_gyro()
-		if accel:
-			forward_input = normalize_tilt(-accel.y)
-			horizontal_input = normalize_tilt(accel.x)
-			x_label.text = "beta: " + str(round_place(gryo.beta))
-			y_label.text = " gamma " + str(round_place(gryo.gamma))
+		#if accel:
+		forward_input = normalize_tilt(-accel.y)
+		horizontal_input = normalize_tilt(accel.x)
+		x_label.text = "beta: " + str(round_place(gryo.beta))
+		y_label.text = " gamma: " + str(round_place(gryo.gamma))
 
 	else:
 		# Use keyboard on desktop
