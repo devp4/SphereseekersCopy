@@ -86,6 +86,15 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 		var gamma = gyro["gamma"]
 		x_label.text = "beta: " + str(round_place(beta)) + " cal: " + str(round_place(cal_beta))
 		y_label.text = " gamma: " + str(round_place(gamma)) + " cal: " + str(round_place(cal_gamma))
+		
+		if cal_beta < -10: forward_input = -1
+		elif cal_beta > 7: forward_input = 1
+		else: forward_input = 0 
+		
+		if cal_gamma < -8: horizontal_input = -1
+		elif cal_gamma > 8: horizontal_input = 1
+		else: horizontal_input = 0 
+		
 
 	else:
 		# Use keyboard on desktop
