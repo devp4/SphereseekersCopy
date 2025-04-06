@@ -152,8 +152,8 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	#print("Angular velocity (magnitude): ", get_angular_velocity().length())
 	#print("Angular velocity (vector): ", get_angular_velocity())
 
-	#apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
-	#apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
+	apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
+	apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
 
 
 func disable_controls():
