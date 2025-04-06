@@ -87,12 +87,14 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 		x_label.text = "beta: " + str(round_place(beta)) + " cal: " + str(round_place(cal_beta))
 		y_label.text = " gamma: " + str(round_place(gamma)) + " cal: " + str(round_place(cal_gamma))
 		
-		if cal_beta < -10: forward_input = -1
-		elif cal_beta > 7: forward_input = 1
+		var sens = 0.5
+		
+		if cal_beta < -10: forward_input = -1 * sens
+		elif cal_beta > 7: forward_input = 1 * sens
 		else: forward_input = 0 
 		
-		if cal_gamma < -8: horizontal_input = -1
-		elif cal_gamma > 8: horizontal_input = 1
+		if cal_gamma < -8: horizontal_input = -1 * sens
+		elif cal_gamma > 8: horizontal_input = 1 * sens
 		else: horizontal_input = 0 
 		
 
@@ -100,6 +102,7 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 		# Use keyboard on desktop
 		forward_input = Input.get_action_raw_strength("ui_down") - Input.get_action_raw_strength("ui_up")
 		horizontal_input = Input.get_action_raw_strength("ui_right") - Input.get_action_raw_strength("ui_left")
+		print(forward_input)
 		
 	# Calculate movement direction
 	var direction_forward = forward_input * cam_forward
