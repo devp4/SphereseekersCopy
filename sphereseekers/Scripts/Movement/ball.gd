@@ -10,6 +10,7 @@ extends RigidBody3D
 @onready var x_label: Label = $"../UI/x"
 @onready var y_label: Label = $"../UI/y"
 @onready var z_label: Label = $"../UI/z"
+@onready var a_label: Label = $"../UI/a"
 
 var can_move: bool = true
 var is_on_ground: bool = true
@@ -28,6 +29,8 @@ func calibrate_accelerometer() -> void:
 	if Global.is_mobile:
 		initial_accel = Accelerometer.get_acceleration()
 		initial_tilt = Accelerometer.get_tilt()
+		z_label.text = "init beta " + str(round_place(initial_tilt["beta"]))
+		a_label.text = "init gamma " + str(round_place(initial_tilt["gamma"]))
 
 func get_calibrated_acceleration() -> Vector3:
 	return Accelerometer.get_acceleration() - initial_accel
@@ -66,14 +69,18 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	# Use accelerometer on mobile
 	if Global.is_mobile:
 		var accel = get_calibrated_acceleration()
-		var gyro = get_calibrated_tilt()
 		#if accel:
 		forward_input = normalize_tilt(-accel.y)
 		horizontal_input = normalize_tilt(accel.x)
+		var cal_gyro = get_calibrated_tilt()
+		var cal_beta = cal_gyro["beta"]
+		var cal_gamma = cal_gyro["gamma"]
+		
+		var gyro = Accelerometer.get_tilt()
 		var beta = gyro["beta"]
 		var gamma = gyro["gamma"]
-		x_label.text = "beta: " + str(round_place(beta))
-		y_label.text = " gamma: " + str(round_place(gamma))
+		x_label.text = "beta: " + str(round_place(beta)) + " cal: " + str(round_place(cal_beta))
+		y_label.text = " gamma: " + str(round_place(gamma)) + " cal: " + str(round_place(cal_gamma))
 
 	else:
 		# Use keyboard on desktop
