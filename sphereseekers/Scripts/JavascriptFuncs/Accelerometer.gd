@@ -20,16 +20,24 @@ func create_accelerometer():
 			}
 		}
 		
-		if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-			DeviceOrientationEvent.requestPermission().then(function(state) {
-				if (state === 'granted') registerMotionListener()
-			})
-		}
-		else {
+		DeviceOrientationEvent.requestPermission()
+		.then(response => {
+		  if (response == 'granted') {
 			registerMotionListener()
-		}
+		  }
+		})
+		.catch(console.error)
+		
 	""", true)
 
+		#if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+			#DeviceOrientationEvent.requestPermission().then(function(state) {
+				#if (state === 'granted') registerMotionListener()
+			#})
+		#}
+		#else {
+			#registerMotionListener()
+		#}
 func get_acceleration():
 	if not OS.has_feature('web'): return null
 	

@@ -102,7 +102,6 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 		# Use keyboard on desktop
 		forward_input = Input.get_action_raw_strength("ui_down") - Input.get_action_raw_strength("ui_up")
 		horizontal_input = Input.get_action_raw_strength("ui_right") - Input.get_action_raw_strength("ui_left")
-		print(forward_input)
 		
 	# Calculate movement direction
 	var direction_forward = forward_input * cam_forward
