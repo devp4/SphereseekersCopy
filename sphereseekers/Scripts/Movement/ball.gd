@@ -16,6 +16,7 @@ var can_move: bool = true
 var is_on_ground: bool = true
 
 var initial_accel := Vector3.ZERO
+var calibrated = false
 var initial_tilt = {"beta": 0, "gamma": 0}
 
 func normalize_tilt(value: float) -> float:
@@ -50,6 +51,10 @@ func round_place(num):
 	return int(num * 1000) / float(1000)
 
 func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
+	if not calibrated:
+		calibrate_accelerometer()
+		calibrated = true
+		
 	if not can_move:
 		linear_velocity = Vector3.ZERO
 		angular_velocity = Vector3.ZERO
