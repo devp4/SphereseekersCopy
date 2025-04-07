@@ -22,6 +22,7 @@ boot_splash/minimum_display_time=5000
 Global="*res://Scripts/Interface/Global.gd"
 LocalStorage="*res://Scripts/SaveLoadManager/LocalStorage.gd"
 PlayerClass="*res://Scripts/Player/PlayerClass.gd"
+MobileMovementJs="*res://Scripts/Movement/MobileMovementJS.gd"
 
 [dotnet]
 

@@ -97,6 +97,34 @@ offset_bottom = 1149.0
 text = "Best: --:--"
 script = ExtResource("3_q4jqf")
 
+[node name="a" type="Label" parent="UI"]
+offset_left = 5.0
+offset_top = 30.0
+offset_right = 118.0
+offset_bottom = 53.0
+text = "a"
+
+[node name="x" type="Label" parent="UI"]
+offset_left = 5.0
+offset_top = 67.0
+offset_right = 106.0
+offset_bottom = 90.0
+text = "b"
+
+[node name="y" type="Label" parent="UI"]
+offset_left = 8.0
+offset_top = 103.0
+offset_right = 88.0
+offset_bottom = 126.0
+text = "c"
+
+[node name="z" type="Label" parent="UI"]
+offset_left = 7.0
+offset_top = 134.0
+offset_right = 90.0
+offset_bottom = 157.0
+text = "d"
+
 [node name="Marble" type="RigidBody3D" parent="." groups=["player"]]
 transform = Transform3D(1, 8.74228e-08, 8.74227e-08, 8.74227e-08, -1, 0, 8.74227e-08, 7.64274e-15, -1, 0, 5, -67.5)
 mass = 20.0

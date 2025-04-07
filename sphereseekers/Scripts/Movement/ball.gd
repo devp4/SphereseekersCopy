@@ -7,45 +7,101 @@ extends RigidBody3D
 @export var jump_force : float = 100.0;
 
 @onready var camera_3d: Camera3D = $"../CameraRig/HRotation/VRotation/SpringArm3D/Camera3D"
+@onready var x_label: Label = $"../UI/x"
+@onready var y_label: Label = $"../UI/y"
+@onready var z_label: Label = $"../UI/z"
+@onready var a_label: Label = $"../UI/a"
+
 var can_move: bool = true
 var is_on_ground: bool = true
 
+var initial_accel := Vector3.ZERO
+var calibrated = false
+var initial_tilt = {"beta": 0, "gamma": 0}
+
+func normalize_tilt(value: float) -> float:
+	var deadzone = 0.1
+	if abs(value) < deadzone:
+		return 0.0
+		
+	return 1 if value > 0 else -1
+
+func calibrate_tilt() -> void:
+	if Global.is_mobile:
+		initial_tilt = MobileMovementJs.get_tilt()
+		z_label.text = "init beta " + str(round_place(initial_tilt["beta"]))
+		a_label.text = "init gamma " + str(round_place(initial_tilt["gamma"]))
+	
+func get_calibrated_tilt():
+	var new_tilt = MobileMovementJs.get_tilt()
+	return {"beta": new_tilt["beta"] - initial_tilt["beta"], "gamma": new_tilt["gamma"] - initial_tilt["gamma"]}
+	
 func _ready():
 	var mesh = $MeshInstance3D
 	mesh.set_surface_override_material(0, Global.player_skin)
+	if Global.is_mobile: 
+		MobileMovementJs.create_listeners()
+
+func round_place(num):
+	return int(num * 1000) / float(1000)
 
 func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
-	
+	if not calibrated:
+		calibrate_tilt()
+		calibrated = true
+		
 	if not can_move:
 		linear_velocity = Vector3.ZERO
 		angular_velocity = Vector3.ZERO
 		return
-		
-	# Set speed limits for speed and rotation speed of marble
+	
+	# Set speed limits
 	linear_velocity.z = clamp(linear_velocity.z, -max_linear_velocity, max_linear_velocity)
 	linear_velocity.x = clamp(linear_velocity.x, -max_linear_velocity, max_linear_velocity)
-	
 	angular_velocity.x = clamp(angular_velocity.x, -max_angular_velocity, max_angular_velocity)
-	
-	# Get inputs from user to calculate intended direction
-	var forward_input = Input.get_action_raw_strength("ui_down") - Input.get_action_raw_strength("ui_up")
-	var horizontal_input = Input.get_action_raw_strength("ui_right") - Input.get_action_raw_strength("ui_left")
-	
-	# Get position (a/k/a "transform") of camera
-	var _camera_tranform = camera_3d.get_camera_transform()
-	
-	# Cancel out y-component to keep movement horizontal
+
+	# Get camera direction
 	var cam_forward = (camera_3d.global_transform.basis.z * Vector3(1, 0, 1)).normalized()
 	var cam_horizontal = (camera_3d.global_transform.basis.x * Vector3(1, 0, 1)).normalized()
-	
-	# Calculate forward/backward direction relative to camera position
+
+	var forward_input = 0.0
+	var horizontal_input = 0.0
+	# Use accelerometer on mobile
+	if Global.is_mobile:
+		var cal_tilt = get_calibrated_tilt()
+		var cal_beta = cal_tilt["beta"]
+		var cal_gamma = cal_tilt["gamma"]
+		
+		var tilt = MobileMovementJs.get_tilt()
+		var beta = tilt["beta"]
+		var gamma = tilt["gamma"]
+		x_label.text = "beta: " + str(round_place(beta)) + " cal: " + str(round_place(cal_beta))
+		y_label.text = " gamma: " + str(round_place(gamma)) + " cal: " + str(round_place(cal_gamma))
+		
+		var sens = 0.5
+		
+		if cal_beta < -10: forward_input = -1 * sens
+		elif cal_beta > 7: forward_input = 1 * sens
+		else: forward_input = 0 
+		
+		if cal_gamma < -8: horizontal_input = -1 * sens
+		elif cal_gamma > 8: horizontal_input = 1 * sens
+		else: horizontal_input = 0 
+		
+
+	else:
+		# Use keyboard on desktop
+		forward_input = Input.get_action_raw_strength("ui_down") - Input.get_action_raw_strength("ui_up")
+		horizontal_input = Input.get_action_raw_strength("ui_right") - Input.get_action_raw_strength("ui_left")
+		
+	# Calculate movement direction
 	var direction_forward = forward_input * cam_forward
 	var direction_horizontal = horizontal_input * cam_horizontal
 	
 	if Input.is_action_pressed("ui_end") and is_on_ground:
 		apply_impulse(Vector3(0, jump_force, 0))
 		is_on_ground = false
-	
+
 	# Ball will not move around while shift is being held down...
 	if (Input.is_action_pressed("shift")):
 		# Apply braking force gradually (lerp to zero) while leaving gravity intact
@@ -88,6 +144,7 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	#print("==========================================")
 	#print("Angular velocity (magnitude): ", get_angular_velocity().length())
 	#print("Angular velocity (vector): ", get_angular_velocity())
+
 	apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
 	apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
 
