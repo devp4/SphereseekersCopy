@@ -2,14 +2,13 @@ extends Node
 
 var is_initialized = false
 
-func create_accelerometer():
+func create_listeners():
 	if not OS.has_feature('web'):
 		return
 	
 	# Set up initial values
 	JavaScriptBridge.eval("""
-		window.acceleration = { x: 0, y: 0, z: 0 };
-		window.gyro_data = { x: 0, y: 0, z: 0, beta: 0, gamma: 0 };
+		window.gyro_data = { beta: 0, gamma: 0 };
 		window.sensor_permission = "pending";
 		
 		function registerMotionListener() {
@@ -60,13 +59,6 @@ func request_permission():
 	""", true)
 	return true
 
-func get_acceleration() -> Vector3:
-	if not OS.has_feature('web') or not is_initialized:
-		return Vector3.ZERO
-	var x = JavaScriptBridge.eval('window.acceleration.x || 0')
-	var y = JavaScriptBridge.eval('window.acceleration.y || 0')
-	var z = JavaScriptBridge.eval('window.acceleration.z || 0')
-	return Vector3(x, y, z)
 
 func get_tilt() -> Dictionary:
 	if not OS.has_feature('web') or not is_initialized:

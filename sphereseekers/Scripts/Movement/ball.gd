@@ -16,8 +16,19 @@ var label_tilt: Label
 var label_accel: Label
 var label_perm: Label
 
+var calibrated = false
+var initial_tilt = {"beta": 0, "gamma": 0}
+
+func calibrate_tilt() -> void:
+	if Global.is_mobile:
+		initial_tilt = MobileMovementJs.get_tilt()
+
+func get_calibrated_tilt():
+	var new_tilt = MobileMovementJs.get_tilt()
+	return {"beta": new_tilt["beta"] - initial_tilt["beta"], "gamma": new_tilt["gamma"] - initial_tilt["gamma"]}
+		
 func _ready():
-	MobileMovementJs.create_accelerometer()
+	MobileMovementJs.create_listeners()
 	create_debug_labels()
 	create_permission_button()
 
@@ -44,6 +55,10 @@ func _on_permission_button_pressed() -> void:
 	if MobileMovementJs.request_permission():
 		await get_tree().create_timer(1.0).timeout  # Wait a bit for permission to be processed
 		label_perm.text = "Permission: " + MobileMovementJs.get_permission_status()
+	
+	if not calibrated:
+		calibrate_tilt()
+		calibrated = true
 
 func create_debug_labels() -> void:
 	var canvas_layer = CanvasLayer.new()
@@ -55,13 +70,6 @@ func create_debug_labels() -> void:
 	label_tilt.position = Vector2(20, 20)
 	label_tilt.add_theme_color_override("font_color", Color(1, 1, 1)) # White text
 	canvas_layer.add_child(label_tilt)
-
-	# Create the acceleration label
-	label_accel = Label.new()
-	label_accel.text = "Accel: Loading..."
-	label_accel.position = Vector2(20, 100)
-	label_accel.add_theme_color_override("font_color", Color(1, 1, 1))
-	canvas_layer.add_child(label_accel)
 	
 	label_perm = Label.new()
 	label_perm.text = "Permission: " + MobileMovementJs.get_permission_status()
@@ -92,31 +100,31 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 
 	if Global.is_mobile:
 		var tilt = MobileMovementJs.get_tilt()
-		var accel = MobileMovementJs.get_acceleration()
 		var permission = MobileMovementJs.get_permission_status()
 		
 		label_perm.text = "Permission: " + permission
 		
 		if permission == "granted":
 			if tilt:
-				var beta = tilt["beta"]
-				var gamma = tilt["gamma"]
+				var calibrated_tilt = get_calibrated_tilt()
+				var beta = calibrated_tilt["beta"]
+				var gamma = calibrated_tilt["gamma"]
 				
 				# Adjust sensitivity based on testing
-				var sensitivity = 0.1  # Increased sensitivity
-				
-				# iOS might need different handling compared to Android
-				forward_input = clamp(-beta * sensitivity, -1.0, 1.0)  # Note the negative sign
-				horizontal_input = clamp(gamma * sensitivity, -1.0, 1.0)
+				var sens = 0.5
+
+				if beta < -10: forward_input = -1 * sens
+				elif beta > 7: forward_input = 1 * sens
+				else: forward_input = 0 
+
+				if gamma < -8: horizontal_input = -1 * sens
+				elif gamma > 8: horizontal_input = 1 * sens
+				else: horizontal_input = 0 
 				
 				label_tilt.text = "Tilt:\nBeta: " + str(round_place(beta)) + "\nGamma: " + str(round_place(gamma))
 			else:
 				label_tilt.text = "Tilt: Not Available"
-				
-			if accel.length() > 0:
-				label_accel.text = "Accel:\nX: " + str(round_place(accel.x)) + "\nY: " + str(round_place(accel.y)) + "\nZ: " + str(round_place(accel.z))
-			else:
-				label_accel.text = "Accel: Not Available"
+			
 		else:
 			label_tilt.text = "Tilt: Need Permission"
 			label_accel.text = "Accel: Need Permission"
