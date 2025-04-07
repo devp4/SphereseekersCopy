@@ -12,6 +12,7 @@ func _ready() -> void:
 	continue_btn = $continue
 	error_label = $error
 	bg_rect = $background
+	
 
 	if Global.is_mobile:
 		name_input.focus_entered.connect(_on_mobile_input_focus)
@@ -244,14 +245,12 @@ func set_mobile_layout() -> void:
 	bg_rect.color = Color(173 / 255.0, 216 / 255.0, 230 / 255.0)
 
 	# Title
-	title_label.text = "Set Name"
 	title_label.set_size(Vector2(w * 0.75, h * 0.15 ))
 	var title_target_pos = Vector2((w - title_label.size.x) / 2, h * 0.15)
 	title_label.position = Vector2(title_target_pos.x, -title_label.size.y)
 	animate_property(title_label, "position", title_target_pos, 1.0, Tween.TRANS_BOUNCE)
 
 	title_label.add_theme_font_size_override("font_size", 48)
-	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title_label.visible = true
 
 	# Input
@@ -268,14 +267,11 @@ func set_mobile_layout() -> void:
 	var button_target_pos = Vector2((w - continue_btn.size.x) / 2, input_target_pos.y + name_input.size.y + h * 0.15)
 	continue_btn.position = Vector2(w + continue_btn.size.x, button_target_pos.y)
 	animate_property(continue_btn, "position", button_target_pos, 0.6)
-
-	continue_btn.text = "Continue"
 	continue_btn.visible = true
 
 	# Error Label
 	error_label.set_size(Vector2(w * 0.8, h * 0.05))
 	error_label.set_position(Vector2((w - error_label.size.x) / 2, button_target_pos.y + continue_btn.size.y + h * 0.15))
-	error_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	error_label.modulate = Color.RED
 	error_label.visible = false
 	error_label.add_theme_font_size_override("font_size", 36)
