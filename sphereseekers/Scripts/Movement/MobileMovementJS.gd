@@ -1,32 +1,84 @@
 extends Node
 
-func create_listeners():
-	if not OS.has_feature('web'): pass
-	JavaScriptBridge.eval("""
-		var gyro_data = {beta: 0, gamma: 0};
+var is_initialized = false
 
-		function registerMotionListener() {
-			window.ondeviceorientation = function(event) {
-				gyro_data.beta = event.beta || 0;
-				gyro_data.gamma = event.gamma || 0;
-			}
-		}
+func create_accelerometer():
+	if not OS.has_feature('web'):
+		return
+	
+	# Set up initial values
+	JavaScriptBridge.eval("""
+		window.acceleration = { x: 0, y: 0, z: 0 };
+		window.gyro_data = { x: 0, y: 0, z: 0, beta: 0, gamma: 0 };
+		window.sensor_permission = "pending";
 		
-		if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-			DeviceOrientationEvent.requestPermission().then(function(state) {
-				if (state === 'granted') registerMotionListener()
-			})
-		}
-		else {
-			registerMotionListener()
+		function registerMotionListener() {
+			window.ondevicemotion = function(event) {
+				if (event.accelerationIncludingGravity) {
+					window.acceleration.x = event.accelerationIncludingGravity.x;
+					window.acceleration.y = event.accelerationIncludingGravity.y;
+					window.acceleration.z = event.accelerationIncludingGravity.z;
+				}
+			};
+			window.ondeviceorientation = function(event) {
+				window.gyro_data.beta = event.beta || 0;
+				window.gyro_data.gamma = event.gamma || 0;
+			};
 		}
 	""", true)
-
-func get_tilt():
-	if not OS.has_feature('web'): return null
 	
-	var beta = JavaScriptBridge.eval('gyro_data.beta')
-	var gamma = JavaScriptBridge.eval('gyro_data.gamma')
+	is_initialized = true
 
+func request_permission():
+	if not OS.has_feature('web') or not is_initialized:
+		return false
+		
+	JavaScriptBridge.eval("""
+		if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+			// iOS 13+ requires permission
+			DeviceOrientationEvent.requestPermission()
+			.then(function(response) {
+				if (response === 'granted') {
+					registerMotionListener();
+					window.sensor_permission = "granted";
+					console.log("Motion permission granted");
+				} else {
+					window.sensor_permission = "denied";
+					console.log("Motion permission denied");
+				}
+			})
+			.catch(function(error) {
+				window.sensor_permission = "error";
+				console.log("Motion permission error:", error);
+			});
+		} else {
+			// Non-iOS devices
+			registerMotionListener();
+			window.sensor_permission = "granted";
+			console.log("Motion permission auto-granted (non-iOS)");
+		}
+	""", true)
+	return true
+
+func get_acceleration() -> Vector3:
+	if not OS.has_feature('web') or not is_initialized:
+		return Vector3.ZERO
+	var x = JavaScriptBridge.eval('window.acceleration.x || 0')
+	var y = JavaScriptBridge.eval('window.acceleration.y || 0')
+	var z = JavaScriptBridge.eval('window.acceleration.z || 0')
+	return Vector3(x, y, z)
+
+func get_tilt() -> Dictionary:
+	if not OS.has_feature('web') or not is_initialized:
+		return {"beta": 0, "gamma": 0}
+	var beta = JavaScriptBridge.eval('window.gyro_data.beta || 0')
+	var gamma = JavaScriptBridge.eval('window.gyro_data.gamma || 0')
 	return {"beta": beta, "gamma": gamma}
-	
+
+func get_permission_status() -> String:
+	if not OS.has_feature('web'):
+		return "unsupported"
+	if not is_initialized:
+		return "not_initialized"
+	var status = JavaScriptBridge.eval('window.sensor_permission')
+	return str(status)
