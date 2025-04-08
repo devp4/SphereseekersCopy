@@ -1,12 +1,12 @@
 [gd_scene load_steps=6 format=3 uid="uid://2jm1027hjbde"]
 
 [ext_resource type="Script" uid="uid://ddjyxn7i6exo5" path="res://Scripts/Interface/SetNameMenu.gd" id="1_ulw0x"]
-[ext_resource type="Texture2D" uid="uid://c0b80fl8lnlub" path="res://Assets/Interface/ui_images/set_name_label.png" id="2_iyoe4"]
-[ext_resource type="Texture2D" uid="uid://ibswd5l1qge2" path="res://Assets/buttons/continue_button.png" id="3_407c1"]
-[ext_resource type="Texture2D" uid="uid://byw8en3w8wthl" path="res://Assets/Interface/ui_images/input_box.png" id="4_4olj1"]
+[ext_resource type="Texture2D" uid="uid://fan6t10ubbae" path="res://Assets/Interface/ui_images/label_set_name_2x1.png" id="2_c6cfq"]
+[ext_resource type="Texture2D" uid="uid://d3ao3agusf7lu" path="res://Assets/buttons/continue_btn_2x1.png" id="3_c6cfq"]
+[ext_resource type="Texture2D" uid="uid://cok23l0sfij4u" path="res://Assets/Interface/ui_images/set_name_in_4x1.png" id="4_c6cfq"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c6cfq"]
-texture = ExtResource("4_4olj1")
+texture = ExtResource("4_c6cfq")
 texture_margin_left = 100.0
 texture_margin_right = 100.0
 
@@ -24,7 +24,7 @@ offset_bottom = 40.0
 layout_mode = 0
 offset_right = 79.0
 offset_bottom = 23.0
-texture = ExtResource("2_iyoe4")
+texture = ExtResource("2_c6cfq")
 expand_mode = 1
 
 [node name="continue" type="TextureButton" parent="."]
@@ -32,7 +32,7 @@ layout_mode = 0
 offset_top = 62.0
 offset_right = 79.0
 offset_bottom = 93.0
-texture_normal = ExtResource("3_407c1")
+texture_normal = ExtResource("3_c6cfq")
 ignore_texture_size = true
 stretch_mode = 0
 

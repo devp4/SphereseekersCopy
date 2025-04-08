@@ -3,8 +3,15 @@ extends Node3D
 var controls_menu_instance = null
 var pause_menu_instance = null
 
+@onready var canvas_layer = $CanvasLayer
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	
+	if Global.is_mobile:
+		canvas_layer = CanvasLayer.new()
+		add_child(canvas_layer)
+		create_pause_button()
 	
 	# Show Controls menu on first launch
 	if not Global.controls_shown:
@@ -28,7 +35,7 @@ func _unhandled_input(event):
 				pause_game()
 			else:
 				unpause_game()
-				
+
 func process(delta):
 	if Global.is_paused:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -58,3 +65,15 @@ func unpause_game():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	get_tree().paused = false
 	
+func create_pause_button():
+	var screen_size = get_viewport().get_visible_rect().size
+	
+	var pause_btn = TextureButton.new()
+	pause_btn.position = Vector2(screen_size.x * 0.8, screen_size.y * 0.05)
+	pause_btn.ignore_texture_size = true
+	pause_btn.stretch_mode = TextureButton.STRETCH_SCALE
+	pause_btn.size = Vector2(screen_size.x * 0.15, screen_size.x * 0.15)
+	pause_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	pause_btn.connect("pressed", Callable(self, "pause_game"))
+	pause_btn.texture_normal = load("res://Assets/buttons/settings_button.png")
+	canvas_layer.add_child(pause_btn)

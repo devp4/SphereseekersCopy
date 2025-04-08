@@ -44,7 +44,11 @@ var credits = [
 		"https://blender.org/about/license/",
 		"",
 		"Hosted in Vercel", "",
-		"https://vercel.com/about"
+		"https://vercel.com/about", "",
+		"",
+		"Audio created with GuitarPro 8", "",
+		"https://www.guitar-pro.com/",
+		""
 	],
 	["Special thanks", "", "Our Families", "", "Our friends", "", "Our Advisor"],
 	[""],

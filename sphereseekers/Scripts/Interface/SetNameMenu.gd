@@ -244,8 +244,7 @@ func set_mobile_layout() -> void:
 	bg_rect.color = Color(173 / 255.0, 216 / 255.0, 230 / 255.0)
 
 	# Title
-	title_label.text = "Set Name"
-	title_label.set_size(Vector2(w * 0.75, h * 0.15 ))
+	title_label.set_size(Vector2(h * 0.4, h * 0.2))
 	var title_target_pos = Vector2((w - title_label.size.x) / 2, h * 0.15)
 	title_label.position = Vector2(title_target_pos.x, -title_label.size.y)
 	animate_property(title_label, "position", title_target_pos, 1.0, Tween.TRANS_BOUNCE)
@@ -255,16 +254,16 @@ func set_mobile_layout() -> void:
 	title_label.visible = true
 
 	# Input
-	name_input.set_size(Vector2(w * 0.8, h * 0.08))
-	var input_target_pos = Vector2((w - name_input.size.x) / 2, title_target_pos.y + title_label.size.y + h * 0.15)
+	name_input.set_size(Vector2(w * 0.8, w * 0.2))
+	var input_target_pos = Vector2((w - name_input.size.x) / 2, title_target_pos.y + title_label.size.y + h * 0.05)
 	name_input.position = Vector2(-name_input.size.x, input_target_pos.y)
-	name_input.add_theme_font_size_override("font_size", 36)
+	name_input.add_theme_font_size_override("font_size", 40)
 	animate_property(name_input, "position", input_target_pos, 0.6)
 	name_input.editable = true
 	name_input.visible = true
 
 	# Continue Button
-	continue_btn.set_size(Vector2(w * 0.5, h * 0.08))
+	continue_btn.set_size(Vector2(h * 0.2, h * 0.1))
 	var button_target_pos = Vector2((w - continue_btn.size.x) / 2, input_target_pos.y + name_input.size.y + h * 0.15)
 	continue_btn.position = Vector2(w + continue_btn.size.x, button_target_pos.y)
 	animate_property(continue_btn, "position", button_target_pos, 0.6)

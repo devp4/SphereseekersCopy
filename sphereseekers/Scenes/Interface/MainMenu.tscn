@@ -1,13 +1,13 @@
 [gd_scene load_steps=10 format=3 uid="uid://dcqsy6vwxhbwq"]
 
 [ext_resource type="Script" uid="uid://cfosts6m02p2v" path="res://Scripts/Interface/MainMenu.gd" id="1_buu5b"]
-[ext_resource type="Texture2D" uid="uid://ibswd5l1qge2" path="res://Assets/buttons/continue_button.png" id="2_poxen"]
-[ext_resource type="Texture2D" uid="uid://bn4nrdvvgmfow" path="res://Assets/Interface/ui_images/sphereseekers_label.png" id="2_sffqo"]
-[ext_resource type="Texture2D" uid="uid://djvkp2dvj7xui" path="res://Assets/buttons/new_game_button.png" id="3_3x6up"]
-[ext_resource type="Texture2D" uid="uid://d18axqtl0dv3k" path="res://Assets/buttons/load_game_button.png" id="4_a66ve"]
-[ext_resource type="Texture2D" uid="uid://dwc2r4kipj1er" path="res://Assets/buttons/options_button.png" id="5_a66ve"]
-[ext_resource type="Texture2D" uid="uid://dgpqpadns13ba" path="res://Assets/buttons/skins_button.png" id="6_o8m6i"]
-[ext_resource type="Texture2D" uid="uid://d0afk2ggfd3cg" path="res://Assets/buttons/credits_button.png" id="8_sffqo"]
+[ext_resource type="Texture2D" uid="uid://c07fehxayjcc7" path="res://Assets/Interface/ui_images/label_title_2x1.png" id="2_i1btt"]
+[ext_resource type="Texture2D" uid="uid://d3ao3agusf7lu" path="res://Assets/buttons/continue_btn_2x1.png" id="3_i1btt"]
+[ext_resource type="Texture2D" uid="uid://d0hnqd2oossd" path="res://Assets/buttons/new_game_btn_2x1.png" id="4_lu5lc"]
+[ext_resource type="Texture2D" uid="uid://dopervygo6x8q" path="res://Assets/buttons/load_game_btn_2x1.png" id="5_20vek"]
+[ext_resource type="Texture2D" uid="uid://bvvbgygu03jro" path="res://Assets/buttons/options_btn_2x1.png" id="6_b3gd5"]
+[ext_resource type="Texture2D" uid="uid://dxgo5hvj4mbwj" path="res://Assets/buttons/skins_btn_2x1.png" id="7_tytll"]
+[ext_resource type="Texture2D" uid="uid://dwf6db0xxmlai" path="res://Assets/buttons/credits_btn_2x1.png" id="8_037rv"]
 [ext_resource type="AudioStream" uid="uid://dywpl6glqo4lh" path="res://Assets/Audio/Green Pastures.mp3" id="9_i1btt"]
 
 [node name="Control" type="Control"]
@@ -26,8 +26,7 @@ layout_mode = 1
 layout_mode = 0
 offset_right = 1.0
 offset_bottom = 23.0
-texture = ExtResource("2_sffqo")
-expand_mode = 1
+texture = ExtResource("2_i1btt")
 
 [node name="continue_button" type="TextureButton" parent="."]
 layout_mode = 1
@@ -38,7 +37,7 @@ offset_left = -576.0
 offset_right = -568.0
 offset_bottom = 8.0
 grow_horizontal = 2
-texture_normal = ExtResource("2_poxen")
+texture_normal = ExtResource("3_i1btt")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -46,7 +45,7 @@ stretch_mode = 0
 layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
-texture_normal = ExtResource("3_3x6up")
+texture_normal = ExtResource("4_lu5lc")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -54,7 +53,7 @@ stretch_mode = 0
 layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
-texture_normal = ExtResource("4_a66ve")
+texture_normal = ExtResource("5_20vek")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -62,7 +61,7 @@ stretch_mode = 0
 layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
-texture_normal = ExtResource("5_a66ve")
+texture_normal = ExtResource("6_b3gd5")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -70,7 +69,7 @@ stretch_mode = 0
 layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
-texture_normal = ExtResource("6_o8m6i")
+texture_normal = ExtResource("7_tytll")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -78,7 +77,7 @@ stretch_mode = 0
 layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
-texture_normal = ExtResource("8_sffqo")
+texture_normal = ExtResource("8_037rv")
 ignore_texture_size = true
 stretch_mode = 0
 

@@ -15,16 +15,24 @@ var skin_buttons: Array[TextureButton] = []
 
 var touch_start_position: Vector2
 var swipe_threshold := 100 #Minimum pixels to consider a swipe
+var button_width : float
+var button_height: float
 
 func _ready():
+	
+	var screen_size = get_viewport().size
 	
 	if not Global.is_mobile:
 		generate_skin_buttons()
 		update_button_highlight()
 		skin_name_label.add_theme_font_size_override("font_size", 24)
+		button_width = screen_size.x * 0.12
+		button_height = screen_size.y * 50
 	else:
 		set_camera_for_mobile()
 		skin_name_label.add_theme_font_size_override("font_size", 44)
+		button_width = screen_size.x * 0.5
+		button_height = screen_size.y * 0.08
 		
 	position_selector_ui()
 	update_skin()
@@ -133,7 +141,7 @@ func _on_select_button_pressed():
 
 func set_camera_for_mobile():
 	var camera_position = camera.position
-	camera.position = Vector3(camera_position.x * 0.4, camera_position.y * 0.5, camera_position.z * 0.4)
+	# camera.position = Vector3(camera_position.x * 0.4, camera_position.y * 0.5, camera_position.z * 0.4)
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if Global.is_mobile:
@@ -163,7 +171,7 @@ func position_confirm_button():
 	var screen_size = get_viewport().size
 	
 	# Set button size
-	confirm_button.size = Vector2(100, 50)
+	confirm_button.size = Vector2(screen_size.x * 0.5, screen_size.y * 0.08)
 	var button_size = confirm_button.size
 	
 	# Reset anchors
@@ -177,7 +185,7 @@ func position_confirm_button():
 		button_size = confirm_button.size
 		confirm_button.position = Vector2(
 			(screen_size.x - button_size.x) / 2,
-			screen_size.y - button_size.y - screen_size.y * 0.1
+			screen_size.y - button_size.y - screen_size.y * 0.25
 		)
 	else:
 		# For desktop: Keep original top-right positioning

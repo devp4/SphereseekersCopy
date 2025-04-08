@@ -109,7 +109,7 @@ func set_objects_for_mobile() -> Array:
 	bg_rect.color = Color(173 / 255.0, 216 / 255.0, 230 / 255.0)
 
 	title_label.set_size(Vector2(800, 400))
-	var title_target = Vector2((w - title_label.size.x) / 2, h * 0.2)
+	var title_target = Vector2((w - title_label.size.x) / 2, h * 0.05)
 	title_label.position = Vector2(title_target.x, -title_label.size.y)
 
 	var title_tween = create_tween()
@@ -118,7 +118,7 @@ func set_objects_for_mobile() -> Array:
 		.set_ease(Tween.EASE_OUT)
 
 	var button_width = w * 0.5
-	var button_height = h * 0.05
+	var button_height = h * 0.08
 	var spacing = h * 0.015
 	var start_y = title_target.y + title_label.size.y + h * 0.04
 
