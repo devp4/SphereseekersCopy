@@ -12,10 +12,6 @@ extends RigidBody3D
 var can_move: bool = true
 var is_on_ground: bool = true
 
-var label_tilt: Label
-var label_accel: Label
-var label_perm: Label
-
 var calibrated = false
 var initial_tilt = {"beta": 0, "gamma": 0}
 
@@ -54,7 +50,6 @@ func create_permission_button() -> void:
 func _on_permission_button_pressed() -> void:
 	if MobileMovementJs.request_permission():
 		await get_tree().create_timer(1.0).timeout  # Wait a bit for permission to be processed
-		label_perm.text = "Permission: " + MobileMovementJs.get_permission_status()
 	
 	if not calibrated:
 		calibrate_tilt()
@@ -63,19 +58,6 @@ func _on_permission_button_pressed() -> void:
 func create_debug_labels() -> void:
 	var canvas_layer = CanvasLayer.new()
 	add_child(canvas_layer)
-
-	# Create the tilt label
-	label_tilt = Label.new()
-	label_tilt.text = "Tilt: Loading..."
-	label_tilt.position = Vector2(20, 20)
-	label_tilt.add_theme_color_override("font_color", Color(1, 1, 1)) # White text
-	canvas_layer.add_child(label_tilt)
-	
-	label_perm = Label.new()
-	label_perm.text = "Permission: " + MobileMovementJs.get_permission_status()
-	label_perm.position = Vector2(20, 180)
-	label_perm.add_theme_color_override("font_color", Color(1, 1, 1))
-	canvas_layer.add_child(label_perm)
 
 func round_place(num):
 	return int(num * 1000) / float(1000)
@@ -102,8 +84,6 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 		var tilt = MobileMovementJs.get_tilt()
 		var permission = MobileMovementJs.get_permission_status()
 		
-		label_perm.text = "Permission: " + permission
-		
 		if permission == "granted":
 			if tilt:
 				var calibrated_tilt = get_calibrated_tilt()
@@ -120,14 +100,7 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 				if gamma < -8: horizontal_input = -1 * sens
 				elif gamma > 8: horizontal_input = 1 * sens
 				else: horizontal_input = 0 
-				
-				label_tilt.text = "Tilt:\nBeta: " + str(round_place(beta)) + "\nGamma: " + str(round_place(gamma))
-			else:
-				label_tilt.text = "Tilt: Not Available"
-			
-		else:
-			label_tilt.text = "Tilt: Need Permission"
-			label_accel.text = "Accel: Need Permission"
+
 	else:
 		# Desktop keyboard fallback
 		forward_input = Input.get_action_raw_strength("ui_down") - Input.get_action_raw_strength("ui_up")
