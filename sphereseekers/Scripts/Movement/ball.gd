@@ -8,19 +8,26 @@ extends RigidBody3D
 @export var jump_force: float = 100.0
 
 @onready var camera_3d: Camera3D = $"../CameraRig/HRotation/VRotation/SpringArm3D/Camera3D"
-@onready var canvas_layer: CanvasLayer
 
 var can_move: bool = true
 var is_on_ground: bool = true
 
+var calibrated = false
+var initial_tilt = {"beta": 0, "gamma": 0}
 
-func _ready():
-	
+func calibrate_tilt() -> void:
 	if Global.is_mobile:
-		Accelerometer.create_accelerometer()
-		create_permission_button()
-		create_action_buttons()
-	
+		initial_tilt = MobileMovement.get_tilt()
+
+func get_calibrated_tilt():
+	var new_tilt = MobileMovement.get_tilt()
+	return {"beta": new_tilt["beta"] - initial_tilt["beta"], "gamma": new_tilt["gamma"] - initial_tilt["gamma"]}
+		
+func _ready():
+	MobileMovement.create_listeners()
+	create_debug_labels()
+	create_permission_button()
+
 	var mesh = $MeshInstance3D
 	mesh.set_surface_override_material(0, Global.player_skin)
 
@@ -28,6 +35,7 @@ func create_permission_button() -> void:
 	if not Global.is_mobile:
 		return
 		
+	var canvas_layer = $CanvasLayer  # Use existing CanvasLayer if you already created one
 	if not canvas_layer:
 		canvas_layer = CanvasLayer.new()
 		add_child(canvas_layer)
@@ -40,8 +48,16 @@ func create_permission_button() -> void:
 	canvas_layer.add_child(btn)
 
 func _on_permission_button_pressed() -> void:
-	if Accelerometer.request_permission():
+	if MobileMovement.request_permission():
 		await get_tree().create_timer(1.0).timeout  # Wait a bit for permission to be processed
+	
+	if not calibrated:
+		calibrate_tilt()
+		calibrated = true
+
+func create_debug_labels() -> void:
+	var canvas_layer = CanvasLayer.new()
+	add_child(canvas_layer)
 
 func round_place(num):
 	return int(num * 1000) / float(1000)
@@ -65,21 +81,26 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	var horizontal_input = 0.0
 
 	if Global.is_mobile:
-		var tilt = Accelerometer.get_tilt()
-		var accel = Accelerometer.get_acceleration()
-		var permission = Accelerometer.get_permission_status()
+		var tilt = MobileMovement.get_tilt()
+		var permission = MobileMovement.get_permission_status()
 		
 		if permission == "granted":
 			if tilt:
-				var beta = tilt["beta"]
-				var gamma = tilt["gamma"]
+				var calibrated_tilt = get_calibrated_tilt()
+				var beta = calibrated_tilt["beta"]
+				var gamma = calibrated_tilt["gamma"]
 				
 				# Adjust sensitivity based on testing
-				var sensitivity = 0.1  # Increased sensitivity
-				
-				# iOS might need different handling compared to Android
-				forward_input = clamp(-beta * sensitivity, -1.0, 1.0)  # Note the negative sign
-				horizontal_input = clamp(gamma * sensitivity, -1.0, 1.0)
+				var sens = 0.5
+
+				if beta < -10: forward_input = -1 * sens
+				elif beta > 7: forward_input = 1 * sens
+				else: forward_input = 0 
+
+				if gamma < -8: horizontal_input = -1 * sens
+				elif gamma > 8: horizontal_input = 1 * sens
+				else: horizontal_input = 0 
+
 	else:
 		# Desktop keyboard fallback
 		forward_input = Input.get_action_raw_strength("ui_down") - Input.get_action_raw_strength("ui_up")
@@ -90,8 +111,9 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	var direction_horizontal = horizontal_input * cam_horizontal
 
 	# Jump
-	if Input.is_action_pressed("ui_end"):
-		make_jump()
+	if Input.is_action_pressed("ui_end") and is_on_ground:
+		apply_impulse(Vector3(0, jump_force, 0))
+		is_on_ground = false
 
 	# Boost charging
 	if Input.is_action_pressed("shift"):
@@ -139,23 +161,3 @@ func reset_position() -> void:
 	new_transform.origin = Vector3(0, 5, -67.5)
 	global_transform = new_transform
 	is_on_ground = true
-
-func create_action_buttons():
-	var screen_size = get_viewport().get_visible_rect().size
-	
-	var jump_btn = preload("res://Scripts/Interface/draggable_button.gd").new()
-	jump_btn.position = Vector2(screen_size.x * 0.75, screen_size.y * 0.75)
-	
-	jump_btn.ignore_texture_size = true
-	jump_btn.stretch_mode = TextureButton.STRETCH_SCALE
-	jump_btn.size = Vector2(screen_size.x * 0.15, screen_size.x * 0.15)
-	jump_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	jump_btn.texture_normal = load("res://Assets/buttons/jump_btn.png")
-	jump_btn.action_callable = Callable(self, "make_jump")
-	
-	canvas_layer.add_child(jump_btn)
-
-func make_jump():
-	if is_on_ground:
-		apply_impulse(Vector3(0, jump_force, 0))
-		is_on_ground = false
