@@ -8,7 +8,8 @@ var new_game_btn: TextureButton
 var load_game_btn: TextureButton
 var options_btn: TextureButton
 var skins_btn: TextureButton
-var exit_btn: TextureButton
+var credits_btn: TextureButton
+var music_player: AudioStreamPlayer2D
 
 const MOBILE_KEYWORDS = ["Android", "iPhone", "iPad", "iPod", "Windows Phone", "Mobile"]
 
@@ -20,7 +21,8 @@ func _ready() -> void:
 	load_game_btn = $load_game_button
 	options_btn = $options_button
 	skins_btn = $skins_button
-	exit_btn = $exit_button
+	credits_btn = $credits_button
+	music_player = $AudioStreamPlayer2D
 
 	Global.is_mobile = is_running_on_mobile_browser()
 
@@ -31,7 +33,9 @@ func _ready() -> void:
 		var targets = set_objects_for_desktop()
 		animate_title(title_label)
 		await animate_buttons_in(targets)
-
+	
+	music_player.playing = true
+	
 func _on_Continue_pressed() -> void:
 	pass
 
@@ -49,8 +53,8 @@ func _on_options_pressed() -> void:
 func _on_skins_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/Levels/display_room.tscn")
 
-func _on_exit_pressed() -> void:
-	get_tree().quit()
+func _on_credits_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/Interface/Credits.tscn")
 
 func is_running_on_mobile_browser() -> bool:
 	if not OS.has_feature("web"):
@@ -68,7 +72,7 @@ func set_objects_for_desktop() -> Array:
 
 	bg_rect.set_size(screen_size)
 	bg_rect.set_position(Vector2.ZERO)
-	bg_rect.color = Color(173 / 255.0, 216 / 255.0, 230 / 255.0)
+	bg_rect.color = Color(173.0/255.0, 216.0/255.0, 230.0/255.0, 1.0)
 
 	title_label.set_size(Vector2(500, 250))
 	title_label.set_position(Vector2((w - title_label.size.x) / 2, h * 0.1))
@@ -80,7 +84,7 @@ func set_objects_for_desktop() -> Array:
 
 	var buttons = [
 		continue_btn, new_game_btn, load_game_btn,
-		options_btn, skins_btn, exit_btn
+		options_btn, skins_btn, credits_btn
 	]
 
 	var button_targets = []
@@ -104,8 +108,8 @@ func set_objects_for_mobile() -> Array:
 	bg_rect.set_position(Vector2.ZERO)
 	bg_rect.color = Color(173 / 255.0, 216 / 255.0, 230 / 255.0)
 
-	title_label.set_size(Vector2(500, 250))
-	var title_target = Vector2((w - title_label.size.x) / 2, h * 0.2)
+	title_label.set_size(Vector2(800, 400))
+	var title_target = Vector2((w - title_label.size.x) / 2, h * 0.05)
 	title_label.position = Vector2(title_target.x, -title_label.size.y)
 
 	var title_tween = create_tween()
@@ -114,13 +118,13 @@ func set_objects_for_mobile() -> Array:
 		.set_ease(Tween.EASE_OUT)
 
 	var button_width = w * 0.5
-	var button_height = h * 0.05
+	var button_height = h * 0.08
 	var spacing = h * 0.015
 	var start_y = title_target.y + title_label.size.y + h * 0.04
 
 	var buttons = [
 		continue_btn, new_game_btn, load_game_btn,
-		options_btn, skins_btn, exit_btn
+		options_btn, skins_btn, credits_btn
 	]
 
 	var button_targets = []

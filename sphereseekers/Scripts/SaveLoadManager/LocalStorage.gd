@@ -5,8 +5,8 @@ func get_local_storage(key):
 	return JavaScriptBridge.eval("localStorage.getItem('%s')" % key)
 
 func set_local_storage(key, item):
-	var key_string = "%s" % key
-	var item_string = JSON.stringify(item)
+	var _key_string = "%s" % key
+	var _item_string = JSON.stringify(item)
 	JavaScriptBridge.eval("localStorage.setItem('%s', '%s')" % [key, item])
 
 func get_save_names():
@@ -36,7 +36,7 @@ func save_player_data(player_name, player_data):
 	
 	player_string = player_string.replace("'", "\\'")
 	var js_string = "localStorage.setItem('%s', '%s')" % [player_name, player_data]
-	var data = JavaScriptBridge.eval(js_string)
+	var _data = JavaScriptBridge.eval(js_string)
 
 func get_player_data(player_name):
 	var js_string = "localStorage.getItem('%s')" % player_name
@@ -47,4 +47,4 @@ func get_player_data(player_name):
 func print_message(message):
 	# for testing
 	var js_string = "console.log('%s')" % message
-	var data = JavaScriptBridge.eval(js_string)
+	var _data = JavaScriptBridge.eval(js_string)

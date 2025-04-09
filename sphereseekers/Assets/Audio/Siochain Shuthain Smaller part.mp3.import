@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cw4hhvjnpginb"
+path="res://.godot/imported/Siochain Shuthain Smaller part.mp3-ec154179ef7bcba353d82b09daf019e4.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/Siochain Shuthain Smaller part.mp3"
+dest_files=["res://.godot/imported/Siochain Shuthain Smaller part.mp3-ec154179ef7bcba353d82b09daf019e4.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

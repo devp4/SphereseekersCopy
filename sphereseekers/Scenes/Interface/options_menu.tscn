@@ -1,0 +1,67 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbcgcjh7dimv8"]
+
+[ext_resource type="Script" uid="uid://bsasxotmmewfh" path="res://Scripts/Interface/options_menu.gd" id="1_1mmyw"]
+[ext_resource type="Texture2D" uid="uid://byev77qewwfk3" path="res://Assets/Interface/ui_images/label_settings_2x1.png" id="2_xljma"]
+
+[node name="OptionsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_1mmyw")
+
+[node name="background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="main_title" type="TextureRect" parent="."]
+layout_mode = 2
+offset_right = 40.0
+texture = ExtResource("2_xljma")
+expand_mode = 1
+
+[node name="audio_section_title" type="Label" parent="."]
+layout_mode = 2
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="slider_container" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="slider_label" type="Label" parent="slider_container"]
+layout_mode = 2
+
+[node name="slider" type="HSlider" parent="slider_container"]
+layout_mode = 2
+
+[node name="mute_container" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="mute_label" type="Label" parent="mute_container"]
+layout_mode = 2
+
+[node name="mute_checkbox" type="CheckBox" parent="mute_container"]
+layout_mode = 2
+
+[node name="controls_section_title" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="controls_table" type="GridContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="reset_controls_button" type="Button" parent="."]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="message_label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

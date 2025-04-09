@@ -13,6 +13,7 @@ config_version=5
 config/name="Sphereseekers"
 run/main_scene="res://Scenes/Interface/MainMenu.tscn"
 config/features=PackedStringArray("4.4", "GL Compatibility")
+boot_splash/bg_color=Color(0.678431, 0.847059, 1, 1)
 config/icon="res://Vector/Textures/icon.svg"
 
 [autoload]
@@ -20,6 +21,7 @@ config/icon="res://Vector/Textures/icon.svg"
 Global="*res://Scripts/Interface/Global.gd"
 LocalStorage="*res://Scripts/SaveLoadManager/LocalStorage.gd"
 PlayerClass="*res://Scripts/Player/PlayerClass.gd"
+Accelerometer="*res://Scripts/JS/Accelerometer.gd"
 
 [dotnet]
 
@@ -89,6 +91,8 @@ spacebar={
 
 [input_devices]
 
+sensors/enable_accelerometer=true
+sensors/enable_gyroscope=true
 pointing/emulate_touch_from_mouse=true
 
 [rendering]
