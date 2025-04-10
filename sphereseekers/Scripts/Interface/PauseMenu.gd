@@ -103,9 +103,11 @@ func _on_main_menu_button_pressed():
 	Global.controls_shown = false
 	Global.is_paused = false
 	
+	
 	for sphere in get_tree().get_nodes_in_group("enemy_balls"):
 		if is_instance_valid(sphere):
 			sphere.queue_free()
 	
 	get_tree().paused = false
+	MusicPlayer.find_child("AudioStreamPlayer2D").play()
 	get_tree().change_scene_to_file("res://Scenes/Interface/MainMenu.tscn")

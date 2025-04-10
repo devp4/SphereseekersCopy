@@ -1,0 +1,82 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6g4hpuxd6xgd"]
+
+[ext_resource type="PackedScene" uid="uid://d4lkjqlt7bp8s" path="res://Scenes/Objects/level_3_floor/level_3_floor.glb" id="1_oqqlr"]
+[ext_resource type="Material" uid="uid://dihmuvdpds62d" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="2_2q5hs"]
+[ext_resource type="Material" uid="uid://b66mn6xqdkhka" path="res://Assets/Materials/cartoon/wood_planks_toon/wood_planks_toon.tres" id="3_bkv4f"]
+
+[node name="level_3_floor" instance=ExtResource("1_oqqlr")]
+
+[node name="platform1" parent="." index="0"]
+material_override = ExtResource("2_2q5hs")
+
+[node name="StaticBody3D" parent="platform1" index="0" groups=["Ground"]]
+
+[node name="curve1" parent="." index="1"]
+material_override = ExtResource("3_bkv4f")
+
+[node name="StaticBody3D" parent="curve1" index="0" groups=["Ground"]]
+
+[node name="curve3" parent="." index="2"]
+material_override = ExtResource("3_bkv4f")
+
+[node name="StaticBody3D" parent="curve3" index="0" groups=["Ground"]]
+
+[node name="curve2" parent="." index="3"]
+material_override = ExtResource("3_bkv4f")
+
+[node name="StaticBody3D" parent="curve2" index="0" groups=["Ground"]]
+
+[node name="platform2" parent="." index="4"]
+material_override = ExtResource("2_2q5hs")
+
+[node name="StaticBody3D" parent="platform2" index="0" groups=["Ground"]]
+
+[node name="platform3" parent="." index="5"]
+material_override = ExtResource("2_2q5hs")
+
+[node name="StaticBody3D" parent="platform3" index="0" groups=["Ground"]]
+
+[node name="curve4" parent="." index="6"]
+material_override = ExtResource("3_bkv4f")
+
+[node name="StaticBody3D" parent="curve4" index="0" groups=["Ground"]]
+
+[node name="curve5" parent="." index="7"]
+material_override = ExtResource("3_bkv4f")
+
+[node name="StaticBody3D" parent="curve5" index="0" groups=["Ground"]]
+
+[node name="platform4" parent="." index="8"]
+material_override = ExtResource("2_2q5hs")
+
+[node name="StaticBody3D" parent="platform4" index="0" groups=["Ground"]]
+
+[node name="curve6" parent="." index="9"]
+material_override = ExtResource("3_bkv4f")
+
+[node name="StaticBody3D" parent="curve6" index="0" groups=["Ground"]]
+
+[node name="platform5" parent="." index="10"]
+material_override = ExtResource("2_2q5hs")
+
+[node name="StaticBody3D" parent="platform5" index="0" groups=["Ground"]]
+
+[node name="curve7" parent="." index="11"]
+material_override = ExtResource("2_2q5hs")
+
+[node name="StaticBody3D" parent="curve7" index="0" groups=["Ground"]]
+
+[node name="platform6" parent="." index="12"]
+material_override = ExtResource("2_2q5hs")
+
+[node name="StaticBody3D" parent="platform6" index="0" groups=["Ground"]]
+
+[node name="wall1" parent="." index="13"]
+material_override = ExtResource("2_2q5hs")
+
+[node name="StaticBody3D" parent="wall1" index="0" groups=["Ground"]]
+
+[node name="wall2" parent="." index="14"]
+material_override = ExtResource("2_2q5hs")
+
+[node name="StaticBody3D" parent="wall2" index="0" groups=["Ground"]]

@@ -40,7 +40,7 @@ func _physics_process(delta: float) -> void:
 	
 	
 func _input(event):
-	if (event is InputEventMouseMotion):
+	if (event is InputEventMouseMotion and not Global.dragging_button):
 		camrot_h += -event.relative.x * h_sensitivity
 		camrot_v += -event.relative.y * v_sensitivity
 	if (event is InputEventMouseButton):

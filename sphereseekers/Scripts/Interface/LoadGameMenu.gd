@@ -32,6 +32,7 @@ func _on_load_pressed(save_name):
 	
 	# Make sure that Cannons will shoot
 	Global.stop_all_projectiles = false
+	MusicPlayer.find_child("AudioStreamPlayer2D").stop()
 	get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 	
 func _on_delete_confirm(save_name):

@@ -1,0 +1,86 @@
+[gd_scene load_steps=16 format=3 uid="uid://htl26832hom7"]
+
+[ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_yy6i0"]
+[ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="2_rc141"]
+[ext_resource type="Texture2D" uid="uid://cnv4wc7tvvivh" path="res://Assets/backgrounds/anime-style-clouds.jpg" id="3_yy6i0"]
+[ext_resource type="Script" uid="uid://c6ycpobav1k77" path="res://Scripts/Movement/ball.gd" id="4_167vu"]
+[ext_resource type="PackedScene" uid="uid://copu860806ql0" path="res://Scenes/Objects/teleport_platform/teleport_platform.tscn" id="5_rc141"]
+[ext_resource type="Material" uid="uid://w5n4a03t0r7u" path="res://Assets/Materials/cartoon/dragon_scales_toon/dragon_scales_toon.tres" id="5_x1k1j"]
+[ext_resource type="PackedScene" uid="uid://c6g4hpuxd6xgd" path="res://Scenes/Objects/level_3_floor/level_3_floor.tscn" id="7_167vu"]
+[ext_resource type="Script" uid="uid://c3nmstgb3dbw8" path="res://Scripts/Objects/limit.gd" id="8_x1k1j"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_yy6i0"]
+panorama = ExtResource("3_yy6i0")
+
+[sub_resource type="Sky" id="Sky_5rbo1"]
+sky_material = SubResource("PanoramaSkyMaterial_yy6i0")
+
+[sub_resource type="Environment" id="Environment_167vu"]
+background_mode = 2
+sky = SubResource("Sky_5rbo1")
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_x1k1j"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_4ahh4"]
+material = ExtResource("5_x1k1j")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_dl55b"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4ahh4"]
+size = Vector3(150, 1, 300)
+
+[node name="Level3" type="Node3D"]
+script = ExtResource("1_yy6i0")
+
+[node name="CameraRig" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 10.782, -80.51)
+script = ExtResource("2_rc141")
+
+[node name="HRotation" type="Node3D" parent="CameraRig"]
+
+[node name="VRotation" type="Node3D" parent="CameraRig/HRotation"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraRig/HRotation/VRotation"]
+spring_length = 9.0
+margin = 1.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig/HRotation/VRotation/SpringArm3D"]
+environment = SubResource("Environment_167vu")
+current = true
+fov = 80.0
+
+[node name="Marble" type="RigidBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 8.74228e-08, 8.74227e-08, 8.74227e-08, -1, 0, 8.74227e-08, 7.64274e-15, -1, 17.0895, 2.1739, 0.047286)
+mass = 20.0
+physics_material_override = SubResource("PhysicsMaterial_x1k1j")
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("4_167vu")
+movement_speed = 20000.0
+jump_force = 150.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Marble"]
+transform = Transform3D(-0.677543, 5.50161e-08, 0.735483, -1.50996e-07, -1, -6.42979e-08, 0.735483, -1.54619e-07, 0.677543, 0, 0, 0)
+mesh = SubResource("SphereMesh_4ahh4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Marble"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_dl55b")
+
+[node name="TeleportPlatform" parent="." instance=ExtResource("5_rc141")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 39, -135)
+
+[node name="level_3_floor" parent="." instance=ExtResource("7_167vu")]
+
+[node name="Limit" type="Area3D" parent="."]
+transform = Transform3D(-8.60667e-08, 0, 1, 0, 1, 0, -1.96898, 0, -4.37114e-08, -37.7874, -31.2683, -80.3586)
+script = ExtResource("8_x1k1j")
+restart_position = Vector3(17, 2, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Limit"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
+shape = SubResource("BoxShape3D_4ahh4")
+
+[connection signal="body_entered" from="Marble" to="Marble" method="_on_body_entered"]
+[connection signal="body_shape_entered" from="Marble" to="Marble" method="_on_body_shape_entered"]
+[connection signal="body_entered" from="Limit" to="Limit" method="_on_body_entered"]

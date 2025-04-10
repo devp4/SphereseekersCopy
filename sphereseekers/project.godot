@@ -22,6 +22,7 @@ Global="*res://Scripts/Interface/Global.gd"
 LocalStorage="*res://Scripts/SaveLoadManager/LocalStorage.gd"
 PlayerClass="*res://Scripts/Player/PlayerClass.gd"
 Accelerometer="*res://Scripts/JS/Accelerometer.gd"
+MusicPlayer="*res://Scenes/Interface/MusicPlayer.tscn"
 
 [dotnet]
 

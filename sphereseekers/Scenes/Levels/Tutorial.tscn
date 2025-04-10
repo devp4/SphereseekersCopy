@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bkhapywan2k7e"]
+[gd_scene load_steps=26 format=3 uid="uid://bkhapywan2k7e"]
 
 [ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_bkrq4"]
 [ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="2_6qjlu"]
@@ -7,11 +7,12 @@
 [ext_resource type="Texture2D" uid="uid://cnv4wc7tvvivh" path="res://Assets/backgrounds/anime-style-clouds.jpg" id="4_u3mja"]
 [ext_resource type="Script" uid="uid://rnw2m46f12tu" path="res://Scripts/Interface/stopwatch_label.gd" id="4_v6tyg"]
 [ext_resource type="Script" uid="uid://c3nmstgb3dbw8" path="res://Scripts/Objects/limit.gd" id="7_ajsod"]
-[ext_resource type="Material" uid="uid://bypxjktybemk8" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="8_u3mja"]
+[ext_resource type="Material" uid="uid://dihmuvdpds62d" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="8_u3mja"]
 [ext_resource type="Material" uid="uid://bhrcvuaba1n8v" path="res://Assets/Materials/cartoon/purple_toon/purple_toon.tres" id="9_v6tyg"]
 [ext_resource type="PackedScene" uid="uid://dqeuanfk6o722" path="res://Scenes/Objects/path_with_holes/path_with_holes.tscn" id="10_c8kkf"]
 [ext_resource type="PackedScene" uid="uid://chy427wghii5s" path="res://Scenes/Objects/cannon/cannon.tscn" id="10_gg1sk"]
 [ext_resource type="PackedScene" uid="uid://bbkib2fbyyasc" path="res://Scenes/Objects/tutorial_platform/tutorial_platform.tscn" id="12_u3mja"]
+[ext_resource type="AudioStream" uid="uid://bgwus6k8ky6m1" path="res://Assets/Audio/tutorial_music.mp3" id="14_1odfw"]
 [ext_resource type="PackedScene" uid="uid://copu860806ql0" path="res://Scenes/Objects/teleport_platform/teleport_platform.tscn" id="14_mq0sh"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_kcoyj"]
@@ -235,6 +236,11 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -9.614, 131.703)
 
 [node name="tutorial_platform" parent="." instance=ExtResource("12_u3mja")]
 transform = Transform3D(-0.5, 0, -4.37114e-08, 0, 0.5, 0, 4.37114e-08, 0, -0.5, 0, 2.5, 0)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.543466, -2.80455, 131.787)
+stream = ExtResource("14_1odfw")
+autoplay = true
 
 [connection signal="body_entered" from="Marble" to="Marble" method="_on_body_entered"]
 [connection signal="body_shape_entered" from="Marble" to="Marble" method="_on_body_shape_entered"]

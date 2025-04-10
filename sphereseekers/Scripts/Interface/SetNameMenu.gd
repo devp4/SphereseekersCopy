@@ -141,6 +141,7 @@ func _force_unfocus():
 func start_game():
 	Global.is_paused = false
 	Global.in_main_menu = false
+	MusicPlayer.find_child("AudioStreamPlayer2D").stop()
 	
 	# New game is going to played, set the level to play to TUTORIAL
 	Global.level_to_play = Global.levels.TUTORIAL

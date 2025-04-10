@@ -126,6 +126,7 @@ func add_line():
 func finish():
 	if not finished:
 		finished = true
+		MusicPlayer.find_child("AudioStreamPlayer2D").play()
 		get_tree().change_scene_to_file("res://Scenes/Interface/MainMenu.tscn")
 
 func _unhandled_input(event):

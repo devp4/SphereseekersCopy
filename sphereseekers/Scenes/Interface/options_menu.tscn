@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bbcgcjh7dimv8"]
+[gd_scene load_steps=4 format=3 uid="uid://bbcgcjh7dimv8"]
 
 [ext_resource type="Script" uid="uid://bsasxotmmewfh" path="res://Scripts/Interface/options_menu.gd" id="1_1mmyw"]
 [ext_resource type="Texture2D" uid="uid://byev77qewwfk3" path="res://Assets/Interface/ui_images/label_settings_2x1.png" id="2_xljma"]
+[ext_resource type="Texture2D" uid="uid://ceo5h8jmy01am" path="res://Assets/buttons/menu_btn_2x1.png" id="3_84t6a"]
 
 [node name="OptionsMenu" type="Control"]
 layout_mode = 3
@@ -56,12 +57,12 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="reset_controls_button" type="Button" parent="."]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-
-[node name="message_label" type="Label" parent="."]
+[node name="menu_button" type="TextureButton" parent="."]
 layout_mode = 0
 offset_right = 40.0
-offset_bottom = 23.0
+offset_bottom = 40.0
+texture_normal = ExtResource("3_84t6a")
+ignore_texture_size = true
+stretch_mode = 0
+
+[connection signal="pressed" from="menu_button" to="." method="on_menu_pressed"]

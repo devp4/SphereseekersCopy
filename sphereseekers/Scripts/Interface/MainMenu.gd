@@ -22,7 +22,6 @@ func _ready() -> void:
 	options_btn = $options_button
 	skins_btn = $skins_button
 	credits_btn = $credits_button
-	music_player = $AudioStreamPlayer2D
 
 	Global.is_mobile = is_running_on_mobile_browser()
 
@@ -34,26 +33,25 @@ func _ready() -> void:
 		animate_title(title_label)
 		await animate_buttons_in(targets)
 	
-	music_player.playing = true
 	
 func _on_Continue_pressed() -> void:
 	pass
 
-# Signal handler for the "New Game" button
 func _on_new_game_pressed() -> void:	
-	# set name first
 	get_tree().change_scene_to_file("res://Scenes/Interface/SetNameMenu.tscn")
 
 func _on_load_game_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/Interface/LoadGameMenu.tscn")
 
 func _on_options_pressed() -> void:
-	pass
+	get_tree().change_scene_to_file("res://Scenes/Interface/options_menu.tscn")
 
 func _on_skins_pressed() -> void:
+	MusicPlayer.find_child("AudioStreamPlayer2D").stop()
 	get_tree().change_scene_to_file("res://Scenes/Levels/display_room.tscn")
 
 func _on_credits_pressed() -> void:
+	MusicPlayer.find_child("AudioStreamPlayer2D").stop()
 	get_tree().change_scene_to_file("res://Scenes/Interface/Credits.tscn")
 
 func is_running_on_mobile_browser() -> bool:

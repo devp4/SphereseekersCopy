@@ -12,12 +12,14 @@ func _on_pressed():
 		action_callable.call()
 
 func _gui_input(event):
-	if event is InputEventScreenTouch:
+	if event is InputEventScreenTouch and Global.allow_dragging:
 		if event.pressed:
 			dragging = true
+			Global.dragging_button = true
 			drag_offset = get_local_mouse_position()
 		else:
 			dragging = false
+			Global.dragging_button = false
 	elif event is InputEventScreenDrag and dragging:
 		position = get_global_mouse_position() - drag_offset
 		
