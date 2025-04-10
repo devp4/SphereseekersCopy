@@ -25,8 +25,6 @@ func _ready() -> void:
 	
 	var world = get_viewport().get_world_3d()
 	world.environment = environment
-	
-	PlayerClass.set_current_level(1)
 		
 func _unhandled_input(event):
 	if event is InputEventKey and event.pressed and event.keycode == KEY_P:  # Escape key

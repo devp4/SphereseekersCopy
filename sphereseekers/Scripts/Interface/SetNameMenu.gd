@@ -167,7 +167,7 @@ func _on_continue_pressed():
 	else:
 		save_names.append(trimmed_text)
 		LocalStorage.set_save_names(save_names)
-		
+		Global.level_to_play = Global.levels.TUTORIAL
 		PlayerClass.clear_player()
 		PlayerClass.playerName = trimmed_text
 		PlayerClass.save_player()
@@ -189,6 +189,7 @@ func show_override_dialog(name: String) -> void:
 func _on_override_pressed(_save_name):
 	PlayerClass.delete_player(_save_name)
 	PlayerClass.clear_player()
+	Global.level_to_play = Global.levels.TUTORIAL
 	PlayerClass.playerName = _save_name
 	PlayerClass.save_player()
 	

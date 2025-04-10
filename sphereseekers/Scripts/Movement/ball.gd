@@ -8,6 +8,7 @@ extends RigidBody3D
 @export var jump_force: float = 100.0
 
 @onready var camera_3d: Camera3D = $"../CameraRig/HRotation/VRotation/SpringArm3D/Camera3D"
+@onready var stopwatch: TextureRect = $"../UI/Stopwatch"
 
 var can_move: bool = true
 var is_on_ground: bool = true
@@ -40,12 +41,21 @@ func create_permission_button() -> void:
 		canvas_layer = CanvasLayer.new()
 		add_child(canvas_layer)
 	
+	var texture_rect = TextureRect.new()
+	texture_rect.texture = load("res://Assets/Interface/ui_images/set_name_in_4x1.png")
+	texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	texture_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	texture_rect.custom_minimum_size = Vector2(250, 60)
+	
 	var btn = Button.new()
 	btn.text = "Enable Motion Controls"
-	btn.position = Vector2(20, 260)
 	btn.size = Vector2(250, 60)
 	btn.connect("pressed", Callable(self, "_on_permission_button_pressed"))
-	canvas_layer.add_child(btn)
+	
+	var stopwatch_pos = stopwatch.get_rect().position
+	texture_rect.add_child(btn)
+	texture_rect.set_position(Vector2(stopwatch_pos.x, stopwatch_pos.y + 50))
+	add_child(texture_rect)
 
 func _on_permission_button_pressed() -> void:
 	if MobileMovement.request_permission():
@@ -152,6 +162,11 @@ func _on_body_entered(body: Node3D) -> void:
 func _on_body_shape_entered(_body_rid, body, _body_shape_index, _local_shape_index):
 	if body.is_in_group("Ground"):
 		is_on_ground = true
+
+func _process(delta):
+	if Global.is_falling:
+		reset_position()
+		Global.is_falling = false
 
 func reset_position() -> void:
 	set_inertia(Vector3.ZERO)
