@@ -4,23 +4,12 @@ extends Control
 @onready var main_title = $main_title
 @onready var audio_section_title = $audio_section_title
 
-# Slider Section
-@onready var slider_container = $slider_container
-@onready var slider_label = $slider_container/slider_label
-@onready var slider = $slider_container/slider
-
-# Mute Section
-@onready var mute_container = $mute_container
-@onready var mute_label = $mute_container/mute_label
-@onready var mute_checkbox = $mute_container/mute_checkbox
-
-# Controls Section
-@onready var controls_section_title = $controls_section_title
-@onready var controls_table = $controls_table
-
 # Exit Section
 @onready var menu_button = $menu_button
 
+var slider
+var mute_toggle
+var controls_table
 
 var bus_index = AudioServer.get_bus_index("Master")
 var actions = ["move_forward", "move_backward", "move_left", "move_right", "jump", "stop"]
@@ -61,14 +50,12 @@ func _ready():
 	set_back_button()
 	
 	slider.value = Global.volume_level
-	mute_checkbox.button_pressed = AudioServer.is_bus_mute(bus_index)
-
+	mute_toggle.is_on = AudioServer.is_bus_mute(bus_index)
 	
 	# Connect signals
 	slider.connect("value_changed", _on_music_volume_changed)
-	mute_checkbox.connect("toggled", _on_mute_toggled)
+	mute_toggle.connect("toggled", _on_mute_toggled)
 
-	
 func _input(event):
 	if waiting_for_key:
 		if event is InputEventKey and event.pressed:
@@ -119,67 +106,43 @@ func set_main_title():
 		main_title.position = Vector2(title_target.x, title_target.y)
 
 func set_audio_title():
+	var audio_section_title = Label.new()
+	add_child(audio_section_title)
+	
 	if Global.is_mobile:
-		audio_section_title.add_theme_font_size_override("font_size", 60)
-		audio_section_title.text = "Audio Settings"
-		audio_section_title.size_flags_horizontal = 0
-		audio_section_title.set_size(Vector2(screen_size.x * 0.5, screen_size.y * 0.05))
-		var title_target = Vector2((screen_size.x * 0.05), screen_size.y * 0.2)
-		audio_section_title.position = Vector2(title_target.x, title_target.y)
+		pass
 	else:
 		audio_section_title.add_theme_font_size_override("font_size", 24)
 		audio_section_title.text = "Audio Settings"
 		audio_section_title.size_flags_horizontal = 0
 		audio_section_title.set_size(Vector2(screen_size.x * 0.1, screen_size.x * 0.05))
-		var title_target = Vector2((screen_size.x * 0.05), main_title.size.y * 1.25)
+		var title_target = Vector2((screen_size.x * 0.05), screen_size.y * 0.15)
 		audio_section_title.position = Vector2(title_target.x, title_target.y)
 
 func set_slider_section():
 	if Global.is_mobile:
-		# HBOX
-		slider_container.size = Vector2(screen_size.x * 0.9, screen_size.y * 0.1)
-		slider_container.size_flags_horizontal = 0
-		slider_container.size_flags_vertical = 0
-		slider_container.position = Vector2((screen_size.x * 0.05), screen_size.y * 0.3)
-		
-		# Label
-		slider_label.add_theme_font_size_override("font_size", 50)
-		slider_label.text = "Volume"
-		slider_label.size_flags_horizontal = 0
-		
-		# Spacer
-		var spacer = Control.new()
-		spacer.size_flags_horizontal = 3
-		slider_container.add_child(spacer)
-		slider_container.move_child(spacer, 1)
-		
-		# Slider
-		slider.size_flags_horizontal = 3
-		slider.size_flags_vertical = 1
-		slider.size = Vector2(screen_size.x * 0.5, slider_container.size.y)
-		slider.min_value = 0
-		slider.max_value = 100
-		slider.value = Global.volume_level
-		slider.step = 1
+		pass
 	else:
-		# HBOX
+		var slider_container = HBoxContainer.new()
+		add_child(slider_container)
+
 		slider_container.size = Vector2(screen_size.x * 0.8, screen_size.y * 0.05)
 		slider_container.size_flags_horizontal = 0
 		slider_container.size_flags_vertical = 0
-		slider_container.position = Vector2((screen_size.x * 0.05), audio_section_title.position.y * 1.5)
-		
-		# Label
+		slider_container.position = Vector2((screen_size.x * 0.05), screen_size.y * 0.25)
+
+		var slider_label = Label.new()
 		slider_label.add_theme_font_size_override("font_size", 16)
 		slider_label.text = "Volume"
 		slider_label.size_flags_horizontal = 0
-		
-		# Spacer
+		slider_container.add_child(slider_label)
+
 		var spacer = Control.new()
 		spacer.size_flags_horizontal = 3
 		slider_container.add_child(spacer)
 		slider_container.move_child(spacer, 1)
-		
-		# Slider
+
+		slider = HSlider.new()
 		slider.size_flags_horizontal = 3
 		slider.size_flags_vertical = 1
 		slider.size = Vector2(screen_size.x * 0.5, screen_size.y * 0.05)
@@ -187,43 +150,55 @@ func set_slider_section():
 		slider.max_value = 100
 		slider.value = Global.volume_level
 		slider.step = 1
+		slider_container.add_child(slider)
 
 func set_mute_section():
 	if Global.is_mobile:
 		# HBOX
-		mute_container.size = Vector2(screen_size.x * 0.9, screen_size.y * 0.1)
-		mute_container.size_flags_horizontal = 0
-		mute_container.size_flags_vertical = 0
-		mute_container.position = Vector2(screen_size.x * 0.05, screen_size.y * 0.4)
+		var mute_container = VBoxContainer.new()
+		mute_container.size = Vector2(screen_size.x * 0.9, screen_size.y * 0.2)
+		mute_container.position = Vector2(
+			(screen_size.x - mute_container.size.x) / 2, 
+			screen_size.y * 0.2)
+		add_child(mute_container)
+		
+		mute_container.alignment = BoxContainer.ALIGNMENT_CENTER
 		
 		# Label
+		var mute_label = Label.new()
 		mute_label.add_theme_font_size_override("font_size", 50)
-		mute_label.text = "Mute game"
-		mute_label.size_flags_horizontal = 0
+		mute_label.text = "Mute Game"
+		mute_label.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		mute_container.add_child(mute_label)
 		
-		# Spacer
 		var spacer = Control.new()
-		spacer.size_flags_horizontal = 3
+		spacer.custom_minimum_size = Vector2(0, 20)
 		mute_container.add_child(spacer)
-		mute_container.move_child(spacer, 1)
 		
 		# Checkbox
-		mute_checkbox.button_pressed = Global.is_muted
-		mute_checkbox.size_flags_horizontal = 0
-		mute_checkbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		mute_checkbox.custom_minimum_size = Vector2(mute_container.size.y, mute_container.size.y)
+		mute_toggle = preload("res://Scripts/Interface/toogle_button.gd").new()
+		mute_toggle.is_on = Global.is_muted
+		mute_container.toggle_width = mute_container.size.y * 0.25
+		mute_container.toggle_height = mute_container.size.y * 0.125
+		mute_toggle.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		mute_container.add_child(mute_toggle)
+		mute_toggle.connect("toogled", _on_mute_toggled)
+		
 	else:
 		# HBOX
+		var mute_container = HBoxContainer.new()
 		mute_container.size = Vector2(screen_size.x * 0.8, screen_size.y * 0.05)
 		mute_container.size_flags_horizontal = 0
 		mute_container.size_flags_vertical = 0
-		mute_container.position = Vector2((screen_size.x * 0.05), slider_container.position.y * 1.25)
+		mute_container.position = Vector2((screen_size.x * 0.05), screen_size.y * 0.35)
+		add_child(mute_container)
 		
 		# Label
+		var mute_label = Label.new()
 		mute_label.add_theme_font_size_override("font_size", 16)
 		mute_label.text = "Mute game"
 		mute_label.size_flags_horizontal = 0
-		
+		mute_container.add_child(mute_label)
 		# Spacer
 		var spacer = Control.new()
 		spacer.size_flags_horizontal = 3
@@ -231,28 +206,34 @@ func set_mute_section():
 		mute_container.move_child(spacer, 1)
 		
 		# Checkbox
-		mute_checkbox.button_pressed = Global.is_muted
-		mute_checkbox.size_flags_horizontal = 0
-		mute_checkbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		mute_checkbox.custom_minimum_size = Vector2(mute_container.size.y, mute_container.size.y)
-
+		mute_toggle = preload("res://Scripts/Interface/toogle_button.gd").new()
+		mute_toggle.is_on = Global.is_muted
+		mute_toggle.toggle_width = mute_container.size.y * 2
+		mute_toggle.toggle_height = mute_container.size.y
+		mute_toggle.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		mute_container.add_child(mute_toggle)
+		mute_toggle.connect("toogled", _on_mute_toggled)
+		
 func set_controls_section():
 	if Global.is_mobile:
-		controls_section_title.visible = false
-		controls_table.visible = false
+		pass
 	else:
 		# Controls title
+		var controls_section_title = Label.new()
 		controls_section_title.add_theme_font_size_override("font_size", 24)
 		controls_section_title.text = "Key Binds"
 		controls_section_title.size_flags_horizontal = 0
 		controls_section_title.set_size(Vector2(screen_size.x * 0.15, screen_size.x * 0.05))
-		var title_target = Vector2((screen_size.x * 0.05), mute_container.position.y + mute_container.size.y * 1.5)
+		var title_target = Vector2((screen_size.x * 0.05), screen_size.y * 0.45)
 		controls_section_title.position = Vector2(title_target.x, title_target.y)
+		add_child(controls_section_title)
 		
 		# Controls table setup
+		controls_table = GridContainer.new()
 		controls_table.size = Vector2(screen_size.x * 0.8, screen_size.y * 0.3)
-		controls_table.position = Vector2(screen_size.x * 0.05, controls_section_title.position.y + controls_section_title.size.y * 1)
+		controls_table.position = Vector2(screen_size.x * 0.05, controls_section_title.position.y + controls_section_title.size.y)
 		controls_table.columns = 2
+		add_child(controls_table)
 		
 		# Load controls from InputMap or create default ones
 		load_controls()
@@ -263,57 +244,49 @@ func set_controls_section():
 func set_draggable_section():
 	if Global.is_mobile:
 		
-		var drag_section_title = Label.new()
-		drag_section_title.add_theme_font_size_override("font_size", 60)
-		drag_section_title.text = "Game Settings"
-		drag_section_title.size_flags_horizontal = 0
-		drag_section_title.set_size(Vector2(screen_size.x * 0.5, screen_size.y * 0.05))
-		var title_target = Vector2((screen_size.x * 0.05), screen_size.y * 0.5)
-		drag_section_title.position = Vector2(title_target.x, title_target.y)
-		add_child(drag_section_title)
-		
-		var drag_container = HBoxContainer.new()
-		drag_container.size = Vector2(screen_size.x * 0.9, screen_size.y * 0.1)
-		drag_container.size_flags_horizontal = 0
-		drag_container.size_flags_vertical = 0
-		drag_container.position = Vector2((screen_size.x * 0.05), screen_size.y * 0.6)
+		var drag_container = VBoxContainer.new()
+		drag_container.size = Vector2(screen_size.x * 0.9, screen_size.y * 0.2)
+		drag_container.position = Vector2(
+			(screen_size.x - drag_container.size.x) / 2, 
+			screen_size.y * 0.35)
 		add_child(drag_container)
+		
+		drag_container.alignment = BoxContainer.ALIGNMENT_CENTER
 		
 		# Label
 		var drag_label = Label.new()
 		drag_label.add_theme_font_size_override("font_size", 50)
-		drag_label.text = "Allow moving buttons"
-		drag_label.size_flags_horizontal = 0
+		drag_label.text = "Enable button dragging"
+		drag_label.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		drag_container.add_child(drag_label)
 		
 		# Spacer
 		var spacer = Control.new()
-		spacer.size_flags_horizontal = 3
+		spacer.custom_minimum_size = Vector2(0, 20)  # 20 pixels vertical space
 		drag_container.add_child(spacer)
-		drag_container.move_child(spacer, 1)
 		
 		# Checkbox
-		
-		var drag_checkbox = CheckBox.new()
-		drag_checkbox.size_flags_horizontal = 0
-		drag_checkbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		drag_checkbox.custom_minimum_size = Vector2(drag_container.size.y, drag_container.size.y)
-		drag_container.add_child(drag_checkbox)
-		drag_checkbox.button_pressed = Global.allow_dragging
-		drag_checkbox.connect("toggled", _on_drag_toggled)
+		var drag_toogle = preload("res://Scripts/Interface/toogle_button.gd").new()
+		drag_toogle.is_on = Global.allow_dragging
+		drag_toogle.toggle_width = drag_container.size.y * 0.25
+		drag_toogle.toggle_height = drag_container.size.y * 0.125
+		drag_toogle.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		drag_container.add_child(drag_toogle)
+		drag_toogle.button_pressed = Global.allow_dragging
+		drag_toogle.connect("toogled", _on_drag_toggled)
 	else:
 		pass
 	
 func set_back_button():
 	if Global.is_mobile:
-		menu_button.size = Vector2(screen_size.x * 0.15, screen_size.y * 0.08)
+		menu_button.size = Vector2(screen_size.y * 0.16, screen_size.y * 0.08)
 		menu_button.position = Vector2(
-			(screen_size.x - menu_button.size.x) / 2, screen_size.y * 0.9
+			(screen_size.x - menu_button.size.x) / 2, screen_size.y * 0.8
 		)
 	else:
 		menu_button.size = Vector2(screen_size.x * 0.15, screen_size.y * 0.08)
 		menu_button.position = Vector2(
-			(screen_size.x - menu_button.size.x) / 2, controls_table.position.y + controls_table.size.y * 1.25
+			(screen_size.x - menu_button.size.x) / 2, screen_size.y * 0.9
 		)
 
 func load_controls():

@@ -25,38 +25,6 @@ layout_mode = 2
 offset_right = 40.0
 offset_bottom = 23.0
 
-[node name="slider_container" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="slider_label" type="Label" parent="slider_container"]
-layout_mode = 2
-
-[node name="slider" type="HSlider" parent="slider_container"]
-layout_mode = 2
-
-[node name="mute_container" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="mute_label" type="Label" parent="mute_container"]
-layout_mode = 2
-
-[node name="mute_checkbox" type="CheckBox" parent="mute_container"]
-layout_mode = 2
-
-[node name="controls_section_title" type="Label" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="controls_table" type="GridContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
 [node name="menu_button" type="TextureButton" parent="."]
 layout_mode = 0
 offset_right = 40.0
