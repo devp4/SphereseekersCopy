@@ -8,6 +8,7 @@ var pause_menu_instance = null
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	
+	MusicPlayer.find_child("AudioStreamPlayer2D").stop()
 	if Global.is_mobile:
 		canvas_layer = CanvasLayer.new()
 		add_child(canvas_layer)

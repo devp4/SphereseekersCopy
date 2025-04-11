@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://htl26832hom7"]
+[gd_scene load_steps=17 format=3 uid="uid://htl26832hom7"]
 
 [ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_yy6i0"]
 [ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="2_rc141"]
@@ -8,6 +8,7 @@
 [ext_resource type="Material" uid="uid://w5n4a03t0r7u" path="res://Assets/Materials/cartoon/dragon_scales_toon/dragon_scales_toon.tres" id="5_x1k1j"]
 [ext_resource type="PackedScene" uid="uid://c6g4hpuxd6xgd" path="res://Scenes/Objects/level_3_floor/level_3_floor.tscn" id="7_167vu"]
 [ext_resource type="Script" uid="uid://c3nmstgb3dbw8" path="res://Scripts/Objects/limit.gd" id="8_x1k1j"]
+[ext_resource type="AudioStream" uid="uid://dtrycrd8w7tmk" path="res://Assets/Audio/Level 3.mp3" id="9_4ahh4"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_yy6i0"]
 panorama = ExtResource("3_yy6i0")
@@ -80,6 +81,11 @@ restart_position = Vector3(17, 2, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Limit"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
 shape = SubResource("BoxShape3D_4ahh4")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 63.3921, -135)
+stream = ExtResource("9_4ahh4")
+autoplay = true
 
 [connection signal="body_entered" from="Marble" to="Marble" method="_on_body_entered"]
 [connection signal="body_shape_entered" from="Marble" to="Marble" method="_on_body_shape_entered"]
