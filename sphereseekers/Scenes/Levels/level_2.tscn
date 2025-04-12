@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://d2jopfffi3elc"]
+[gd_scene load_steps=19 format=3 uid="uid://d2jopfffi3elc"]
 
 [ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_8qsmg"]
 [ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="2_ovj6s"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://iajm84bugmvs" path="res://Scenes/Objects/level_2_floor/level_2_path.tscn" id="8_pnnky"]
 [ext_resource type="PackedScene" uid="uid://bq5anrruu6lx" path="res://Scenes/Objects/sweeper/sweeper.tscn" id="9_blpqv"]
 [ext_resource type="AudioStream" uid="uid://g15fbyi5k5x" path="res://Assets/Audio/Level 2.mp3" id="10_1jlnc"]
+[ext_resource type="PackedScene" uid="uid://dnof3vqgf2k8v" path="res://Scenes/Objects/invisible_wall/invisible_wall.tscn" id="11_u40f0"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_blpqv"]
 panorama = ExtResource("3_8qsmg")
@@ -97,6 +98,15 @@ position = Vector2(-174.1, 20.998)
 stream = ExtResource("10_1jlnc")
 volume_db = 5.0
 autoplay = true
+
+[node name="InvisibleWall" parent="." instance=ExtResource("11_u40f0")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -121, 0, -3.551)
+
+[node name="InvisibleWall2" parent="." instance=ExtResource("11_u40f0")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -121, 0, 10.4236)
+
+[node name="InvisibleWall3" parent="." instance=ExtResource("11_u40f0")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -113.026, 0, 5.60373)
 
 [connection signal="body_entered" from="Marble" to="Marble" method="_on_body_entered"]
 [connection signal="body_shape_entered" from="Marble" to="Marble" method="_on_body_shape_entered"]

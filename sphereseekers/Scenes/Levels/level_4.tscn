@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://d26yc08k0ba5a"]
+[gd_scene load_steps=16 format=3 uid="uid://d26yc08k0ba5a"]
 
 [ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_t74h0"]
 [ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="2_jqrsn"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dhl0vwlt88xre" path="res://Scenes/Objects/level_4_floor/level_4_floor.tscn" id="6_t74h0"]
 [ext_resource type="PackedScene" uid="uid://copu860806ql0" path="res://Scenes/Objects/teleport_platform/teleport_platform.tscn" id="7_i4hbv"]
 [ext_resource type="Script" uid="uid://cip48r0khg2se" path="res://Scenes/Objects/teleport_platform/random_teleporter.gd" id="8_h0uxt"]
+[ext_resource type="AudioStream" uid="uid://n8mjandgknw" path="res://Assets/Audio/labyrinth.mp3" id="9_keyqw"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_keyqw"]
 panorama = ExtResource("3_t74h0")
@@ -69,6 +70,11 @@ shape = SubResource("SphereShape3D_i5g5g")
 [node name="TeleportPlatform" parent="." instance=ExtResource("7_i4hbv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -265.407, -10, -24.157)
 script = ExtResource("8_h0uxt")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="TeleportPlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 265.407, 10, 24.157)
+stream = ExtResource("9_keyqw")
+autoplay = true
 
 [connection signal="body_entered" from="Marble" to="Marble" method="_on_body_entered"]
 [connection signal="body_shape_entered" from="Marble" to="Marble" method="_on_body_shape_entered"]
