@@ -4,6 +4,7 @@ var controls_menu_instance = null
 var pause_menu_instance = null
 
 var canvas_layer
+var pause_btn
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -56,6 +57,7 @@ func pause_game():
 	add_child(pause_menu_instance)
 	pause_menu_instance.process_mode = Node.PROCESS_MODE_ALWAYS
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	show_hide_btns()
 	get_tree().paused = true
 
 func unpause_game():
@@ -64,12 +66,28 @@ func unpause_game():
 		pause_menu_instance.queue_free()
 		pause_menu_instance = null
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	show_hide_btns()
 	get_tree().paused = false
-	
+
+func show_hide_btns():
+	if Global.is_mobile:
+		if Global.is_paused:
+			if Global.jump_btn.visible:
+				print("game is paused, hiding the buttons")
+				Global.jump_btn.visible = false
+				Global.stop_btn.visible = false
+				pause_btn.visible = false
+		else:
+			if not Global.jump_btn.visible:
+				print("game is resumed, showing the buttons")
+				Global.jump_btn.visible = true
+				Global.stop_btn.visible = true
+				pause_btn.visible = true
+
 func create_pause_button():
 	var screen_size = get_viewport().get_visible_rect().size
 	
-	var pause_btn = TextureButton.new()
+	pause_btn = TextureButton.new()
 	pause_btn.position = Vector2(screen_size.x * 0.8, screen_size.y * 0.05)
 	pause_btn.ignore_texture_size = true
 	pause_btn.stretch_mode = TextureButton.STRETCH_SCALE

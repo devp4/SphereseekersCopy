@@ -13,3 +13,6 @@ var allow_dragging = true
 var is_muted = false
 
 var volume_level = 100
+
+var jump_btn
+var stop_btn
