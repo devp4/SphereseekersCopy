@@ -3,7 +3,7 @@ extends Node3D
 var controls_menu_instance = null
 var pause_menu_instance = null
 
-@onready var canvas_layer = $CanvasLayer
+var canvas_layer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

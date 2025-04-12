@@ -3,8 +3,6 @@ extends Control
 @onready var background = $background
 @onready var main_title = $main_title
 @onready var audio_section_title = $audio_section_title
-
-# Exit Section
 @onready var menu_button = $menu_button
 
 var slider
@@ -21,17 +19,16 @@ var action_names = {
 	"jump": "Jump",
 	"stop": "Stop"
 }
-var default_actions = {
-	"move_forward": KEY_W,
-	"move_backward": KEY_S,
-	"move_left": KEY_A,
-	"move_right": KEY_D,
-	"jump": KEY_SPACE,
-	"stop": KEY_SHIFT
+
+var action_keys = {
+	"move_forward": ["W", "↑"],
+	"move_backward": ["S", "↓"],
+	"move_left": ["A", "←"],
+	"move_right": ["D", "→"],
+	"jump": ["Space", "End"],
+	"stop": ["Shift"]
 }
 
-var waiting_for_key = false
-var action_to_rebind = ""
 
 var screen_size
 
@@ -52,21 +49,8 @@ func _ready():
 	slider.value = Global.volume_level
 	mute_toggle.is_on = AudioServer.is_bus_mute(bus_index)
 	
-	# Connect signals
 	slider.connect("value_changed", _on_music_volume_changed)
 	mute_toggle.connect("toggled", _on_mute_toggled)
-
-func _input(event):
-	if waiting_for_key:
-		if event is InputEventKey and event.pressed:
-			if event.keycode == KEY_ESCAPE:
-				cancel_rebinding()
-				return
-				
-			remap_action_key(action_to_rebind, event)
-			
-			get_viewport().set_input_as_handled()
-			return
 
 func _on_music_volume_changed(value):
 	Global.volume_level = value
@@ -132,7 +116,7 @@ func set_slider_section():
 		slider_container.position = Vector2((screen_size.x * 0.05), screen_size.y * 0.25)
 
 		var slider_label = Label.new()
-		slider_label.add_theme_font_size_override("font_size", 16)
+		slider_label.add_theme_font_size_override("font_size", 20)
 		slider_label.text = "Volume"
 		slider_label.size_flags_horizontal = 0
 		slider_container.add_child(slider_label)
@@ -195,10 +179,11 @@ func set_mute_section():
 		
 		# Label
 		var mute_label = Label.new()
-		mute_label.add_theme_font_size_override("font_size", 16)
+		mute_label.add_theme_font_size_override("font_size", 20)
 		mute_label.text = "Mute game"
 		mute_label.size_flags_horizontal = 0
 		mute_container.add_child(mute_label)
+		
 		# Spacer
 		var spacer = Control.new()
 		spacer.size_flags_horizontal = 3
@@ -228,15 +213,12 @@ func set_controls_section():
 		controls_section_title.position = Vector2(title_target.x, title_target.y)
 		add_child(controls_section_title)
 		
-		# Controls table setup
+		# Controls table
 		controls_table = GridContainer.new()
 		controls_table.size = Vector2(screen_size.x * 0.8, screen_size.y * 0.3)
 		controls_table.position = Vector2(screen_size.x * 0.05, controls_section_title.position.y + controls_section_title.size.y)
-		controls_table.columns = 2
+		controls_table.columns = 5
 		add_child(controls_table)
-		
-		# Load controls from InputMap or create default ones
-		load_controls()
 		
 		# Generate the table rows
 		update_controls_table()
@@ -262,7 +244,7 @@ func set_draggable_section():
 		
 		# Spacer
 		var spacer = Control.new()
-		spacer.custom_minimum_size = Vector2(0, 20)  # 20 pixels vertical space
+		spacer.custom_minimum_size = Vector2(0, 20)
 		drag_container.add_child(spacer)
 		
 		# Checkbox
@@ -289,105 +271,60 @@ func set_back_button():
 			(screen_size.x - menu_button.size.x) / 2, screen_size.y * 0.9
 		)
 
-func load_controls():
-	var config = ConfigFile.new()
-	var err = config.load("user://input_settings.cfg")
-	
-	for action_id in actions:
-		if !InputMap.has_action(action_id):
-			InputMap.add_action(action_id)
-			
-		InputMap.action_erase_events(action_id)
-		
-		if err != OK:
-			var event = InputEventKey.new()
-			event.keycode = default_actions[action_id]
-			event.pressed = true
-			InputMap.action_add_event(action_id, event)
-		else:
-			if config.has_section_key("inputs", action_id):
-				var keycode = config.get_value("inputs", action_id, default_actions[action_id])
-				var event = InputEventKey.new()
-				event.keycode = keycode
-				event.pressed = true
-				InputMap.action_add_event(action_id, event)
-			else:
-				var event = InputEventKey.new()
-				event.keycode = default_actions[action_id]
-				event.pressed = true
-				InputMap.action_add_event(action_id, event)
-
 func update_controls_table():
-
 	for action_id in actions:
+		# 1. Action name
 		var action_label = Label.new()
 		action_label.text = action_names[action_id]
-		action_label.add_theme_font_size_override("font_size", 16)
-		action_label.custom_minimum_size = Vector2(screen_size.x * 0.3, screen_size.y * 0.05)
+		action_label.add_theme_font_size_override("font_size", 20)
+		action_label.custom_minimum_size = Vector2(screen_size.x * 0.2, screen_size.y * 0.05)
+		action_label.align = HORIZONTAL_ALIGNMENT_LEFT
+		action_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		controls_table.add_child(action_label)
-		
-		var key_button = Button.new()
-		key_button.size_flags_horizontal = 3
-		key_button.text = get_action_key_string(action_id)
-		key_button.custom_minimum_size = Vector2(screen_size.x * 0.3, screen_size.y * 0.05)
-		key_button.name = "btn_" + action_id
-		key_button.connect("pressed", Callable(self, "_on_key_button_pressed").bind(action_id))
-		controls_table.add_child(key_button)
 
-func get_action_key_string(action_id):
-	var events = InputMap.action_get_events(action_id)
-	if events.size() == 0:
-		return "Unassigned"
-		
-	var event = events[0]
-	
-	if event is InputEventKey:
-		return OS.get_keycode_string(event.keycode)
-		
-	return "Unknown"
+		# 2. Spacer
+		var spacer1 = Control.new()
+		spacer1.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		controls_table.add_child(spacer1)
 
-func _on_key_button_pressed(action_id):
-	if waiting_for_key:
-		cancel_rebinding()
-	
-	action_to_rebind = action_id
-	waiting_for_key = true
-	
-	var button = controls_table.get_node("btn_" + action_id)
-	button.text = "Press any key..."	
+		# 3. Spacer
+		var spacer2 = Control.new()
+		spacer2.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		controls_table.add_child(spacer2)
 
-func cancel_rebinding():
-	if waiting_for_key:
-		var button = controls_table.get_node("btn_" + action_to_rebind)
-		button.text = get_action_key_string(action_to_rebind)
-		waiting_for_key = false
-		action_to_rebind = ""
+		# 4. Main key
+		var keys = action_keys.get(action_id, [])
+		var main_key = keys[0] if keys.size() > 0 else "Unknown"
+		var main_key_label = create_key_label(main_key)
+		controls_table.add_child(main_key_label)
 
-func remap_action_key(action_id, event):
-	InputMap.action_erase_events(action_id)
-	
-	if event is InputEventKey:
-		InputMap.action_add_event(action_id, event)
-		
-		var button = controls_table.get_node("btn_" + action_id)
-		button.text = OS.get_keycode_string(event.keycode)
-		
-		save_controls()
-	
-	waiting_for_key = false
-	action_to_rebind = ""
+		# 5. Auxiliary key
+		var aux_key = keys[1] if keys.size() > 1 else ""
+		if aux_key != "":
+			var aux_key_label = create_key_label(aux_key)
+			controls_table.add_child(aux_key_label)
+		else:
+			var empty_label = Label.new()
+			empty_label.custom_minimum_size = Vector2(screen_size.x * 0.1, screen_size.y * 0.05)
+			controls_table.add_child(empty_label)
 
-func save_controls():
-	var config = ConfigFile.new()
+func create_key_label(text_value):
+	var key_label = Label.new()
+	key_label.text = text_value
+	key_label.add_theme_font_size_override("font_size", 16)
+	key_label.custom_minimum_size = Vector2(screen_size.x * 0.1, screen_size.y * 0.05)
+	key_label.align = HORIZONTAL_ALIGNMENT_CENTER
+	key_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	
-	config.load("user://input_settings.cfg")
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color(0.7, 0.7, 0.7)
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_left = 8
+	style.corner_radius_bottom_right = 8
+	key_label.add_theme_stylebox_override("normal", style)
 	
-	for action_id in actions:
-		var events = InputMap.action_get_events(action_id)
-		if events.size() > 0 and events[0] is InputEventKey:
-			config.set_value("inputs", action_id, events[0].keycode)
-	
-	config.save("user://input_settings.cfg")
+	return key_label
 
 func on_menu_pressed():
 	get_tree().change_scene_to_file("res://Scenes/Interface/MainMenu.tscn")
