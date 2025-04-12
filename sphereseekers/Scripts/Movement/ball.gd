@@ -12,6 +12,7 @@ extends RigidBody3D
 
 var can_move: bool = true
 var is_on_ground: bool = true
+var buttons_created = false
 
 
 func _ready():
@@ -19,10 +20,19 @@ func _ready():
 	if Global.is_mobile:
 		Accelerometer.create_accelerometer()
 		create_permission_button()
-		create_action_buttons()
+		if Global.controls_shown:
+			create_action_buttons()
 	
 	var mesh = $MeshInstance3D
 	mesh.set_surface_override_material(0, Global.player_skin)
+
+func _process(delta):
+	if Global.is_mobile:
+		if Global.controls_shown and not buttons_created:
+			create_action_buttons()
+			buttons_created = true
+		
+		show_hide_btns()
 
 func create_permission_button() -> void:
 	if not Global.is_mobile:
@@ -78,7 +88,7 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 				var sensitivity = 0.1  # Increased sensitivity
 				
 				# iOS might need different handling compared to Android
-				forward_input = clamp(-beta * sensitivity, -1.0, 1.0)  # Note the negative sign
+				forward_input = clamp(-beta * sensitivity, -1.0, 1.0) 
 				horizontal_input = clamp(gamma * sensitivity, -1.0, 1.0)
 	else:
 		# Desktop keyboard fallback
@@ -90,11 +100,15 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	var direction_horizontal = horizontal_input * cam_horizontal
 
 	# Jump
-	if Input.is_action_pressed("ui_end"):
+	if not Global.is_mobile and Input.is_action_pressed("ui_end"):
 		make_jump()
 
+	var stop_button_pressed = false
+	if Global.is_mobile and canvas_layer and canvas_layer.has_node("StopButton"):
+		stop_button_pressed = canvas_layer.get_node("StopButton").is_pressed()
+	
 	# Boost charging
-	if Input.is_action_pressed("shift"):
+	if Input.is_action_pressed("shift") or stop_button_pressed:
 		var horizontal_velocity = Vector3(linear_velocity.x, 0, linear_velocity.z)
 		horizontal_velocity = horizontal_velocity.lerp(Vector3.ZERO, braking_factor)
 		linear_velocity = Vector3(horizontal_velocity.x, linear_velocity.y, horizontal_velocity.z)
@@ -102,7 +116,7 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 		angular_velocity = angular_velocity.lerp(Vector3.ZERO, braking_factor)
 		physics_material_override.friction = 0.0
 
-		if Input.is_action_just_pressed("spacebar"):
+		if not Global.is_mobile and Input.is_action_just_pressed("spacebar"):
 			apply_torque_impulse(-cam_horizontal * spin_boost_factor)
 		return
 
@@ -141,21 +155,79 @@ func reset_position() -> void:
 	is_on_ground = true
 
 func create_action_buttons():
+	if not canvas_layer:
+		canvas_layer = CanvasLayer.new()
+		canvas_layer.process_mode = Node.PROCESS_MODE_ALWAYS
+		add_child(canvas_layer)
+	
 	var screen_size = get_viewport().get_visible_rect().size
 	
-	var jump_btn = preload("res://Scripts/Interface/draggable_button.gd").new()
-	jump_btn.position = Vector2(screen_size.x * 0.75, screen_size.y * 0.75)
-	
-	jump_btn.ignore_texture_size = true
-	jump_btn.stretch_mode = TextureButton.STRETCH_SCALE
-	jump_btn.size = Vector2(screen_size.x * 0.15, screen_size.x * 0.15)
-	jump_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	jump_btn.texture_normal = load("res://Assets/buttons/jump_btn.png")
-	jump_btn.action_callable = Callable(self, "make_jump")
-	
-	canvas_layer.add_child(jump_btn)
+	Global.jump_btn = preload("res://Scripts/Interface/draggable_button.gd").new()
+	Global.jump_btn.name = "JumpButton"
+	Global.jump_btn.position = Vector2(screen_size.x * 0.75, screen_size.y * 0.75)
+	Global.jump_btn.ignore_texture_size = true
+	Global.jump_btn.stretch_mode = TextureButton.STRETCH_SCALE
+	Global.jump_btn.size = Vector2(screen_size.x * 0.15, screen_size.x * 0.15)
+	Global.jump_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	Global.jump_btn.texture_normal = load("res://Assets/buttons/jump_button.png")
+	Global.jump_btn.action_callable = Callable(self, "make_jump")
+	canvas_layer.add_child(Global.jump_btn)
 
-func make_jump():
-	if is_on_ground:
+	Global.stop_btn = preload("res://Scripts/Interface/draggable_button.gd").new()
+	Global.stop_btn.name = "StopButton"
+	Global.stop_btn.position = Vector2(screen_size.x * 0.15, screen_size.y * 0.75)
+	Global.stop_btn.ignore_texture_size = true
+	Global.stop_btn.stretch_mode = TextureButton.STRETCH_SCALE
+	Global.stop_btn.size = Vector2(screen_size.x * 0.15, screen_size.x * 0.15)
+	Global.stop_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	Global.stop_btn.texture_normal = load("res://Assets/buttons/stop_button.png") 
+	Global.stop_btn.action_callable = Callable(self, "_on_stop_button_event")
+	canvas_layer.add_child(Global.stop_btn)
+
+func _on_stop_button_event(event_type = ""):
+	if event_type == "down":
+		# This is equivalent to pressing shift
+		var horizontal_velocity = Vector3(linear_velocity.x, 0, linear_velocity.z)
+		horizontal_velocity = horizontal_velocity.lerp(Vector3.ZERO, braking_factor)
+		linear_velocity = Vector3(horizontal_velocity.x, linear_velocity.y, horizontal_velocity.z)
+
+		angular_velocity = angular_velocity.lerp(Vector3.ZERO, braking_factor)
+		physics_material_override.friction = 0.0
+	elif event_type == "up":
+		# This is equivalent to releasing shift
+		physics_material_override.friction = 1.0
+		var lil_jump_magnitude = 0.6
+		var lil_jump_impulse = lil_jump_magnitude * Vector3.ONE
+		var final_boost_vector = lil_jump_impulse + (camera_3d.global_transform.basis.z * Vector3(1, 0, 1)).normalized()
+		var spin_speed = get_angular_velocity().length()
+		apply_central_impulse(spin_speed * final_boost_vector)
+	else:
+		pass
+
+func make_jump(event_type = ""):
+	if event_type == "down" and is_on_ground:
+		# Regular jump functionality
 		apply_impulse(Vector3(0, jump_force, 0))
 		is_on_ground = false
+	elif is_on_ground:
+		# For regular press without event_type
+		apply_impulse(Vector3(0, jump_force, 0))
+		is_on_ground = false
+	
+	# Check if stop button is being held (to implement the spin boost)
+	if canvas_layer and canvas_layer.has_node("StopButton") and canvas_layer.get_node("StopButton").is_pressed():
+		# This is equivalent to pressing space while shift is held
+		var cam_horizontal = (camera_3d.global_transform.basis.x * Vector3(1, 0, 1)).normalized()
+		apply_torque_impulse(-cam_horizontal * spin_boost_factor)
+
+func show_hide_btns():
+	if Global.is_paused:
+		if Global.jump_btn.visible:
+			print("game is paused, hiding the buttons")
+			Global.jump_btn.visible = false
+			Global.stop_btn.visible = false
+	else:
+		if not Global.jump_btn.visible:
+			print("game is resumed, showing the buttons")
+			Global.jump_btn.visible = true
+			Global.stop_btn.visible = true

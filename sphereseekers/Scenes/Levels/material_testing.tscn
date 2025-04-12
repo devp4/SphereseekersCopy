@@ -10,9 +10,9 @@
 [ext_resource type="Material" uid="uid://y4yhjq6ftc3l" path="res://Assets/Materials/cartoon/orange_toon/orange_toon.tres" id="7_b8n46"]
 [ext_resource type="Material" uid="uid://dv5esmm34fpg2" path="res://Assets/Materials/cartoon/brick_toon/brick_toon.tres" id="7_gt7pi"]
 [ext_resource type="Material" uid="uid://3vg8xdyp66a4" path="res://Assets/Materials/cartoon/grass_toon/grass_toon.tres" id="8_7ppab"]
-[ext_resource type="Material" uid="uid://dy6tyj3t7v5kw" path="res://Assets/Materials/cartoon/white_bricks_toon/white_bricks_toon.tres" id="8_aebg8"]
+[ext_resource type="Material" path="res://Assets/Materials/cartoon/white_bricks_toon/white_bricks_toon.tres" id="8_aebg8"]
 [ext_resource type="Material" uid="uid://d17bn5nh0y3me" path="res://Assets/Materials/cartoon/leaves_toon/leaves_toon.tres" id="8_ytbuo"]
-[ext_resource type="Material" uid="uid://bypxjktybemk8" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="10_tdihx"]
+[ext_resource type="Material" uid="uid://dihmuvdpds62d" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="10_tdihx"]
 [ext_resource type="Material" uid="uid://b66mn6xqdkhka" path="res://Assets/Materials/cartoon/wood_planks_toon/wood_planks_toon.tres" id="11_ytbuo"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_gt7pi"]

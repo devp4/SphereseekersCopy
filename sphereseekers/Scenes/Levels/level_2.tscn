@@ -14,12 +14,12 @@
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_blpqv"]
 panorama = ExtResource("3_8qsmg")
 
-[sub_resource type="Sky" id="Sky_5rbo1"]
+[sub_resource type="Sky" id="Sky_1jlnc"]
 sky_material = SubResource("PanoramaSkyMaterial_blpqv")
 
 [sub_resource type="Environment" id="Environment_1jlnc"]
 background_mode = 2
-sky = SubResource("Sky_5rbo1")
+sky = SubResource("Sky_1jlnc")
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_8qsmg"]
 

@@ -1,0 +1,74 @@
+[gd_scene load_steps=15 format=3 uid="uid://d26yc08k0ba5a"]
+
+[ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_t74h0"]
+[ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="2_jqrsn"]
+[ext_resource type="Texture2D" uid="uid://cnv4wc7tvvivh" path="res://Assets/backgrounds/anime-style-clouds.jpg" id="3_t74h0"]
+[ext_resource type="Script" uid="uid://c6ycpobav1k77" path="res://Scripts/Movement/ball.gd" id="4_i4hbv"]
+[ext_resource type="Material" uid="uid://w5n4a03t0r7u" path="res://Assets/Materials/cartoon/dragon_scales_toon/dragon_scales_toon.tres" id="5_h0uxt"]
+[ext_resource type="PackedScene" uid="uid://dhl0vwlt88xre" path="res://Scenes/Objects/level_4_floor/level_4_floor.tscn" id="6_t74h0"]
+[ext_resource type="PackedScene" uid="uid://copu860806ql0" path="res://Scenes/Objects/teleport_platform/teleport_platform.tscn" id="7_i4hbv"]
+[ext_resource type="Script" uid="uid://cip48r0khg2se" path="res://Scenes/Objects/teleport_platform/random_teleporter.gd" id="8_h0uxt"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_keyqw"]
+panorama = ExtResource("3_t74h0")
+
+[sub_resource type="Sky" id="Sky_h0uxt"]
+sky_material = SubResource("PanoramaSkyMaterial_keyqw")
+
+[sub_resource type="Environment" id="Environment_gsxik"]
+background_mode = 2
+sky = SubResource("Sky_h0uxt")
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3asqb"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_slbhm"]
+material = ExtResource("5_h0uxt")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_i5g5g"]
+
+[node name="Level4" type="Node3D"]
+script = ExtResource("1_t74h0")
+
+[node name="CameraRig" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 10.782, -80.51)
+script = ExtResource("2_jqrsn")
+
+[node name="HRotation" type="Node3D" parent="CameraRig"]
+
+[node name="VRotation" type="Node3D" parent="CameraRig/HRotation"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraRig/HRotation/VRotation"]
+spring_length = 9.0
+margin = 1.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig/HRotation/VRotation/SpringArm3D"]
+environment = SubResource("Environment_gsxik")
+current = true
+fov = 80.0
+
+[node name="Marble" type="RigidBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 8.74228e-08, 8.74227e-08, 8.74227e-08, -1, 0, 8.74227e-08, 7.64274e-15, -1, 2.7937, -7.09844, 0.59717)
+mass = 20.0
+physics_material_override = SubResource("PhysicsMaterial_3asqb")
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("4_i4hbv")
+movement_speed = 20000.0
+jump_force = 150.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Marble"]
+transform = Transform3D(-0.677543, 5.50161e-08, 0.735483, -1.50996e-07, -1, -6.42979e-08, 0.735483, -1.54619e-07, 0.677543, 0, 0, 0)
+mesh = SubResource("SphereMesh_slbhm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Marble"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("SphereShape3D_i5g5g")
+
+[node name="level_4_floor" parent="." instance=ExtResource("6_t74h0")]
+
+[node name="TeleportPlatform" parent="." instance=ExtResource("7_i4hbv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -265.407, -10, -24.157)
+script = ExtResource("8_h0uxt")
+
+[connection signal="body_entered" from="Marble" to="Marble" method="_on_body_entered"]
+[connection signal="body_shape_entered" from="Marble" to="Marble" method="_on_body_shape_entered"]

@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3 uid="uid://2jm1027hjbde"]
+
+[ext_resource type="Script" uid="uid://ddjyxn7i6exo5" path="res://Scripts/Interface/SetNameMenu.gd" id="1_ulw0x"]
+[ext_resource type="Texture2D" uid="uid://fan6t10ubbae" path="res://Assets/Interface/ui_images/label_set_name_2x1.png" id="2_c6cfq"]
+[ext_resource type="Texture2D" uid="uid://d3ao3agusf7lu" path="res://Assets/buttons/continue_btn_2x1.png" id="3_c6cfq"]
+[ext_resource type="Texture2D" uid="uid://cok23l0sfij4u" path="res://Assets/Interface/ui_images/set_name_in_4x1.png" id="4_c6cfq"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c6cfq"]
+texture = ExtResource("4_c6cfq")
+texture_margin_left = 100.0
+texture_margin_right = 100.0
+
+[node name="SetSaveName" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ulw0x")
+
+[node name="background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="title" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 79.0
+offset_bottom = 23.0
+texture = ExtResource("2_c6cfq")
+expand_mode = 1
+
+[node name="continue" type="TextureButton" parent="."]
+layout_mode = 0
+offset_top = 62.0
+offset_right = 79.0
+offset_bottom = 93.0
+texture_normal = ExtResource("3_c6cfq")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="error" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="name_input" type="LineEdit" parent="."]
+layout_mode = 0
+offset_top = 27.0
+offset_right = 79.0
+offset_bottom = 58.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_c6cfq")
+
+[connection signal="pressed" from="continue" to="." method="_on_continue_pressed"]

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dhl0vwlt88xre"]
+
+[ext_resource type="PackedScene" uid="uid://3megxrhmo107" path="res://Scenes/Objects/level_4_floor/level_4_floor.glb" id="1_j6gyc"]
+[ext_resource type="Material" uid="uid://dihmuvdpds62d" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="2_rch2p"]
+
+[node name="level_4_floor" instance=ExtResource("1_j6gyc")]
+
+[node name="cave" parent="." index="0"]
+material_override = ExtResource("2_rch2p")
+
+[node name="StaticBody3D" parent="cave" index="0" groups=["Ground"]]

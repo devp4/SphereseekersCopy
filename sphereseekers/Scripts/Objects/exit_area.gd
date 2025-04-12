@@ -20,6 +20,10 @@ func _level_to_play():
 			Global.level_to_play = Global.levels.LEVEL1
 		Global.levels.LEVEL1:
 			Global.level_to_play = Global.levels.LEVEL2
+		Global.levels.LEVEL2:
+			Global.level_to_play = Global.levels.LEVEL3
+		Global.levels.LEVEL3:
+			Global.level_to_play = Global.levels.LEVEL4
 			
 
 func _on_animation_complete():

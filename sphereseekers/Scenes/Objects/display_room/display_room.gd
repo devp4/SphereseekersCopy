@@ -136,7 +136,7 @@ func set_label_background():
 	
 func _on_select_button_pressed():
 	Global.player_skin = skins[current_skin_index]
-	print(skins[current_skin_index])
+	MusicPlayer.find_child("AudioStreamPlayer2D").play()
 	get_tree().change_scene_to_file("res://Scenes/Interface/MainMenu.tscn")
 
 func set_camera_for_mobile():
@@ -171,7 +171,7 @@ func position_confirm_button():
 	var screen_size = get_viewport().size
 	
 	# Set button size
-	confirm_button.size = Vector2(screen_size.x * 0.5, screen_size.y * 0.08)
+	confirm_button.size = Vector2(screen_size.x * 0.3, screen_size.y * 0.08)
 	var button_size = confirm_button.size
 	
 	# Reset anchors
@@ -191,8 +191,8 @@ func position_confirm_button():
 		# For desktop: Keep original top-right positioning
 		var padding_x = screen_size.x * 0.05
 		var padding_y = screen_size.y * 0.05
-		
+		confirm_button.size = Vector2(screen_size.x * 0.1, (screen_size.x * 0.1)/2)
 		confirm_button.position = Vector2(
-			screen_size.x - button_size.x - padding_x,
+			screen_size.x - confirm_button.size.x - padding_x,
 			padding_y
 		)

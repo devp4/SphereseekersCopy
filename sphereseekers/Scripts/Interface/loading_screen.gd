@@ -71,5 +71,9 @@ func get_path_to_level() -> String:
 			return "res://Scenes/Levels/level_1.tscn"
 		Global.levels.LEVEL2:
 			return "res://Scenes/Levels/level_2.tscn"
+		Global.levels.LEVEL3:
+			return "res://Scenes/Levels/level_3.tscn"
+		Global.levels.LEVEL4:
+			return "res://Scenes/Levels/level_4.tscn"
 		_:
 			return "res://Scenes/Interface/MainMenu.tscn"

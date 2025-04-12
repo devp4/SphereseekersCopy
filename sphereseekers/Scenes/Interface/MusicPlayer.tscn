@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3yv3gup0ds4x"]
+
+[ext_resource type="AudioStream" uid="uid://dywpl6glqo4lh" path="res://Assets/Audio/Green Pastures.mp3" id="1_6u8kk"]
+
+[node name="MusicPlayer" type="Node"]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("1_6u8kk")
+autoplay = true
