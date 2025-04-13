@@ -15,6 +15,7 @@ var is_on_ground: bool = true
 var buttons_created = false
 var current_platform_velocity: Vector3 = Vector3.ZERO
 
+
 func _ready():
 	
 	if Global.is_mobile:
@@ -27,9 +28,12 @@ func _ready():
 	mesh.set_surface_override_material(0, Global.player_skin)
 
 func _process(delta):
-	if Global.controls_shown and not buttons_created:
-		create_action_buttons()
-		buttons_created = true
+	if Global.is_mobile:
+		if Global.controls_shown and not buttons_created:
+			create_action_buttons()
+			buttons_created = true
+		
+		show_hide_btns()
 
 func create_permission_button() -> void:
 	if not Global.is_mobile:
@@ -178,31 +182,32 @@ func reset_position() -> void:
 func create_action_buttons():
 	if not canvas_layer:
 		canvas_layer = CanvasLayer.new()
+		canvas_layer.process_mode = Node.PROCESS_MODE_ALWAYS
 		add_child(canvas_layer)
 	
 	var screen_size = get_viewport().get_visible_rect().size
 	
-	var jump_btn = preload("res://Scripts/Interface/draggable_button.gd").new()
-	jump_btn.name = "JumpButton"
-	jump_btn.position = Vector2(screen_size.x * 0.75, screen_size.y * 0.75)
-	jump_btn.ignore_texture_size = true
-	jump_btn.stretch_mode = TextureButton.STRETCH_SCALE
-	jump_btn.size = Vector2(screen_size.x * 0.15, screen_size.x * 0.15)
-	jump_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	jump_btn.texture_normal = load("res://Assets/buttons/jump_button.png")
-	jump_btn.action_callable = Callable(self, "make_jump")
-	canvas_layer.add_child(jump_btn)
+	Global.jump_btn = preload("res://Scripts/Interface/draggable_button.gd").new()
+	Global.jump_btn.name = "JumpButton"
+	Global.jump_btn.position = Vector2(screen_size.x * 0.75, screen_size.y * 0.75)
+	Global.jump_btn.ignore_texture_size = true
+	Global.jump_btn.stretch_mode = TextureButton.STRETCH_SCALE
+	Global.jump_btn.size = Vector2(screen_size.x * 0.15, screen_size.x * 0.15)
+	Global.jump_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	Global.jump_btn.texture_normal = load("res://Assets/buttons/jump_button.png")
+	Global.jump_btn.action_callable = Callable(self, "make_jump")
+	canvas_layer.add_child(Global.jump_btn)
 
-	var stop_btn = preload("res://Scripts/Interface/draggable_button.gd").new()
-	stop_btn.name = "StopButton"
-	stop_btn.position = Vector2(screen_size.x * 0.15, screen_size.y * 0.75)
-	stop_btn.ignore_texture_size = true
-	stop_btn.stretch_mode = TextureButton.STRETCH_SCALE
-	stop_btn.size = Vector2(screen_size.x * 0.15, screen_size.x * 0.15)
-	stop_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	stop_btn.texture_normal = load("res://Assets/buttons/stop_button.png") 
-	stop_btn.action_callable = Callable(self, "_on_stop_button_event")
-	canvas_layer.add_child(stop_btn)
+	Global.stop_btn = preload("res://Scripts/Interface/draggable_button.gd").new()
+	Global.stop_btn.name = "StopButton"
+	Global.stop_btn.position = Vector2(screen_size.x * 0.15, screen_size.y * 0.75)
+	Global.stop_btn.ignore_texture_size = true
+	Global.stop_btn.stretch_mode = TextureButton.STRETCH_SCALE
+	Global.stop_btn.size = Vector2(screen_size.x * 0.15, screen_size.x * 0.15)
+	Global.stop_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	Global.stop_btn.texture_normal = load("res://Assets/buttons/stop_button.png") 
+	Global.stop_btn.action_callable = Callable(self, "_on_stop_button_event")
+	canvas_layer.add_child(Global.stop_btn)
 
 func _on_stop_button_event(event_type = ""):
 	if event_type == "down":
@@ -239,3 +244,15 @@ func make_jump(event_type = ""):
 		# This is equivalent to pressing space while shift is held
 		var cam_horizontal = (camera_3d.global_transform.basis.x * Vector3(1, 0, 1)).normalized()
 		apply_torque_impulse(-cam_horizontal * spin_boost_factor)
+
+func show_hide_btns():
+	if Global.is_paused:
+		if Global.jump_btn.visible:
+			print("game is paused, hiding the buttons")
+			Global.jump_btn.visible = false
+			Global.stop_btn.visible = false
+	else:
+		if not Global.jump_btn.visible:
+			print("game is resumed, showing the buttons")
+			Global.jump_btn.visible = true
+			Global.stop_btn.visible = true

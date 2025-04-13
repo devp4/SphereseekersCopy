@@ -8,7 +8,7 @@ func _ready():
 	
 	screen_size = get_viewport_rect().size
 	var width = screen_size.x
-	var height = screen_size.y
+	var _height = screen_size.y
 	
 	if Global.is_mobile:
 		button_size = width * 0.1
@@ -55,7 +55,6 @@ func _on_delete_pressed(save_name):
 
 func _set_desktop_objects():
 	
-	var screen_size = get_viewport_rect().size
 	var width = screen_size.x
 	var height = screen_size.y
 	
@@ -148,7 +147,6 @@ func _set_desktop_objects():
 	main_vbox.add_child(main_menu_button)
 	 
 func _set_mobile_objects():
-	var screen_size = get_viewport_rect().size
 	var width = screen_size.x
 	var height = screen_size.y
 	
@@ -249,7 +247,12 @@ func create_right_spacer(hbox: HBoxContainer):
 
 func create_label(hbox: HBoxContainer, save_name: String, font_size: float):
 	var name_label = Label.new()
-	name_label.text = "%s" % save_name
+	
+	if save_name.length() >= 13:
+		name_label.text = "%s..." % save_name.substr(0, 10)
+	else:
+		name_label.text = "%s" % save_name
+	
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	name_label.add_theme_font_size_override("font_size", font_size)
 	hbox.add_child(name_label)

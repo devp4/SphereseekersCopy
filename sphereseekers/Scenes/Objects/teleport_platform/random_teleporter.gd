@@ -12,11 +12,13 @@ var possible_positions = [
 ]
 var rng = RandomNumberGenerator.new()
 var random_position: int
+@onready var music = $AudioStreamPlayer3D
 
 func _ready() -> void:
 	select_random_position()
 	self.position = possible_positions[random_position]
-	print(possible_positions[random_position])
+	music.position = possible_positions[random_position]
+	music.position.z = music.position.z + 5
 	
 func select_random_position():
 	var my_random_number = rng.randf_range(0, 7)
