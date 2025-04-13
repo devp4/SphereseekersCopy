@@ -13,6 +13,7 @@ extends RigidBody3D
 var can_move: bool = true
 var is_on_ground: bool = true
 var buttons_created = false
+var current_platform_velocity: Vector3 = Vector3.ZERO
 
 func _ready():
 	
@@ -124,6 +125,32 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 		var spin_speed = get_angular_velocity().length()
 		apply_central_impulse(spin_speed * final_boost_vector)
 
+
+	# Detecting if marble is on a moving platform...
+	var standing_on_moving_platform := false
+	current_platform_velocity = Vector3.ZERO
+	
+	for i in _state.get_contact_count():
+		var collider := _state.get_contact_collider_object(i)
+		
+		# If on a moving platform...
+		if collider is AnimatableBody3D:
+			
+			# Detect if we're standing on TOP of the moving pltform
+			var contact_local_normal := _state.get_contact_local_normal(i)
+			if contact_local_normal.dot(Vector3.UP) > 0.7:
+				standing_on_moving_platform = true
+				current_platform_velocity = collider.get_platform_velocity()
+				break
+	
+	# Override ball's velocity with the moving platform's velocity (implenting stickiness)
+	if standing_on_moving_platform:
+		var velocity := _state.get_linear_velocity()
+		var horizontal_velocity = Vector3(current_platform_velocity.x, 0, current_platform_velocity.z)
+		velocity.x = lerp(velocity.x, horizontal_velocity.x, 0.2)
+		velocity.z = lerp(velocity.z, horizontal_velocity.z, 0.2)
+		_state.set_linear_velocity(velocity)
+
 	# Apply forces
 	apply_central_force(direction_forward * movement_speed * get_physics_process_delta_time())
 	apply_central_force(direction_horizontal * movement_speed * get_physics_process_delta_time())
@@ -136,8 +163,6 @@ func disable_controls():
 func _on_body_entered(body: Node3D) -> void:
 	if body.is_in_group("enemy_balls") or body.is_in_group("killing_obstacle"):
 		reset_position()
-
-func _on_body_shape_entered(_body_rid, body, _body_shape_index, _local_shape_index):
 	if body.is_in_group("Ground"):
 		is_on_ground = true
 
