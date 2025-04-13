@@ -36,6 +36,10 @@ func _ready():
 	mesh.set_surface_override_material(0, Global.player_skin)
 
 func _process(delta):
+	if Global.is_falling:
+		reset_position()
+		Global.is_falling = false
+		
 	if Global.is_mobile:
 		if Global.controls_shown and not buttons_created:
 			create_action_buttons()
