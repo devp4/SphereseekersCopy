@@ -27,13 +27,10 @@ func _on_load_pressed(save_name):
 	PlayerClass.load_game(save_name)
 	Global.in_main_menu = false
 	
-	# New game is going to played, set the level to play to TUTORIAL
-	Global.level_to_play = Global.levels.TUTORIAL
-	
 	# Make sure that Cannons will shoot
 	Global.stop_all_projectiles = false
 	MusicPlayer.find_child("AudioStreamPlayer2D").stop()
-	get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
+	get_tree().change_scene_to_file("res://Scenes/Interface/loading_screen.tscn")
 	
 func _on_delete_confirm(save_name):
 	if Global.is_mobile:
