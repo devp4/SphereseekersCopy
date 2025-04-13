@@ -8,24 +8,25 @@ extends RigidBody3D
 @export var jump_force: float = 100.0
 
 @onready var camera_3d: Camera3D = $"../CameraRig/HRotation/VRotation/SpringArm3D/Camera3D"
+@onready var stopwatch: TextureRect = $"../UI/Stopwatch"
 @onready var canvas_layer: CanvasLayer
 
 var can_move: bool = true
 var is_on_ground: bool = true
 var buttons_created = false
 var calibrated = false
+var tilts = []
 var initial_tilt = {"beta": 0, "gamma": 0}
 
-func calibrate_tilt() -> void:
+func calibrate_tilt():
 	if Global.is_mobile:
-		initial_tilt = MobileMovement.get_tilt()
+		return MobileMovement.get_tilt()
 
 func get_calibrated_tilt():
 	var new_tilt = MobileMovement.get_tilt()
 	return {"beta": new_tilt["beta"] - initial_tilt["beta"], "gamma": new_tilt["gamma"] - initial_tilt["gamma"]}
 
 func _ready():
-	
 	if Global.is_mobile:
 		MobileMovement.create_listeners()
 		create_permission_button()
@@ -37,7 +38,7 @@ func _ready():
 
 func _process(delta):
 	if Global.is_falling:
-		reset_position()
+		stop_motion()
 		Global.is_falling = false
 		
 	if Global.is_mobile:
@@ -55,17 +56,43 @@ func create_permission_button() -> void:
 		canvas_layer = CanvasLayer.new()
 		add_child(canvas_layer)
 	
+	var texture_rect = TextureRect.new()
+	texture_rect.texture = load("res://Assets/Interface/ui_images/set_name_in_4x1.png")
+	texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	texture_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	texture_rect.custom_minimum_size = Vector2(250, 60)
+	
 	var btn = Button.new()
 	btn.text = "Enable Motion Controls"
-	btn.position = Vector2(20, 260)
 	btn.size = Vector2(250, 60)
 	btn.connect("pressed", Callable(self, "_on_permission_button_pressed"))
-	canvas_layer.add_child(btn)
+	texture_rect.add_child(btn)
+	
+	var stopwatch_pos = stopwatch.get_rect().position
+	texture_rect.set_position(Vector2(stopwatch_pos.x, stopwatch_pos.y + 50))
+	add_child(texture_rect)
 
 func _on_permission_button_pressed() -> void:
 	if MobileMovement.request_permission():
 		await get_tree().create_timer(1.0).timeout  # Wait a bit for permission to be processed
 
+	if not calibrated:
+		calibrate_tilt()
+		var count = 5
+		for i in range(count):
+			var tilt = calibrate_tilt()
+			tilts.append(tilt)
+
+		var avg_beta = 0
+		var avg_gamma = 0
+		for tilt in tilts:
+			avg_beta += tilt["beta"]
+			avg_gamma += tilt["gamma"]
+
+		initial_tilt = {"beta": avg_beta / count, "gamma": avg_gamma / count}
+
+		calibrated = true
+		
 func round_place(num):
 	return int(num * 1000) / float(1000)
 
@@ -163,6 +190,12 @@ func _on_body_shape_entered(_body_rid, body, _body_shape_index, _local_shape_ind
 	if body.is_in_group("Ground"):
 		is_on_ground = true
 
+func stop_motion():
+	set_inertia(Vector3.ZERO)
+	linear_velocity = Vector3.ZERO
+	angular_velocity = Vector3.ZERO
+	is_on_ground = true
+	
 func reset_position() -> void:
 	set_inertia(Vector3.ZERO)
 	linear_velocity = Vector3.ZERO
