@@ -29,7 +29,6 @@ var action_keys = {
 	"stop": ["Shift"]
 }
 
-
 var screen_size
 
 func _ready():
