@@ -14,6 +14,9 @@ const BUTTON_WIDTH_RATIO_MOBILE = 0.5
 const BUTTON_HEIGHT_RATIO = 0.15  # Each button takes 15% of background height
 const SPACING_RATIO = 0.05  # 5% of background height as spacing between buttons
 
+
+var options_menu_instance: Control = null
+
 func _ready():
 	# Initialize references
 	_init_ui_references()
@@ -95,7 +98,11 @@ func _on_restart_button_pressed():
 	PlayerClass.current_level_time = 0
 
 func _on_options_button_pressed():
-	print("Options menu coming soon!")
+	if options_menu_instance:
+		return
+	options_menu_instance = preload("res://Scenes/Interface/pause_options_menu.tscn").instantiate()
+	add_child(options_menu_instance)
+	options_menu_instance.process_mode = Node.PROCESS_MODE_ALWAYS
 
 func _on_main_menu_button_pressed():
 	Global.in_main_menu = true

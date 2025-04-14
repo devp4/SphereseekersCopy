@@ -1,5 +1,5 @@
 extends Node
-enum levels{TUTORIAL, LEVEL1, LEVEL2, LEVEL3, LEVEL4}
+enum levels{TUTORIAL, LEVEL1, LEVEL2, LEVEL3, LEVEL4, LEVEL5}
 
 var level_to_play :  levels
 var controls_shown = false
@@ -16,5 +16,6 @@ var is_falling = false
 
 var volume_level = 100
 
+var screen_size
 var jump_btn
 var stop_btn

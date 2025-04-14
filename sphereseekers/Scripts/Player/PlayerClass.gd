@@ -2,6 +2,15 @@ extends Node
 
 class_name Player
 
+# Stars scores
+var star_times = {
+	"tutorial": [60, 45, 30],
+	"level1": [90, 60, 40],
+	"level2": [100, 80, 50],
+	"level3": [120, 90, 60],
+	"level4": [150, 120, 90]
+}
+
 # Player data
 var playerName: String = ""
 var current_level_time = 0
