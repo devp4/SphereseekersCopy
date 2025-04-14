@@ -12,6 +12,8 @@ var dragging_button = false
 var allow_dragging = true
 var is_muted = false
 
+var is_falling = false
+
 var volume_level = 100
 
 var jump_btn

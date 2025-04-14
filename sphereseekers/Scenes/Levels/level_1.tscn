@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bo84yrmciq5r"]
+[gd_scene load_steps=20 format=3 uid="uid://bo84yrmciq5r"]
 
 [ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_66voi"]
 [ext_resource type="Script" uid="uid://c6ycpobav1k77" path="res://Scripts/Movement/ball.gd" id="3_5weku"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://c3nmstgb3dbw8" path="res://Scripts/Objects/limit.gd" id="8_jv26f"]
 [ext_resource type="PackedScene" uid="uid://copu860806ql0" path="res://Scenes/Objects/teleport_platform/teleport_platform.tscn" id="8_rb0md"]
 [ext_resource type="AudioStream" uid="uid://d08pfsmuehre8" path="res://Assets/Audio/Medieval Marble.mp3" id="9_rb0md"]
+[ext_resource type="Script" uid="uid://iv37c4cpfund" path="res://Scripts/Interface/stopwatch.gd" id="10_hwvp3"]
+[ext_resource type="Script" uid="uid://cx3m1ohxd464m" path="res://Scripts/Interface/besttime.gd" id="11_afv7b"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_1jlnc"]
 panorama = ExtResource("3_jv26f")
@@ -29,6 +31,13 @@ material = ExtResource("5_jv26f")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rb0md"]
 size = Vector3(150, 1, 150)
+
+[sub_resource type="GDScript" id="GDScript_7r2dd"]
+script/source = "extends CanvasLayer
+
+func _ready():
+	pass
+"
 
 [node name="Level1" type="Node3D"]
 script = ExtResource("1_66voi")
@@ -97,6 +106,25 @@ stream = ExtResource("9_rb0md")
 autoplay = true
 emission_angle_enabled = true
 emission_angle_degrees = 90.0
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = SubResource("GDScript_7r2dd")
+
+[node name="Stopwatch" type="TextureRect" parent="UI"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("10_hwvp3")
+metadata/_edit_use_anchors_ = true
+
+[node name="Besttime" type="TextureRect" parent="UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+script = ExtResource("11_afv7b")
+metadata/_edit_use_anchors_ = true
 
 [connection signal="body_entered" from="Marble" to="Marble" method="_on_body_entered"]
 [connection signal="body_shape_entered" from="Marble" to="Marble" method="_on_body_shape_entered"]

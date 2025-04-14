@@ -8,17 +8,27 @@ extends RigidBody3D
 @export var jump_force: float = 100.0
 
 @onready var camera_3d: Camera3D = $"../CameraRig/HRotation/VRotation/SpringArm3D/Camera3D"
+@onready var stopwatch: TextureRect = $"../UI/Stopwatch"
 @onready var canvas_layer: CanvasLayer
 
 var can_move: bool = true
 var is_on_ground: bool = true
 var buttons_created = false
+var calibrated = false
+var tilts = []
+var initial_tilt = {"beta": 0, "gamma": 0}
 
+func calibrate_tilt():
+	if Global.is_mobile:
+		return MobileMovement.get_tilt()
+
+func get_calibrated_tilt():
+	var new_tilt = MobileMovement.get_tilt()
+	return {"beta": new_tilt["beta"] - initial_tilt["beta"], "gamma": new_tilt["gamma"] - initial_tilt["gamma"]}
 
 func _ready():
-	
 	if Global.is_mobile:
-		Accelerometer.create_accelerometer()
+		MobileMovement.create_listeners()
 		create_permission_button()
 		if Global.controls_shown:
 			create_action_buttons()
@@ -27,6 +37,10 @@ func _ready():
 	mesh.set_surface_override_material(0, Global.player_skin)
 
 func _process(delta):
+	if Global.is_falling:
+		stop_motion()
+		Global.is_falling = false
+		
 	if Global.is_mobile:
 		if Global.controls_shown and not buttons_created:
 			create_action_buttons()
@@ -42,17 +56,43 @@ func create_permission_button() -> void:
 		canvas_layer = CanvasLayer.new()
 		add_child(canvas_layer)
 	
+	var texture_rect = TextureRect.new()
+	texture_rect.texture = load("res://Assets/Interface/ui_images/set_name_in_4x1.png")
+	texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	texture_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	texture_rect.custom_minimum_size = Vector2(250, 60)
+	
 	var btn = Button.new()
 	btn.text = "Enable Motion Controls"
-	btn.position = Vector2(20, 260)
 	btn.size = Vector2(250, 60)
 	btn.connect("pressed", Callable(self, "_on_permission_button_pressed"))
-	canvas_layer.add_child(btn)
+	texture_rect.add_child(btn)
+	
+	var stopwatch_pos = stopwatch.get_rect().position
+	texture_rect.set_position(Vector2(stopwatch_pos.x, stopwatch_pos.y + 50))
+	add_child(texture_rect)
 
 func _on_permission_button_pressed() -> void:
-	if Accelerometer.request_permission():
+	if MobileMovement.request_permission():
 		await get_tree().create_timer(1.0).timeout  # Wait a bit for permission to be processed
 
+	if not calibrated:
+		calibrate_tilt()
+		var count = 5
+		for i in range(count):
+			var tilt = calibrate_tilt()
+			tilts.append(tilt)
+
+		var avg_beta = 0
+		var avg_gamma = 0
+		for tilt in tilts:
+			avg_beta += tilt["beta"]
+			avg_gamma += tilt["gamma"]
+
+		initial_tilt = {"beta": avg_beta / count, "gamma": avg_gamma / count}
+
+		calibrated = true
+		
 func round_place(num):
 	return int(num * 1000) / float(1000)
 
@@ -75,21 +115,26 @@ func _integrate_forces(_state: PhysicsDirectBodyState3D) -> void:
 	var horizontal_input = 0.0
 
 	if Global.is_mobile:
-		var tilt = Accelerometer.get_tilt()
-		var accel = Accelerometer.get_acceleration()
-		var permission = Accelerometer.get_permission_status()
+		var tilt = MobileMovement.get_tilt()
+		var permission = MobileMovement.get_permission_status()
 		
 		if permission == "granted":
 			if tilt:
-				var beta = tilt["beta"]
-				var gamma = tilt["gamma"]
+				var calibrated_tilt = get_calibrated_tilt()
+				var beta = calibrated_tilt["beta"]
+				var gamma = calibrated_tilt["gamma"]
 				
 				# Adjust sensitivity based on testing
-				var sensitivity = 0.1  # Increased sensitivity
-				
-				# iOS might need different handling compared to Android
-				forward_input = clamp(-beta * sensitivity, -1.0, 1.0) 
-				horizontal_input = clamp(gamma * sensitivity, -1.0, 1.0)
+				var sens = 0.5
+
+				if beta < -10: forward_input = -1 * sens
+				elif beta > 7: forward_input = 1 * sens
+				else: forward_input = 0 
+
+				if gamma < -8: horizontal_input = -1 * sens
+				elif gamma > 8: horizontal_input = 1 * sens
+				else: horizontal_input = 0 
+
 	else:
 		# Desktop keyboard fallback
 		forward_input = Input.get_action_raw_strength("ui_down") - Input.get_action_raw_strength("ui_up")
@@ -145,6 +190,12 @@ func _on_body_shape_entered(_body_rid, body, _body_shape_index, _local_shape_ind
 	if body.is_in_group("Ground"):
 		is_on_ground = true
 
+func stop_motion():
+	set_inertia(Vector3.ZERO)
+	linear_velocity = Vector3.ZERO
+	angular_velocity = Vector3.ZERO
+	is_on_ground = true
+	
 func reset_position() -> void:
 	set_inertia(Vector3.ZERO)
 	linear_velocity = Vector3.ZERO

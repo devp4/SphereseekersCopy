@@ -3,7 +3,7 @@ extends Node3D
 var controls_menu_instance = null
 var pause_menu_instance = null
 
-var canvas_layer
+@onready var canvas_layer = $CanvasLayer
 var pause_btn
 
 # Called when the node enters the scene tree for the first time.
@@ -27,8 +27,6 @@ func _ready() -> void:
 	
 	var world = get_viewport().get_world_3d()
 	world.environment = environment
-	
-	PlayerClass.set_current_level(1)
 		
 func _unhandled_input(event):
 	if event is InputEventKey and event.pressed and event.keycode == KEY_P:  # Escape key

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://d26yc08k0ba5a"]
+[gd_scene load_steps=19 format=3 uid="uid://d26yc08k0ba5a"]
 
 [ext_resource type="Script" uid="uid://qr5neqd5s40p" path="res://Scripts/Levels/Level 1/main.gd" id="1_t74h0"]
 [ext_resource type="Script" uid="uid://b7tikyqaeaocm" path="res://Scripts/Camera/camera_rig.gd" id="2_jqrsn"]
@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://copu860806ql0" path="res://Scenes/Objects/teleport_platform/teleport_platform.tscn" id="7_i4hbv"]
 [ext_resource type="Script" uid="uid://cip48r0khg2se" path="res://Scenes/Objects/teleport_platform/random_teleporter.gd" id="8_h0uxt"]
 [ext_resource type="AudioStream" uid="uid://n8mjandgknw" path="res://Assets/Audio/labyrinth.mp3" id="9_keyqw"]
+[ext_resource type="Script" uid="uid://iv37c4cpfund" path="res://Scripts/Interface/stopwatch.gd" id="10_3asqb"]
+[ext_resource type="Script" uid="uid://cx3m1ohxd464m" path="res://Scripts/Interface/besttime.gd" id="11_slbhm"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_keyqw"]
 panorama = ExtResource("3_t74h0")
@@ -26,6 +28,13 @@ sky = SubResource("Sky_h0uxt")
 material = ExtResource("5_h0uxt")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_i5g5g"]
+
+[sub_resource type="GDScript" id="GDScript_i5g5g"]
+script/source = "extends CanvasLayer
+
+func _ready():
+	pass
+"
 
 [node name="Level4" type="Node3D"]
 script = ExtResource("1_t74h0")
@@ -75,6 +84,25 @@ script = ExtResource("8_h0uxt")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 265.407, 10, 24.157)
 stream = ExtResource("9_keyqw")
 autoplay = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = SubResource("GDScript_i5g5g")
+
+[node name="Stopwatch" type="TextureRect" parent="UI"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("10_3asqb")
+metadata/_edit_use_anchors_ = true
+
+[node name="Besttime" type="TextureRect" parent="UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+script = ExtResource("11_slbhm")
+metadata/_edit_use_anchors_ = true
 
 [connection signal="body_entered" from="Marble" to="Marble" method="_on_body_entered"]
 [connection signal="body_shape_entered" from="Marble" to="Marble" method="_on_body_shape_entered"]

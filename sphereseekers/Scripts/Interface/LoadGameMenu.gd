@@ -27,13 +27,10 @@ func _on_load_pressed(save_name):
 	PlayerClass.load_game(save_name)
 	Global.in_main_menu = false
 	
-	# New game is going to played, set the level to play to TUTORIAL
-	Global.level_to_play = Global.levels.TUTORIAL
-	
 	# Make sure that Cannons will shoot
 	Global.stop_all_projectiles = false
 	MusicPlayer.find_child("AudioStreamPlayer2D").stop()
-	get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
+	get_tree().change_scene_to_file("res://Scenes/Interface/loading_screen.tscn")
 	
 func _on_delete_confirm(save_name):
 	if Global.is_mobile:
@@ -195,8 +192,6 @@ func _set_mobile_objects():
 	items_vbox.add_theme_constant_override("separation", 10)
 	scroll_container.add_child(items_vbox)
 	
-	create_top_spacer(items_vbox)
-	
 	var saves = LocalStorage.get_save_names()
 	
 	for save_name in saves:
@@ -313,7 +308,6 @@ func confirm_remove_on_desktop(confirm_action: Callable):
 	delete_btn.texture_normal = load("res://Assets/buttons/confirm_btn_2x1.png")
 	delete_btn.ignore_texture_size = true
 	delete_btn.stretch_mode = TextureButton.STRETCH_SCALE
-	delete_btn.expand = true
 	delete_btn.custom_minimum_size = Vector2(screen_size.x * 0.12, 50)
 	delete_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	delete_btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -329,7 +323,6 @@ func confirm_remove_on_desktop(confirm_action: Callable):
 	exit_btn.texture_normal = load("res://Assets/buttons/cancel_btn_2x1.png")
 	exit_btn.ignore_texture_size = true
 	exit_btn.stretch_mode = TextureButton.STRETCH_SCALE
-	exit_btn.expand = true
 	exit_btn.custom_minimum_size = Vector2(screen_size.x * 0.12, 50)
 	exit_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	exit_btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -383,7 +376,6 @@ func confirm_remove_on_mobile(confirm_action: Callable):
 	delete_btn.texture_normal = load("res://Assets/buttons/confirm_btn_2x1.png")
 	delete_btn.ignore_texture_size = true
 	delete_btn.stretch_mode = TextureButton.STRETCH_SCALE
-	delete_btn.expand = true
 	delete_btn.custom_minimum_size = Vector2(screen_size.x * 0.30, screen_size.y * 0.1)
 	delete_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	delete_btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -399,7 +391,6 @@ func confirm_remove_on_mobile(confirm_action: Callable):
 	exit_btn.texture_normal = load("res://Assets/buttons/cancel_btn_2x1.png")
 	exit_btn.ignore_texture_size = true
 	exit_btn.stretch_mode = TextureButton.STRETCH_SCALE
-	exit_btn.expand = true
 	exit_btn.custom_minimum_size = Vector2(screen_size.x * 0.3, screen_size.y * 0.1)
 	exit_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	exit_btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
