@@ -5,4 +5,5 @@ extends Area3D
 # Called when a body enters the Area3D
 func _on_body_entered(body):
 	if body.is_in_group("player"):
+		Global.is_falling = true
 		body.global_transform.origin = restart_position

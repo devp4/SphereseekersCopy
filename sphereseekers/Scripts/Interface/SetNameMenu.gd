@@ -170,6 +170,7 @@ func _on_continue_pressed():
 		LocalStorage.set_save_names(save_names)
 		
 		PlayerClass.clear_player()
+		Global.level_to_play = Global.levels.TUTORIAL
 		PlayerClass.playerName = trimmed_text
 		PlayerClass.save_player()
 		
@@ -190,6 +191,7 @@ func show_override_dialog(name: String) -> void:
 func _on_override_pressed(_save_name):
 	PlayerClass.delete_player(_save_name)
 	PlayerClass.clear_player()
+	Global.level_to_play = Global.levels.TUTORIAL
 	PlayerClass.playerName = _save_name
 	PlayerClass.save_player()
 	
@@ -251,7 +253,6 @@ func set_mobile_layout() -> void:
 	animate_property(title_label, "position", title_target_pos, 1.0, Tween.TRANS_BOUNCE)
 
 	title_label.add_theme_font_size_override("font_size", 48)
-	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title_label.visible = true
 
 	# Input
@@ -269,7 +270,6 @@ func set_mobile_layout() -> void:
 	continue_btn.position = Vector2(w + continue_btn.size.x, button_target_pos.y)
 	animate_property(continue_btn, "position", button_target_pos, 0.6)
 
-	continue_btn.text = "Continue"
 	continue_btn.visible = true
 
 	# Error Label
