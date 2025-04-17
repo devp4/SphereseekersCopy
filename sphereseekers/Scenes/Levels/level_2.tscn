@@ -25,6 +25,8 @@ background_mode = 2
 sky = SubResource("Sky_1jlnc")
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_8qsmg"]
+friction = 0.0
+rough = true
 
 [sub_resource type="SphereMesh" id="SphereMesh_fphuk"]
 material = ExtResource("5_pnnky")
@@ -45,7 +47,7 @@ func _ready():
 script = ExtResource("1_8qsmg")
 
 [node name="CameraRig" type="Node3D" parent="."]
-transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 10.782, -80.51)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 13.9535, 10.782, 0)
 script = ExtResource("2_ovj6s")
 
 [node name="HRotation" type="Node3D" parent="CameraRig"]
@@ -62,13 +64,17 @@ current = true
 fov = 80.0
 
 [node name="Marble" type="RigidBody3D" parent="." groups=["player"]]
-transform = Transform3D(1, 8.74228e-08, 8.74227e-08, 8.74227e-08, -1, 0, 8.74227e-08, 7.64274e-15, -1, 0, 2.5, 0)
+transform = Transform3D(1, 8.74228e-08, 8.74227e-08, 8.74227e-08, -1, 0, 8.74227e-08, 7.64274e-15, -1, 1.28337, 2.80127, -0.338375)
 mass = 20.0
 physics_material_override = SubResource("PhysicsMaterial_8qsmg")
 contact_monitor = true
 max_contacts_reported = 1
 script = ExtResource("4_fphuk")
 movement_speed = 18500.0
+max_linear_velocity = null
+max_angular_velocity = null
+braking_factor = null
+spin_boost_factor = null
 jump_force = 150.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Marble"]
@@ -94,9 +100,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, 0)
 shape = SubResource("BoxShape3D_1jlnc")
 
 [node name="TeleportPlatform" parent="." instance=ExtResource("8_blpqv")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -175.068, 0.270754, 0)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -175.068, 0.270754, -0.439755)
 
 [node name="level_2_path" parent="." instance=ExtResource("8_pnnky")]
+transform = Transform3D(0.999992, 0.00255459, -0.0029191, -0.00255249, 0.999996, 0.000718905, 0.00292094, -0.00071142, 0.999995, 0, 0, 0)
 
 [node name="sweeper" parent="." instance=ExtResource("9_blpqv")]
 transform = Transform3D(0.5, 0, 0, 0, 0.625, 0, 0, 0, 0.5, -25, 2.03965, -0.0844307)

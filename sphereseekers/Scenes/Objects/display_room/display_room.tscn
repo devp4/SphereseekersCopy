@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dae23tsvpi66r" path="res://Scenes/Objects/display_room/display_room.glb" id="1_pk60g"]
 [ext_resource type="Material" uid="uid://2y70wwrllqwj" path="res://Assets/Materials/cartoon/stone_toon/stone_small_toon.tres" id="2_3q3w3"]
 [ext_resource type="Material" uid="uid://b66mn6xqdkhka" path="res://Assets/Materials/cartoon/wood_planks_toon/wood_planks_toon.tres" id="3_3q3w3"]
-[ext_resource type="Material" uid="uid://bypxjktybemk8" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="4_t4meb"]
+[ext_resource type="Material" uid="uid://dihmuvdpds62d" path="res://Assets/Materials/cartoon/stone_toon/stone_toon.tres" id="4_t4meb"]
 
 [node name="display_room" instance=ExtResource("1_pk60g")]
 

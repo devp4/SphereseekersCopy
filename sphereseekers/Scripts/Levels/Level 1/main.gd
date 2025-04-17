@@ -68,19 +68,16 @@ func unpause_game():
 	get_tree().paused = false
 
 func show_hide_btns():
-	if Global.is_mobile:
-		if Global.is_paused:
-			if Global.jump_btn.visible:
-				print("game is paused, hiding the buttons")
-				Global.jump_btn.visible = false
-				Global.stop_btn.visible = false
-				pause_btn.visible = false
-		else:
-			if not Global.jump_btn.visible:
-				print("game is resumed, showing the buttons")
-				Global.jump_btn.visible = true
-				Global.stop_btn.visible = true
-				pause_btn.visible = true
+	if Global.is_paused:
+		if Global.jump_btn.visible:
+			Global.jump_btn.visible = false
+			Global.stop_btn.visible = false
+			Global.spin_btn.visible = false
+	else:
+		if not Global.jump_btn.visible:
+			Global.jump_btn.visible = true
+			Global.stop_btn.visible = true
+			Global.spin_btn.visible = true
 
 func create_pause_button():
 	var screen_size = get_viewport().get_visible_rect().size

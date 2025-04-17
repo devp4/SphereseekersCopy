@@ -140,8 +140,16 @@ func _on_select_button_pressed():
 	get_tree().change_scene_to_file("res://Scenes/Interface/MainMenu.tscn")
 
 func set_camera_for_mobile():
-	var camera_position = camera.position
-	# camera.position = Vector3(camera_position.x * 0.4, camera_position.y * 0.5, camera_position.z * 0.4)
+	var wall = $display_room/wall
+	var floor = $display_room/floor
+	var base = $display_room/base
+	var camera = $Camera3D
+	
+	wall.visible = false
+	floor.visible = false
+	base.visible = false
+	camera.position = Vector3(5,7,5)
+	camera.rotation_degrees = Vector3(-10,45,0)
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if Global.is_mobile:

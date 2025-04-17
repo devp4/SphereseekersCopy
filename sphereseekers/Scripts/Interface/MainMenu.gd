@@ -22,7 +22,16 @@ func _ready() -> void:
 	options_btn = $options_button
 	skins_btn = $skins_button
 	credits_btn = $credits_button
-
+	
+	Global.screen_size = get_viewport_rect().size
+	
+	if not MusicPlayer.find_child("AudioStreamPlayer2D").is_playing():
+		MusicPlayer.find_child("AudioStreamPlayer2D").play()
+		AudioServer.set_bus_volume_db(
+			AudioServer.get_bus_index("Master"),
+			linear_to_db(Global.volume_level/1000)
+		)
+	
 	Global.is_mobile = is_running_on_mobile_browser()
 
 	if Global.is_mobile:

@@ -14,6 +14,9 @@ const BUTTON_WIDTH_RATIO_MOBILE = 0.5
 const BUTTON_HEIGHT_RATIO = 0.15  # Each button takes 15% of background height
 const SPACING_RATIO = 0.05  # 5% of background height as spacing between buttons
 
+
+var options_menu_instance: Control = null
+
 func _ready():
 	# Initialize references
 	_init_ui_references()
@@ -85,6 +88,7 @@ func _on_resume_button_pressed():
 	get_parent().unpause_game()
 
 func _on_restart_button_pressed():
+	remove_mobile_buttons()
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	Global.is_paused = false
 	Global.stop_all_projectiles = true
@@ -95,13 +99,18 @@ func _on_restart_button_pressed():
 	PlayerClass.current_level_time = 0
 
 func _on_options_button_pressed():
-	print("Options menu coming soon!")
+	if options_menu_instance:
+		return
+	options_menu_instance = preload("res://Scenes/Interface/pause_options_menu.tscn").instantiate()
+	add_child(options_menu_instance)
+	options_menu_instance.process_mode = Node.PROCESS_MODE_ALWAYS
 
 func _on_main_menu_button_pressed():
 	Global.in_main_menu = true
 	Global.stop_all_projectiles = true
 	Global.controls_shown = false
 	Global.is_paused = false
+	Global.control_button_created = false
 	
 	
 	for sphere in get_tree().get_nodes_in_group("enemy_balls"):
@@ -111,3 +120,18 @@ func _on_main_menu_button_pressed():
 	get_tree().paused = false
 	MusicPlayer.find_child("AudioStreamPlayer2D").play()
 	get_tree().change_scene_to_file("res://Scenes/Interface/MainMenu.tscn")
+
+func remove_mobile_buttons():
+	if Global.jump_btn and Global.jump_btn.is_inside_tree():
+		Global.jump_btn.queue_free()
+		Global.jump_btn = null
+
+	if Global.stop_btn and Global.stop_btn.is_inside_tree():
+		Global.stop_btn.queue_free()
+		Global.stop_btn = null
+		
+	if Global.spin_btn and Global.spin_btn.is_inside_tree():
+		Global.spin_btn.queue_free()
+		Global.spin_btn = null
+		
+	await get_tree().process_frame
