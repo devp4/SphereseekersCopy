@@ -34,7 +34,7 @@ var credits = [
 	["Sound Design", "", "Dev Patel"],
 	["Art", "", "Ernesto Rendon"],
 	["Testers", "", "Kenet Ortiz", "", "Dev Patel", "", "Ernesto Rendon", "", "Scott Willard"],
-	["Advisor", "", "Carsten Thur-Bludworth"],
+	["Advisor", "", "Carsten Thue-Bludworth"],
 	[
 		"Tools used", "",
 		"Developed with Godot Engine", "",
@@ -57,6 +57,7 @@ var credits = [
 ]
 
 func _ready():
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	_set_font_size()
 	var screen_size = get_viewport().get_visible_rect().size
 	color_rect.size = screen_size
@@ -126,7 +127,9 @@ func add_line():
 func finish():
 	if not finished:
 		finished = true
+		Global.control_button_created = false
 		MusicPlayer.find_child("AudioStreamPlayer2D").play()
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		get_tree().change_scene_to_file("res://Scenes/Interface/MainMenu.tscn")
 
 func _unhandled_input(event):

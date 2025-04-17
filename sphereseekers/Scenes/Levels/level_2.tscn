@@ -47,7 +47,7 @@ func _ready():
 script = ExtResource("1_8qsmg")
 
 [node name="CameraRig" type="Node3D" parent="."]
-transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 10.782, -80.51)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 13.9535, 10.782, 0)
 script = ExtResource("2_ovj6s")
 
 [node name="HRotation" type="Node3D" parent="CameraRig"]
@@ -71,6 +71,10 @@ contact_monitor = true
 max_contacts_reported = 1
 script = ExtResource("4_fphuk")
 movement_speed = 18500.0
+max_linear_velocity = null
+max_angular_velocity = null
+braking_factor = null
+spin_boost_factor = null
 jump_force = 150.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Marble"]

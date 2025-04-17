@@ -36,7 +36,8 @@ func remove_mobile_buttons():
 	if Global.stop_btn and Global.stop_btn.is_inside_tree():
 		Global.stop_btn.queue_free()
 		Global.stop_btn = null
-
+	
+	await get_tree().process_frame
 
 func _level_to_play():
 	match Global.level_to_play:
@@ -49,7 +50,7 @@ func _level_to_play():
 		Global.levels.LEVEL3:
 			Global.level_to_play = Global.levels.LEVEL4
 		Global.levels.LEVEL4:
-			Global.level_to_play = Global.levels.LEVEL5
+			Global.level_to_play = Global.levels.CREDITS
 
 func show_level_complete_popup(confirm_action: Callable):
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -83,14 +84,22 @@ func show_level_complete_popup(confirm_action: Callable):
 	popup.add_child(container)
 
 	var current_time_label = Label.new()
-	current_time_label.text = "Your Time: %.2f s" % PlayerClass.current_level_time
+	var total_current_time = int(PlayerClass.current_level_time)
+	var current_minutes = total_current_time / 60
+	var current_seconds = total_current_time % 60
+	current_time_label.text = "Your Time: %02d:%02d" % [current_minutes, current_seconds]
 	current_time_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	current_time_label.add_theme_font_size_override("font_size", 30)
 	container.add_child(current_time_label)
 
 	var best_time = PlayerClass.get_current_level_best_time()
+	if best_time == null:
+		best_time = PlayerClass.current_level_time
+	var total_best_time = int(best_time)
+	var best_minutes = total_best_time / 60
+	var best_seconds = total_best_time % 60
 	var best_time_label = Label.new()
-	best_time_label.text = "Best Time: %.2f s" % (best_time if best_time != null else PlayerClass.current_level_time)
+	best_time_label.text = "Best Time: %02d:%02d" % [best_minutes, best_seconds]
 	best_time_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	best_time_label.add_theme_font_size_override("font_size", 30)
 	container.add_child(best_time_label)

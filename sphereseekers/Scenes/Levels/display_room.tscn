@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bhjcdhclie0db"]
+[gd_scene load_steps=21 format=3 uid="uid://bhjcdhclie0db"]
 
 [ext_resource type="PackedScene" uid="uid://3s77ttww565r" path="res://Scenes/Objects/display_room/display_room.tscn" id="1_mthct"]
 [ext_resource type="Script" uid="uid://jtfqwqev8r0i" path="res://Scenes/Objects/display_room/display_room.gd" id="1_vqcex"]
@@ -15,7 +15,19 @@
 [ext_resource type="Texture2D" uid="uid://dewd3rgpdgl83" path="res://Assets/previews/watermelon.png" id="12_strqh"]
 [ext_resource type="Texture2D" uid="uid://cfgw6hvo76qt1" path="res://Assets/previews/trival.png" id="13_strqh"]
 [ext_resource type="Texture2D" uid="uid://370veh27kuh5" path="res://Assets/buttons/confirm_btn_2x1.png" id="15_dgjqd"]
+[ext_resource type="Texture2D" uid="uid://cnv4wc7tvvivh" path="res://Assets/backgrounds/anime-style-clouds.jpg" id="15_m2e68"]
 [ext_resource type="AudioStream" uid="uid://de4tqe6ss774g" path="res://Assets/Audio/Skin Selection.mp3" id="16_dgjqd"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ulca6"]
+panorama = ExtResource("15_m2e68")
+
+[sub_resource type="Sky" id="Sky_5totu"]
+sky_material = SubResource("PanoramaSkyMaterial_ulca6")
+
+[sub_resource type="Environment" id="Environment_o2was"]
+background_mode = 2
+sky = SubResource("Sky_5totu")
+reflected_light_source = 2
 
 [node name="DisplayRoom" type="Node3D"]
 script = ExtResource("1_vqcex")
@@ -28,6 +40,7 @@ skin_names = Array[String](["The Brain of the Developers", "Leopard", "Kitty", "
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.707107, -0.122788, 0.696364, 0, 0.984808, 0.173648, -0.707107, -0.122788, 0.696364, 15, 10, 15)
 keep_aspect = 0
+environment = SubResource("Environment_o2was")
 
 [node name="top-light" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)

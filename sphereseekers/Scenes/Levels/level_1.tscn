@@ -48,7 +48,7 @@ light_energy = 1.5
 shadow_enabled = true
 
 [node name="CameraRig" type="Node3D" parent="."]
-transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 10.782, -80.51)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 40.3331, 10.782, 0.439628)
 script = ExtResource("5_5yx82")
 
 [node name="HRotation" type="Node3D" parent="CameraRig"]
