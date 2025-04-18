@@ -173,6 +173,7 @@ func _on_continue_pressed():
 		Global.level_to_play = Global.levels.TUTORIAL
 		PlayerClass.playerName = trimmed_text
 		PlayerClass.save_player()
+		LocalStorage.set_recent_save(PlayerClass.playerName)
 		
 		start_game()
 		
@@ -194,7 +195,7 @@ func _on_override_pressed(_save_name):
 	Global.level_to_play = Global.levels.TUTORIAL
 	PlayerClass.playerName = _save_name
 	PlayerClass.save_player()
-	
+	LocalStorage.set_recent_save(PlayerClass.playerName)
 	start_game()
 	get_tree().change_scene_to_file("res://Scenes/Levels/Tutorial.tscn")
 

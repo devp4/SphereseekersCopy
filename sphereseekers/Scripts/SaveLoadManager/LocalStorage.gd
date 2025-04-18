@@ -14,6 +14,20 @@ func get_save_names():
 	if data == null: return []
 	else: return JSON.parse_string(data)
 
+func set_recent_save(name):
+	var data = JavaScriptBridge.eval("localStorage.setItem('recent_save', '%s')" % name)
+	if data == null: return null
+	else: return data
+
+func delete_recent_save():
+	var complete_string = "localStorage.removeItem('recent_save')"
+	JavaScriptBridge.eval(complete_string)
+	
+func get_recent_save():
+	var data = JavaScriptBridge.eval("localStorage.getItem('recent_save')")
+	if data == null: return null
+	else: return data
+
 func set_save_names(save_names):
 	var save_names_string = JSON.stringify(save_names)
 	var complete_string = "localStorage.setItem('saves', '%s')" % save_names_string
