@@ -31,7 +31,7 @@ var credits = [
 	["Game Design", "", "Kenet Ortiz", "", "Dev Patel", "", "Ernesto Rendon", "", "Scott Willard"],
 	["Team Lead", "", "Scott Willard"],
 	["QA Test", "", "Kenet Ortiz"],
-	["Sound Design", "", "Dev Patel"],
+	["Sound Design", "", "Scott Willard"],
 	["Art", "", "Ernesto Rendon"],
 	["Testers", "", "Kenet Ortiz", "", "Dev Patel", "", "Ernesto Rendon", "", "Scott Willard"],
 	["Advisor", "", "Carsten Thue-Bludworth"],

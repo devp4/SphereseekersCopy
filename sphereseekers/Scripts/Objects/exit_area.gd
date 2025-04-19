@@ -19,13 +19,21 @@ func _on_animation_complete():
 	PlayerClass.set_level_best_time()
 
 	# Instead of immediately loading next level, show level complete popup
-	show_level_complete_popup(_on_continue_pressed)
+	show_level_complete_popup(_on_continue_pressed, _on_restart_pressed)
 
+func _on_restart_pressed():
+	remove_mobile_buttons()
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	PlayerClass.save_player()
+	Global.is_paused = false
+	get_tree().change_scene_to_file("res://Scenes/Interface/loading_screen.tscn")
+	
 func _on_continue_pressed():
 	remove_mobile_buttons()
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	_level_to_play()
 	PlayerClass.save_player()
+	Global.is_paused = false
 	get_tree().change_scene_to_file("res://Scenes/Interface/loading_screen.tscn")
 
 func remove_mobile_buttons():
@@ -52,7 +60,8 @@ func _level_to_play():
 		Global.levels.LEVEL4:
 			Global.level_to_play = Global.levels.CREDITS
 
-func show_level_complete_popup(confirm_action: Callable):
+func show_level_complete_popup(confirm_action: Callable, restart_action: Callable):
+	Global.is_paused = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	var screen_size = Global.screen_size
 	var popup = ConfirmationDialog.new()
@@ -147,9 +156,23 @@ func show_level_complete_popup(confirm_action: Callable):
 	
 	confirm_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	confirm_btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	button_box.add_child(confirm_btn)
-
 	confirm_btn.pressed.connect(confirm_action)
+	button_box.add_child(confirm_btn)
+	
+	var restart_btn = TextureButton.new()
+	restart_btn.texture_normal = load("res://Assets/buttons/restart_btn_2x1.png")
+	restart_btn.ignore_texture_size = true
+	restart_btn.stretch_mode = TextureButton.STRETCH_SCALE
+	
+	if Global.is_mobile:
+		restart_btn.custom_minimum_size = Vector2(screen_size.x * 0.3, screen_size.y * 0.1)
+	else:
+		restart_btn.custom_minimum_size = Vector2(screen_size.x * 0.12, 50)
+	
+	restart_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	restart_btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	restart_btn.pressed.connect(restart_action)
+	button_box.add_child(restart_btn)
 
 	var bottom_margin = Control.new()
 	bottom_margin.custom_minimum_size = Vector2(0, 10)
