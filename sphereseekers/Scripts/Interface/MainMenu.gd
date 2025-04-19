@@ -44,7 +44,19 @@ func _ready() -> void:
 	
 	
 func _on_Continue_pressed() -> void:
-	pass
+	var recent_save = LocalStorage.get_recent_save()
+
+	if recent_save == null:
+		return
+
+	PlayerClass.clear_player()
+	PlayerClass.load_game(recent_save)
+	Global.in_main_menu = false
+
+	# Make sure that Cannons will shoot
+	Global.stop_all_projectiles = false
+	MusicPlayer.find_child("AudioStreamPlayer2D").stop()
+	get_tree().change_scene_to_file("res://Scenes/Interface/loading_screen.tscn")
 
 func _on_new_game_pressed() -> void:	
 	get_tree().change_scene_to_file("res://Scenes/Interface/SetNameMenu.tscn")

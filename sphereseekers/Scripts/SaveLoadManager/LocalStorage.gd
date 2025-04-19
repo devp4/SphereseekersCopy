@@ -22,7 +22,21 @@ func set_save_names(save_names):
 func delete_player(player_name):
 	var complete_string = "localStorage.removeItem('%s')" % player_name
 	JavaScriptBridge.eval(complete_string)
-	
+
+func set_recent_save(name):
+	var data = JavaScriptBridge.eval("localStorage.setItem('recent_save', '%s')" % name)
+	if data == null: return null
+	else: return null
+
+func delete_recent_save():
+	var complete_string = "localStorage.removeItem('recent_save')"
+	JavaScriptBridge.eval(complete_string)
+
+func get_recent_save():
+	var data = JavaScriptBridge.eval("localStorage.getItem('recent_save')")
+	if data == null: return null
+	else: return data
+
 func save_player_data(player_name, player_data):
 	# convert int keys to string
 	if "best_times" in player_data and player_data["best_times"] is Dictionary:

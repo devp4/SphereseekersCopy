@@ -26,6 +26,7 @@ func _on_load_pressed(save_name):
 	PlayerClass.clear_player()
 	PlayerClass.load_game(save_name)
 	Global.in_main_menu = false
+	LocalStorage.set_recent_save(PlayerClass.playerName)
 	
 	# Make sure that Cannons will shoot
 	Global.stop_all_projectiles = false
@@ -48,6 +49,9 @@ func _on_delete_pressed(save_name):
 	
 	LocalStorage.set_save_names(new_saves)
 	PlayerClass.delete_player(save_name)
+	var recent_save = LocalStorage.get_recent_save()
+	if recent_save == save_name:
+		LocalStorage.delete_recent_save()
 	get_tree().change_scene_to_file("res://Scenes/Interface/LoadGameMenu.tscn")
 
 func _set_desktop_objects():
