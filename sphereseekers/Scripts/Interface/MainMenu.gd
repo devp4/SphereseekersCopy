@@ -114,14 +114,12 @@ func set_objects_for_desktop() -> Array:
 		btn.position = Vector2(-button_width, y_pos)
 
 		if i == 0:
-			print("Adding overlay to button 0")
-
 			var overlay = ColorRect.new()
 			overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-			overlay.color = Color(0, 0, 0, 0.4)  # Semi-transparent black
+			overlay.color = Color(0, 0, 0, 0.4)
 			overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-			btn.add_child(overlay)  # Add overlay as a child of the button
+			btn.add_child(overlay)
 			var recent_save = LocalStorage.get_recent_save()
 			if recent_save == null: 
 				overlay.visible = true
@@ -166,18 +164,24 @@ func set_objects_for_mobile() -> Array:
 	var button_targets = []
 
 	for i in buttons.size():
-		if i == 0:
-			print('ere')
-			var overlay = Panel.new()
-			var rect_min_size = Vector2(button_width, button_height)
-			overlay.rect_min_size = rect_min_size
-			overlay.rect_position = Vector2(0, 0)
-			overlay.modulate = Color(0, 0, 0, 0.5)
-			add_child(overlay)
-			overlay.visible = true
-			
 		var btn = buttons[i]
 		btn.set_size(Vector2(button_width, button_height))
+		
+		if i == 0:
+			var overlay = ColorRect.new()
+			overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			overlay.color = Color(0, 0, 0, 0.4)
+			overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+			btn.add_child(overlay)
+			var recent_save = LocalStorage.get_recent_save()
+			if recent_save == null: 
+				overlay.visible = true
+				btn.disabled = true
+			else: 
+				overlay.visible = false
+				btn.disabled = false
+				
 		var target_x = (w - button_width) / 2
 		var target_y = start_y + i * (button_height + spacing)
 		btn.position = Vector2(target_x, h + button_height)
